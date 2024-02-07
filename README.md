@@ -24,7 +24,7 @@
 	 -   When game starts or when players are needed
 - Player/Game Customization
 	-    Role specification for game (ex: goalie, center, etc)
-	- Game level - beginner friendly or experienced players
+	- Game level - beginner-friendly or experienced players
 
 ## Stretch Goals 🙆
 -   Allow users to rate each other based on sportsmanship and how good they are at the sport
@@ -90,7 +90,7 @@ Quick Read :)
 
 | Command | Description |
 | ------ | ------ |
-| **cd "Book-Mates"** | Change directories over to our repository |
+| **cd "PickUP"** | Change directories over to our repository |
 | **git branch** | Lists branches for you |
 | **git branch "branch name"** | Makes new branch |
 | **git checkout "branch name"** | Switch to branch |

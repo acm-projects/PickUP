@@ -71,7 +71,7 @@ Tutorials/Helpful Links:
 [Git Cheat Sheet](https://education.github.com/git-cheat-sheet-education.pdf)  
 [Firebase CRUD](https://www.youtube.com/watch?v=ErP_xomHKTw)
 
-[How to implement push notifications with Flutter and Firebase Cloud Messaging](https://www.youtube.com/watch?v=AUU6gbDni4Q)
+[How to implement push notifications with Flutter and Firebase Cloud Messaging](https://www.youtube.com/watch?v=AUU6gbDni4Q)  
 [Push notifications pt 2](https://www.youtube.com/watch?v=--PQXg_mx9I)
     
 API links  

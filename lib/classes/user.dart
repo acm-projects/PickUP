@@ -24,4 +24,9 @@ class User {
     Map<String, dynamic> data = jsonDecode(jsonData);
     return data;
   }
+
+  static Future<String>getUserID() async {
+    Map<String, dynamic> localDB = await User.readFromLocalJsonFile();
+    return localDB["_localUser"];
+  }
 }

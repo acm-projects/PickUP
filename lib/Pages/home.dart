@@ -1,4 +1,4 @@
-import 'package:pickup/classes/Game.dart';
+import 'package:pickup/classes/game.dart';
 import 'package:flutter/material.dart';
 import 'package:pickup/Pages/secondPage.dart';
 
@@ -12,24 +12,25 @@ class HomePage extends StatelessWidget {
       ),
       body: Center(
         child: ElevatedButton(
-          child: const Text('Create a Game'),
+          child: const Text('Pick Up!'),
           onPressed: () async {
+
+            /*
             Game newGame = Game(
               'Championship', // name
-              'John Doe', // user
+              'Kobe', // user
               'Basketball', // sport
               123, // location
               10, // numOfPlayers
-              DateTime.now(), // date
               DateTime.now(), // timeCreated
-              DateTime.now().add(Duration(hours: 1)), // startTime
+              DateTime.now().add(const Duration(hours: 1)), // startTime
             );
-
-            Game.createGame(game: newGame);
+            */
+            Game.fetch();
 
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => SecondPage()),
+              MaterialPageRoute(builder: (context) => const SecondPage()),
             );
           },
         ),

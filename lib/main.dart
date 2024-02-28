@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:pickup/Pages/loginPage.dart';
 import 'package:pickup/Pages/home.dart';
@@ -7,7 +6,7 @@ import 'dart:io' show Platform;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-   Platform.isAndroid
+  Platform.isAndroid
       ? await Firebase.initializeApp(
           options: const FirebaseOptions(
             apiKey: "AIzaSyCQL-lqTgbOQhTv8F1Oj1YGsqlDCTb-Za8",
@@ -16,7 +15,7 @@ void main() async {
             projectId: "utdpickup",
           ),
         )
-      : await Firebase.initializeApp(); 
+      : await Firebase.initializeApp();
   //createUser(name: 'dkm');
   runApp(MaterialApp(home: HomePage()));
 }

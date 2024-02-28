@@ -8,12 +8,13 @@ class Game {
   String sport;
   String gameID = generateRandomHex();
   int location;
-  int numOfPlayers;
+  int numOfPlayers = 0;
+  int maxNumOfPlayers;
   DateTime timeCreated;
   DateTime startTime;
 
-  Game(this.name, this.user, this.sport, this.location, this.numOfPlayers,
-      this.timeCreated, this.startTime, DateTime add);
+  Game(this.name, this.user, this.sport, this.location, this.maxNumOfPlayers,
+      this.timeCreated, this.startTime);
 
   Map<String, dynamic> toJSON() {
     return {
@@ -23,49 +24,100 @@ class Game {
       'sport': sport,
       'location': location,
       'numOfPlayers': numOfPlayers,
+      'maxNumOfPlayers': maxNumOfPlayers,
       'timeCreated': timeCreated.toIso8601String(),
       'startTime': startTime.toIso8601String(),
     };
   }
 
-  //Users Can Only Have 5 Active Games at a time
-  static Future createGame({required Game game}) async {
+  //Create, Users Can Only Have 5 Active Games at a time
+  void instantiate() async {
     //Instead of example@utdallas.edu we grab the local user id/email
-    Map<String, dynamic> localDB = await User.readFromLocalJsonFile();
-    String userID = localDB["_localUser"];
-
-    final db = FirebaseFirestore.instance;
-    final usersCreatedGames = db
+    final usersCreatedGames = FirebaseFirestore.instance
         .collection("Users")
-        .doc(userID)
+        .doc(await User.getUserID())
         .collection("ActiveGames")
-        .doc(game.gameID);
-
-    Map<String, dynamic> gameJSON = {game.gameID: game.toJSON()};
+        .doc(gameID);
 
     DocumentSnapshot docSnapshot = await usersCreatedGames.get();
 
     if (docSnapshot.exists) {
-      // If the document exists in the database, update it
-      await usersCreatedGames.update(gameJSON);
+      await usersCreatedGames.update({gameID: toJSON()});
     } else {
-      // If the document does not exist in the database, create it
-      await usersCreatedGames.set(gameJSON);
+      await usersCreatedGames.set({gameID: toJSON()});
+    }
+  }
+
+  //Read
+  static Future<Object> fetch([String target = '']) async {
+    final usersCreatedGames = FirebaseFirestore.instance
+        .collection("Users")
+        .doc(await User.getUserID())
+        .collection("ActiveGames");
+    
+    final List<Map<String, dynamic>> activeGamesData = (await usersCreatedGames.get())
+      .docs
+      .map((doc) => doc.data())
+      .toList();
+
+    if (target.isEmpty) return activeGamesData;
+
+    for (final entry in activeGamesData) {
+      if (entry[target] != null) return entry[target];
     }
 
-    //READ GAMES
+    return false;
+  }
 
-    /*
-    usersCreatedGames.get().then(
-          (DocumentSnapshot doc) {
-            final data = doc.data() as Map<String, dynamic>;
-            print(data);
-          },
-          onError: (e) => print("Error getting document: $e"),
-        );
-    */
+  //Update
+  static Future<void> edit(String target, Map<String,dynamic> doc) async {
+    DocumentReference targetGame = FirebaseFirestore.instance
+        .collection("Users")
+        .doc(await User.getUserID())
+        .collection("ActiveGames")
+        .doc(target);
 
-    //await docUser.set(user);
+        //Check if doc exists
+    if ((await targetGame.get()).exists) {
+      await targetGame.set(doc);
+    } else {
+      print(target + " doesn't exists");
+    }
+  }
+
+  //Destroy
+  static Future<void> delete(String target) async {
+    DocumentReference targetGame = FirebaseFirestore.instance
+        .collection("Users")
+        .doc(await User.getUserID())
+        .collection("ActiveGames")
+        .doc(target);
+    
+    //Check if doc exists
+    if ((await targetGame.get()).exists) {
+      await targetGame.delete();
+    } else {
+      print(target + " doesn't exists");
+    }
+  }
+
+  static Future<Game?> firestoreToGame(String target) async {
+    try {
+      Map<String, dynamic> jsonData = await fetch(target) as Map<String, dynamic>;
+
+      return Game(
+        jsonData["name"], 
+        jsonData["user"], 
+        jsonData["sport"],
+        jsonData["location"],
+        jsonData["maxNumOfPlayers"],
+        DateTime.parse(jsonData["timeCreated"]),
+        DateTime.parse(jsonData["startTime"]));
+    } catch(e) {
+      print('Error: $e'); //Typically while fetching, if fetch == false
+    }  
+
+    return null;
   }
 }
 

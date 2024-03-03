@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class CreateGameButton extends StatelessWidget {
+class SignUpButton extends StatelessWidget {
   final Function()? onTap;
 
-  const CreateGameButton({super.key, required this.onTap});
+  const SignUpButton({super.key, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +15,7 @@ class CreateGameButton extends StatelessWidget {
         decoration: const BoxDecoration(color: Colors.black),
         child: const Center(
           child: Text(
-            'Create Game',
+            'Sign Up',
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,

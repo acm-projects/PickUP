@@ -6,11 +6,11 @@ class GameTextFields extends StatelessWidget {
   final bool obscureTxt;
 
   const GameTextFields({
-    Key? key,
+    super.key,
     required this.controller,
     required this.hintTxt,
     required this.obscureTxt,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

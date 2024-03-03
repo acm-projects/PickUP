@@ -17,7 +17,7 @@ void main() async {
         )
       : await Firebase.initializeApp();
   //createUser(name: 'dkm');
-  runApp(MaterialApp(home: HomePage()));
+  runApp(const MaterialApp(home: HomePage()));
 }
 
 class MyApp extends StatelessWidget {

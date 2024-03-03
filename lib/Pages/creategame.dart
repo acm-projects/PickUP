@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:pickup/components/createGameButton.dart';
 import 'package:pickup/components/gameTextFields.dart';
+import 'package:pickup/classes/game.dart';
+import 'package:pickup/classes/location.dart';
 
+// ignore: must_be_immutable
 class CreateGame extends StatelessWidget {
-  CreateGame({Key? key}) : super(key: key);
+  CreateGame({super.key});
 
   var sport = TextEditingController();
   var numPlayers = TextEditingController();
   var gameLocation = TextEditingController();
-  var gameDetails = TextEditingController();
-  var username = TextEditingController();
-  var gameID = TextEditingController();
+  var gameDescription = TextEditingController();
+  var name = TextEditingController();
+  var startTime = TextEditingController();
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[500],
@@ -32,17 +36,11 @@ class CreateGame extends StatelessWidget {
           ),
           const SizedBox(height: 15),
           GameTextFields(
-            controller: username,
-            hintTxt: 'User ID',
+            controller: name,
+            hintTxt: 'Title',
             obscureTxt: false,
           ),
           const SizedBox(height: 15),
-          GameTextFields(
-            controller: gameID,
-            hintTxt: 'Game ID',
-            obscureTxt: false,
-          ),
-           const SizedBox(height: 15),
           GameTextFields(
             controller: sport,
             hintTxt: 'Select Sport',
@@ -56,7 +54,7 @@ class CreateGame extends StatelessWidget {
           ),
           const SizedBox(height: 15),
           GameTextFields(
-            controller: gameDetails,
+            controller: gameDescription,
             hintTxt: 'Game details',
             obscureTxt: false,
           ),
@@ -66,19 +64,37 @@ class CreateGame extends StatelessWidget {
             hintTxt: 'Location',
             obscureTxt: false,
           ),
-          
+          const SizedBox(height: 15),
+          GameTextFields(
+            controller: startTime,
+            hintTxt: 'When does your start?',
+            obscureTxt: false,
+          ),
+
+          //This should be a mostly linear process,
+          //One Game Attribute at a time
+          //Input validation
           CreateGameButton(
             onTap: () {
               // gameDetails()
-              print('Hello');
+              try {
+                Game game = Game(
+                    name.text,
+                    'user',
+                    sport.text,
+                    gameDescription.text,
+                    Location(0,2),
+                    int.parse(numPlayers.text),
+                    DateTime.parse(startTime.text));
+
+                game.instantiate();
+              } catch (e) {
+                print("error: $e");
+              }
             },
           )
         ],
       ),
     );
   }
-
-
-
-
 }

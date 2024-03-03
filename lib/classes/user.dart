@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/services.dart' show rootBundle;
-import 'dart:convert';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+const SECURE_STORAGE = FlutterSecureStorage();
+
+//Note: Integrate createUser w Login
 
 class User {
   String firstName;
@@ -11,22 +14,22 @@ class User {
   User(this.firstName, this.lastName, this.email, this.birthday);
 
   //Go into User Database, and add a game
-  Future createUser({required String name}) async {
+  Future<void> createUser({required String name}) async {
     final docUser = FirebaseFirestore.instance.collection('User').doc('my-id');
 
     final user = {'name': name, 'age': 21, 'birthday:': DateTime(2001, 7, 28)};
 
+    await SECURE_STORAGE.write(key: "_localUser", value: name);
+
     await docUser.set(user);
   }
 
-  static Future<Map<String, dynamic>> readFromLocalJsonFile() async {
-    String jsonData = await rootBundle.loadString('assets/local.json');
-    Map<String, dynamic> data = jsonDecode(jsonData);
-    return data;
+  static Future<String> getUserID() async {
+    final userID = await SECURE_STORAGE.read(key: 'token');
+
+    return userID!;
   }
 
-  static Future<String>getUserID() async {
-    Map<String, dynamic> localDB = await User.readFromLocalJsonFile();
-    return localDB["_localUser"];
-  }
+  //delete from SS: await secureStorage.delete(key: 'token');
+
 }

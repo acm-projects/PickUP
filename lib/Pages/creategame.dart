@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:pickup/components/createGameButton.dart';
 import 'package:pickup/components/gameTextFields.dart';
 import 'package:pickup/classes/game.dart';
+import 'package:pickup/classes/user.dart';
 import 'package:pickup/classes/location.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 // ignore: must_be_immutable
 class CreateGame extends StatelessWidget {
@@ -67,7 +69,7 @@ class CreateGame extends StatelessWidget {
           const SizedBox(height: 15),
           GameTextFields(
             controller: startTime,
-            hintTxt: 'When does your start?',
+            hintTxt: 'Time',
             obscureTxt: false,
           ),
 
@@ -75,17 +77,18 @@ class CreateGame extends StatelessWidget {
           //One Game Attribute at a time
           //Input validation
           CreateGameButton(
-            onTap: () {
+            onTap: () async {
               // gameDetails()
               try {
                 Game game = Game(
                     name.text,
-                    'user',
-                    sport.text,
-                    gameDescription.text,
-                    Location(0,2),
+                    await User.getUserID(),
+                    sport.text, //Should be a drop down -> templates etc
+                    gameDescription.text, //Box Should expand
+                    Location(0, 2),
                     int.parse(numPlayers.text),
-                    DateTime.parse(startTime.text));
+                    tz.TZDateTime.now(Location.get())
+                        .add(Duration(minutes: 15, seconds: 5))); //Calendar
 
                 game.instantiate();
               } catch (e) {

@@ -1,26 +1,35 @@
+import 'package:pickup/classes/user.dart' as local_user;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pickup/components/my_textFields.dart';
 import 'package:pickup/components/signUpButton.dart';
 
-class signUpPage extends StatelessWidget {
-  signUpPage({super.key});
+class SignUpPage extends StatelessWidget {
+  SignUpPage({super.key});
 
   // text editing
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
-  Future<String?> signUserUp() async {
+  //Stretch Goal, Password Requirements -> Regex
+
+  Future<String?> signUserUp(BuildContext context) async {
     try {
       String email = usernameController.text;
+      if (!email.contains("@utdallas.edu"))
+        throw "PickUp is a University of Texas at Dallas application only.";
       if (isConfirmed()) {
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: email,
           password: passwordController.text,
         );
+        await local_user.User.createUser(
+            usernameController.text, passwordController.text);
+        Navigator.pushNamed(context, '/login/home');
       }
     } catch (e) {
+      print(e);
       return e.toString(); // Return error message if unsuccessful
     }
     return null;
@@ -38,6 +47,7 @@ class signUpPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.grey[500],
       body: Column(
+        //This is being flagged?e
         children: [
           const SizedBox(height: 50),
           const Icon(
@@ -90,7 +100,7 @@ class signUpPage extends StatelessWidget {
           ),
           SignUpButton(
             onTap: () {
-              signUserUp();
+              signUserUp(context);
             },
           )
         ],

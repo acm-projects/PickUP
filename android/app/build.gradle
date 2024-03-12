@@ -28,7 +28,13 @@ android {
     compileSdkVersion flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 
+    defaultConfig {
+        multiDexEnabled true
+    }
+
+
     compileOptions {
+        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -71,6 +77,7 @@ apply plugin: 'com.google.gms.google-services'
 
 dependencies {
   // Import the Firebase BoM
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.2.2'
     implementation(platform("com.google.firebase:firebase-bom:32.7.2"))
   // Add the dependency for the Firebase SDK for Google Analytics
   // When using the BoM, don't specify versions in Firebase dependencies

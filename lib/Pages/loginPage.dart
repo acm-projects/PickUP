@@ -10,32 +10,16 @@ class LoginPage extends StatelessWidget {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 
-  Future<String?> signUserUp() async {
-    try {
-      String email = usernameController.text;
-
-      if (email.endsWith('@utdallas.edu')) {
-        await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: email,
-          password: passwordController.text,
-        );
-        return null;
-      } else {
-        return 'Email domain is not valid';
-      }
-    } catch (e) {
-      return e.toString(); // Return error message if unsuccessful
-    }
-  }
-
-  Future<String?> signUserIn() async {
+  Future<String?> signUserIn(BuildContext context) async {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: usernameController.text,
         password: passwordController.text,
       );
+      Navigator.pushNamed(context, '/login/home');
       return null;
     } catch (e) {
+      print(e);
       return e.toString(); // Return error message if unsuccessful
     }
   }
@@ -91,7 +75,8 @@ class LoginPage extends StatelessWidget {
           ),
           MyButton(
             onTap: () {
-              signUserIn();
+              signUserIn(context);
+              print('button click fr');
             },
           )
         ],

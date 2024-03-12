@@ -1,11 +1,21 @@
-import 'package:flutter/material.dart';
 import 'package:pickup/Pages/loginPage.dart';
 import 'package:pickup/Pages/home.dart';
+import 'package:pickup/Pages/root.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:pickup/Pages/signup.dart';
+import 'package:pickup/classes/notification.dart';
+import 'package:pickup/classes/user.dart' as local_user;
 import 'dart:io' show Platform;
+import 'package:pickup/Pages/calendar.dart';
+import 'dart:async';
 
-void main() async {
+void main() async {  
   WidgetsFlutterBinding.ensureInitialized();
+
+  await LocalNotification.init();
+
   Platform.isAndroid
       ? await Firebase.initializeApp(
           options: const FirebaseOptions(
@@ -16,19 +26,40 @@ void main() async {
           ),
         )
       : await Firebase.initializeApp();
-  //createUser(name: 'dkm');
-  runApp(const MaterialApp(home: HomePage()));
+
+  //Automatic Login else Send to login/signup
+  try {
+    final String userID = await local_user.User.getUserID();
+    final String password = await local_user.User.getPassword();
+
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: userID,
+      password: password,
+    );
+
+    runApp(MaterialApp(home: HomePage()));
+  } catch (e) {
+    print("Account credentials don't match or exist.");
+    runApp(MaterialApp(home: App()));
+  }
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+
+class App extends StatelessWidget {
+  const App({super.key});
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: LoginPage(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const Root(),
+        '/login': (context) => LoginPage(),
+        '/signup': (context) => SignUpPage(),
+        '/login/home': (context) => const HomePage(),
+      },
     );
   }
 }

@@ -1,11 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:pickup/classes/notification.dart';
 import 'package:pickup/classes/user.dart';
 import 'package:pickup/classes/location.dart';
+import 'package:timezone/timezone.dart' as tz;
 import 'dart:math';
 
 // google maps api, calendar.
 
 // Every error that is caught must be transformed into a emessage popup
+
+// Add templates
+
+// On game join make a local noti for the games creation time.
+// Remove notis when deleted.
+// Delete all joined users noti when organizer destroys the game
+
+// Users can check in within 15 minutes of startTime
+
+Map<String, dynamic> emptyMap = {};
 
 class Game {
   String name;
@@ -13,24 +25,17 @@ class Game {
   String sport;
   String description;
   int numOfPlayers = 0;
-  DateTime startTime;
+  tz.TZDateTime startTime;
   List<String> players = []; // User IDs
-  
+
   final int _maxNumOfPlayers;
   final DateTime _timeCreated = DateTime.now();
   final Location _location;
   final String _gameID = generateRandomHex();
-  
+
   // Constructor
-  Game(
-    this.name, 
-    this.organizer,
-    this.sport,
-    this.description,
-    this._location,
-    this._maxNumOfPlayers,
-    this.startTime
-  );
+  Game(this.name, this.organizer, this.sport, this.description, this._location,
+      this._maxNumOfPlayers, this.startTime);
 
   Map<String, dynamic> toMap() {
     return {
@@ -59,42 +64,51 @@ class Game {
   }
 
   // Create
-  Future<void> instantiate() async { print("Instantiating $_gameID");
+  Future<void> instantiate() async {
+    print("Instantiating $_gameID");
     CollectionReference usersActiveGames = FirebaseFirestore.instance
         .collection("Users")
         .doc(await User.getUserID())
         .collection("ActiveGames");
 
-    //Prompt User to delete Games or become an official organizer
-    if ((usersActiveGames as Map<String, dynamic>).length >= 5) return;
+    final globablTargetGame =
+        FirebaseFirestore.instance.collection("ActiveGames").doc(_gameID);
+    final usersTargetGame = usersActiveGames.doc(_gameID);
 
-    final targetGame = FirebaseFirestore.instance.collection("ActiveGames").doc(_gameID);
+    DocumentSnapshot globablTargetGameSS = await globablTargetGame.get();
 
-    DocumentSnapshot docSnapshot = await targetGame.get();
+    if ((await usersActiveGames.get()).docs.length >= 5) return;
 
-    if (docSnapshot.exists) {
-      usersActiveGames.doc(_gameID).set({});
-      await targetGame.update(toMap());
+    if (globablTargetGameSS.exists) {
+      //Prompt User to delete Games or become an official organizer
+      await globablTargetGame.update(toMap());
+      await usersTargetGame.update(emptyMap);
     } else {
-      await targetGame.set(toMap());
+      await globablTargetGame.set(toMap());
+      await usersTargetGame.set(emptyMap);
     }
+    print(2);
+    await Game.join(_gameID);
   }
 
   // Read
-  static Future<Object?> fetch([String target = '']) async { print("Fetching $target");
-    CollectionReference activeGamesColl = FirebaseFirestore.instance.collection("ActiveGames");
-      
+  static Future<Object?> fetch([String target = '']) async {
+    print("Fetching $target");
+    CollectionReference activeGamesColl =
+        FirebaseFirestore.instance.collection("ActiveGames");
+
     if (target.isNotEmpty) {
       try {
         final DocumentReference targetGameDoc = activeGamesColl.doc(target);
-        
+
         final targetGame = await targetGameDoc.get();
 
         return targetGame.data();
       } catch (e) {
-       print(e); 
-      } 
+        print(e);
+      }
     } //Otherwise
+
     final QuerySnapshot activeGames = await activeGamesColl.get();
 
     final activeGamesData = activeGames.docs.map((e) => e.data()).toList();
@@ -103,37 +117,43 @@ class Game {
   }
 
   // Update
-  static Future<void> edit(String target, Map<String, dynamic> doc) async { print("Editing $target");
+  static Future<void> edit(String target, Map<String, dynamic> doc) async {
+    print("Editing $target");
 
     try {
-      final DocumentReference targetGameDoc = FirebaseFirestore.instance.collection("ActiveGames").doc(target);
-    
+      final DocumentReference targetGameDoc =
+          FirebaseFirestore.instance.collection("ActiveGames").doc(target);
+
       final targetGame = await targetGameDoc.get();
 
       if (!targetGame.exists) throw "$target doesn't exist.";
-        
-      if ((targetGame.data() as Map<String, dynamic>)["organizer"] != await User.getUserID()) {
+
+      if ((targetGame.data() as Map<String, dynamic>)["organizer"] !=
+          await User.getUserID()) {
         throw "You're not $target's owner!";
       }
       await targetGameDoc.set(doc);
     } catch (e) {
-      print(e); 
+      print(e);
     }
   }
 
   // Destroy
-  static Future<void> delete(String target, [bool? user]) async { print("Deleting $target");
+  static Future<void> delete(String target, [bool? user]) async {
+    print("Deleting $target");
     try {
-      final DocumentReference targetGameDoc = FirebaseFirestore.instance.collection("ActiveGames").doc(target);
-    
+      final DocumentReference targetGameDoc =
+          FirebaseFirestore.instance.collection("ActiveGames").doc(target);
+
       final targetGame = await targetGameDoc.get();
 
       if (!targetGame.exists) throw "$target doesn't exist.";
-        
-      if ((targetGame.data() as Map<String, dynamic>)["organizer"] != await User.getUserID()) {
+
+      if ((targetGame.data() as Map<String, dynamic>)["organizer"] !=
+          await User.getUserID()) {
         throw "You're not $target's owner!";
       }
-      
+
       await targetGameDoc.delete();
     } catch (e) {
       print(e);
@@ -141,33 +161,63 @@ class Game {
   }
 
   // Game Access - Join
-  static Future<void> join(String target) async { print("Joining $target");
-    try {
-      Map<String, dynamic> targetGame = await Game.fetch(target) as Map<String, dynamic>;
+  static Future<void> join(String target) async {
+    print("Joining $target");
+    CollectionReference usersJoinedGames = FirebaseFirestore.instance
+        .collection("Users")
+        .doc(await User.getUserID())
+        .collection("JoinedGames");
 
-      if (targetGame["players"].contains(await User.getUserID())) {
+    try {
+      Map<String, dynamic> targetGame =
+          await Game.fetch(target) as Map<String, dynamic>;
+
+      DocumentReference targetGameDoc = usersJoinedGames.doc(target);
+
+      if ((await targetGameDoc.get()).exists) {
         throw "You Have Already Joined This Game";
       }
-      
+
+      await targetGameDoc.set(emptyMap);
+
       targetGame["players"].add(await User.getUserID());
       targetGame["numOfPlayers"] = targetGame["players"].length;
-      
+
       await Game.edit(target, targetGame);
+
+      String targetGameSport = targetGame["sport"];
+
+      LocalNotification.scheduleNotification(
+          title: 'Your $targetGameSport Game is Starting in 15 minutes!',
+          body: "Ready to Check In? ",
+          payload: "payload",
+          scheduledTime:
+              tz.TZDateTime.parse(Location.get(), targetGame["startTime"])
+                  .subtract(const Duration(minutes: 15)));
     } catch (e) {
       print(e);
     }
   }
 
   // Game Access - Leave
-  static Future<void> leave(String target) async { print('Leaving $target');
+  static Future<void> leave(String target) async {
+    print('Leaving $target');
     // Check if owner and if amount of players is greate than half then don't delete otherwise delete game
+    CollectionReference usersJoinedGames = FirebaseFirestore.instance
+        .collection("Users")
+        .doc(await User.getUserID())
+        .collection("JoinedGames");
+
+    usersJoinedGames.doc(target).delete();
+
     try {
-      Map<String, dynamic> targetGame = await Game.fetch(target) as Map<String, dynamic>;
+      Map<String, dynamic> targetGame =
+          await Game.fetch(target) as Map<String, dynamic>;
 
       if (!targetGame["players"].contains(await User.getUserID())) {
         throw "You Are Not In This Game"; // Button Shouldn't be clickable
       }
-      
+
       targetGame["players"].remove(await User.getUserID());
       targetGame["numOfPlayers"] = targetGame["players"].length;
 
@@ -176,18 +226,20 @@ class Game {
       if (targetGame["numOfPlayers"] == 0) {
         // Prompt the User that leaving will delete the game
         await Game.delete(target);
-      } else { 
-        await Game.edit(target, targetGame); 
+      } else {
+        await Game.edit(target, targetGame);
       }
-    } catch(e) {
+    } catch (e) {
       print(e);
     }
-  }  
-  
+  }
+
   // Firestore Document => Game
-  static Future<Game?> firestoreToGame(String target) async { print("Converting $target to a Game object.");
+  static Future<Game?> firestoreToGame(String target) async {
+    print("Converting $target to a Game object.");
     try {
-      Map<String, dynamic> jsonData = (await fetch(target)) as Map<String, dynamic>;
+      Map<String, dynamic> jsonData =
+          (await fetch(target)) as Map<String, dynamic>;
 
       return Game(
           jsonData["name"],
@@ -196,7 +248,7 @@ class Game {
           jsonData["description"],
           jsonData["location"],
           jsonData["maxNumOfPlayers"],
-          DateTime.parse(jsonData["startTime"]));
+          tz.TZDateTime.parse(Location.get(), jsonData["startTime"]));
     } catch (e) {
       print('Error: $e'); // Typically while fetching, if fetch == false
     }

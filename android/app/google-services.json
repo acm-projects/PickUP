@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "850087823328",
+    "project_id": "utdpickup",
+    "storage_bucket": "utdpickup.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:850087823328:android:49aae45eba0d0b47758d85",
+        "android_client_info": {
+          "package_name": "com.example.pickup"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQL-lqTgbOQhTv8F1Oj1YGsqlDCTb-Za8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -2,7 +2,6 @@ plugins {
     id "com.android.application"
     id "kotlin-android"
     id "dev.flutter.flutter-gradle-plugin"
-    id "com.google.android.libraries.mapsplatform.secrets-gradle-plugin"
     id "com.google.gms.google-services"
 }
 
@@ -26,7 +25,7 @@ if (flutterVersionName == null) {
 
 android {
     namespace "com.example.pickup"
-    compileSdkVersion 34
+    compileSdkVersion flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 
     defaultConfig {
@@ -53,8 +52,8 @@ android {
         applicationId "com.example.pickup"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion 21
-        targetSdkVersion 34
+        minSdkVersion flutter.minSdkVersion
+        targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
@@ -66,21 +65,6 @@ android {
             signingConfig signingConfigs.debug
         }
     }
-    secrets {
-    // Optionally specify a different file name containing your secrets.
-    // The plugin defaults to "local.properties"
-    propertiesFileName = "secrets.properties"
-
-    // A properties file containing default secret values. This file can be
-    // checked in version control.
-    defaultPropertiesFileName = "local.defaults.properties"
-
-    // Configure which keys should be ignored by the plugin by providing regular expressions.
-    // "sdk.dir" is ignored by default.
-    ignoreList.add("keyToIgnore") // Ignore the key "keyToIgnore"
-    ignoreList.add("sdk.*")       // Ignore all keys matching the regexp "sdk.*"
-}
-        
 }
 
 flutter {

@@ -1,6 +1,3 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
-    <uses-permission android:name="android.permission.INTERNET" />
-    <application
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.dexterous.pickup">
    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
@@ -39,10 +36,6 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
-
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="${MAPS_API_KEY}" />
         <!-- If you want your foreground service to be stopped if
              your app is stopped, set android:stopWithTask to true.
              See https://developer.android.com/reference/android/R.attr#stopWithTask -->
@@ -60,7 +53,6 @@
                 <action android:name="com.htc.intent.action.QUICKBOOT_POWERON"/>
             </intent-filter>
         </receiver>
-
     </application>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 </manifest>

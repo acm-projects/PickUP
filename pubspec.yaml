@@ -77,9 +77,8 @@ flutter:
   fonts:
   - family: LeagueSpartan
     fonts:
-      - asset: assets/fonts/LeagueSpartan-Regular.ttf
-      - asset: assets/fonts/LeagueSpartan-Bold.ttf
-        weight: 700
+      - asset: fonts/LeagueSpartan-VariableFont_wght.ttf
+  #      weight: 700
   - family: Mada
     fonts:
       - asset: fonts/Mada-VariableFont_wght.ttf

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'Screens/log_in.dart';
 import 'Screens/sign_up.dart';
-
+import 'Screens/choose_gametype.dart'; 
 void main() => runApp(const PickUp());
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -12,7 +12,7 @@ class PickUp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      navigatorKey: navigatorKey, // Use the navigatorKey here
+      navigatorKey: navigatorKey, 
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Welcome to PickUp'),
@@ -20,15 +20,21 @@ class PickUp extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.note_add),
               onPressed: () {
-                // Use the navigatorKey to push the route
+              
                 navigatorKey.currentState?.pushNamed('/Signup');
               },
             ),
             IconButton(
               icon: const Icon(Icons.person),
               onPressed: () {
-                // Use the navigatorKey to push the route
+               
                 navigatorKey.currentState?.pushNamed('/Login');
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.sports_soccer), // Icon for game creation, choose an appropriate one
+              onPressed: () {
+                navigatorKey.currentState?.pushNamed('/GameCreation');
               },
             ),
           ],
@@ -40,6 +46,7 @@ class PickUp extends StatelessWidget {
       routes: {
         '/Signup': (context) => const Signup(),
         '/Login': (context) => const Login(),
+        '/GameCreation': (context) => const GameCreation(),
       },
     );
   }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-// ignore: unused_import
+
 import 'package:pickup/main.dart'; // Ensure this import is correct and necessary
 
 class Login extends StatefulWidget {
@@ -50,17 +50,9 @@ class _LoginScreenState extends State<Login> {
             buildTextFormField(label: 'Password', isPassword: true),
             const SizedBox(height: 20),
             // Forgot password button
-            Align(
+            const Align(
               alignment: Alignment.center,
-              child: TextButton(
-                onPressed: () {
-                  // Navigate to Forgot Password Screen
-                },
-                child: const Text(
-                  'Forgot password?',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
+              
             ),
             const SizedBox(height: 20),
             // Login button with gradient
@@ -81,7 +73,7 @@ class _LoginScreenState extends State<Login> {
             ),
             const SizedBox(height: 20),
 
-            /*
+            
             Align(
               alignment: Alignment.center,
               child: ColorFiltered(
@@ -90,13 +82,13 @@ class _LoginScreenState extends State<Login> {
                   BlendMode.srcATop,
                 ),
                 child: Image.network(
-                  'https://img.icons8.com/ios11/2x/football2.png',
-                  width: 326,
-                  height: 196,
+                  'https://img.icons8.com/ios11/2x/beach-soccer.png',
+                  width: 1000,
+                  height: 100,
                 ),
               ),
             ),
-            */
+            
           ],
         ),
       ),
@@ -107,14 +99,9 @@ class _LoginScreenState extends State<Login> {
     return TextFormField(
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: const TextStyle(color: Colors.white, fontFamily: 'LeagueSpartan', fontSize: 24.0,),
-        hintText: 'Enter your Username', // Use the label as hintText or specify your own hint
-      hintStyle: TextStyle(
-        color: Colors.white.withOpacity(0.5), // Make hint text slightly transparent
-        fontFamily: 'LeagueSpartan',
-        
-        fontSize: 24.0, // Keep consistent font size with the label and input text
-      ),
+        labelStyle: const TextStyle(color: Colors.white, fontFamily: 'LeagueSpartan', fontSize: 22.0,fontWeight: FontWeight.w900,),
+        hintText: 'Enter your Text', 
+      hintStyle: TextStyle(color: Colors.white, fontFamily: 'LeagueSpartan', fontSize: 14.0, ),
         enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
         focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
       ),
@@ -147,7 +134,7 @@ class _LoginScreenState extends State<Login> {
         ),
         child: Text(
           text,
-          style: const TextStyle(color: Colors.black, fontSize: 28.0, fontFamily: 'LeagueSpartan'),
+          style: const TextStyle(color: Colors.black, fontSize: 38.0, fontFamily: 'Mada',fontWeight: FontWeight.w900),
         ),
       ),
     );

@@ -44,6 +44,7 @@ dependencies:
   flutter_timezone: ^1.0.8
   timezone: ^0.9.2
   flutter_calendar_carousel: ^2.4.2
+  geolocator: ^11.0.0
 
 dev_dependencies:
   flutter_test:

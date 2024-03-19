@@ -26,7 +26,7 @@ class LocalNotification {
 
     tz.initializeTimeZones();
 
-    tz.setLocalLocation(Location.get());
+    tz.setLocalLocation(Location.getTimeZone());
   }
 
   static Future show({

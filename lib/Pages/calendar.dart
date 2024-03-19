@@ -50,7 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final _calendarCarousel = CalendarCarousel<Event>(
       onDayPressed: (date, events) {
         this.setState(() => _currentDate = date);
-        print(tz.TZDateTime.parse(Location.get(), date.toIso8601String()).add(Duration(hours: 7)));
+        print(tz.TZDateTime.parse(Location.getTimeZone(), date.toIso8601String()).add(Duration(hours: 7)));
         //if AM then regular if PM then double
       },
       weekendTextStyle: TextStyle(
@@ -133,17 +133,19 @@ class _HourMinuteDropdownsState extends State<HourMinuteDropdowns> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           DropdownButton<int>(
-            value: selectedHour,
+            value: selectedHour % 12,
             iconSize: 0,
             onChanged: (int? newValue) {
               setState(() {
                 selectedHour = newValue!;
+                print(selectedHour);
               });
             },
-            items: List.generate(24, (hour) {
+            items: List.generate(12, (hour) {
+              print(selectedHour);
               return DropdownMenuItem<int>(
                 value: hour,
-                child: Text('$hour:'),
+                child: Text('${hour + 1}'),
               );
             }),
           ),

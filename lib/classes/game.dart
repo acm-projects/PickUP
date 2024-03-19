@@ -30,11 +30,11 @@ class Game {
 
   final int _maxNumOfPlayers;
   final DateTime _timeCreated = DateTime.now();
-  final Location _location;
+  final Map<String, dynamic> _location = Location.get(); //assume at the current pos
   final String _gameID = generateRandomHex();
 
   // Constructor
-  Game(this.name, this.organizer, this.sport, this.description, this._location,
+  Game(this.name, this.organizer, this.sport, this.description,
       this._maxNumOfPlayers, this.startTime);
 
   Map<String, dynamic> toMap() {
@@ -45,7 +45,7 @@ class Game {
       'sport': sport,
       'description': description,
       'players': players,
-      'location': _location.toMap(),
+      'location': _location,
       'numOfPlayers': numOfPlayers,
       'maxNumOfPlayers': _maxNumOfPlayers,
       'timeCreated': _timeCreated.toIso8601String(),
@@ -57,7 +57,7 @@ class Game {
   String get gameID => _gameID;
   int get maxNumOfPlayers => _maxNumOfPlayers;
   DateTime get timeCreated => _timeCreated;
-  Location get location => _location;
+  Map<String, dynamic> get location => _location;
 
   Future<void> updateGame() async {
     //Before any action is taken the values must be updated
@@ -169,33 +169,33 @@ class Game {
         .collection("JoinedGames");
 
     try {
-      Map<String, dynamic> targetGame =
-          await Game.fetch(target) as Map<String, dynamic>;
+    Map<String, dynamic> targetGame =
+        await Game.fetch(target) as Map<String, dynamic>;
 
-      DocumentReference targetGameDoc = usersJoinedGames.doc(target);
+    DocumentReference targetGameDoc = usersJoinedGames.doc(target);
 
-      if ((await targetGameDoc.get()).exists) {
-        throw "You Have Already Joined This Game";
-      }
+    if ((await targetGameDoc.get()).exists) {
+      throw "You Have Already Joined This Game";
+    }
 
-      await targetGameDoc.set(emptyMap);
+    await targetGameDoc.set(emptyMap);
 
-      targetGame["players"].add(await User.getUserID());
-      targetGame["numOfPlayers"] = targetGame["players"].length;
+    targetGame["players"].add(await User.getUserID());
+    targetGame["numOfPlayers"] = targetGame["players"].length;
 
-      await Game.edit(target, targetGame);
+    await Game.edit(target, targetGame);
 
-      String targetGameSport = targetGame["sport"];
+    String targetGameSport = targetGame["sport"];
 
-      LocalNotification.scheduleNotification(
-          title: 'Your $targetGameSport Game is Starting in 15 minutes!',
-          body: "Ready to Check In? ",
-          payload: "payload",
-          scheduledTime:
-              tz.TZDateTime.parse(Location.get(), targetGame["startTime"])
-                  .subtract(const Duration(minutes: 15)));
+    LocalNotification.scheduleNotification(
+        title: 'Your $targetGameSport Game is Starting in 15 minutes!',
+        body: "Ready to Check In? ",
+        payload: "payload",
+        scheduledTime:
+            tz.TZDateTime.parse(Location.getTimeZone(), targetGame["startTime"])
+                .subtract(const Duration(minutes: 15)));
     } catch (e) {
-      print(e);
+    print(e);
     }
   }
 
@@ -246,9 +246,8 @@ class Game {
           jsonData["organizer"],
           jsonData["sport"],
           jsonData["description"],
-          jsonData["location"],
           jsonData["maxNumOfPlayers"],
-          tz.TZDateTime.parse(Location.get(), jsonData["startTime"]));
+          tz.TZDateTime.parse(Location.getTimeZone(), jsonData["startTime"]));
     } catch (e) {
       print('Error: $e'); // Typically while fetching, if fetch == false
     }

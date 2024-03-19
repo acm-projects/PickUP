@@ -2,20 +2,33 @@ import 'package:flutter/material.dart';
 import 'package:pickup/components/createGameButton.dart';
 import 'package:pickup/components/gameTextFields.dart';
 import 'package:pickup/classes/game.dart';
+import 'package:pickup/classes/gameTemplates.dart';
 import 'package:pickup/classes/user.dart';
 import 'package:pickup/classes/location.dart';
 import 'package:timezone/timezone.dart' as tz;
 
-// ignore: must_be_immutable
-class CreateGame extends StatelessWidget {
-  CreateGame({super.key});
+class CreateGame extends StatefulWidget {
+  @override
+  CreateGameState createState() => CreateGameState();
+}
 
+// ignore: must_be_immutable
+class CreateGameState extends State<CreateGame> {
   var sport = TextEditingController();
   var numPlayers = TextEditingController();
-  var gameLocation = TextEditingController();
   var gameDescription = TextEditingController();
   var name = TextEditingController();
   var startTime = TextEditingController();
+  String selectedSport = 'Basketball'; // Store the selected sport
+
+  final List<String> sports = [
+    'Basketball',
+    'Soccer',
+    'Tennis',
+    'Volleyball',
+    'Baseball',
+    // Add more sports here if needed
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -42,28 +55,25 @@ class CreateGame extends StatelessWidget {
             hintTxt: 'Title',
             obscureTxt: false,
           ),
-          const SizedBox(height: 15),
-          GameTextFields(
-            controller: sport,
-            hintTxt: 'Select Sport',
-            obscureTxt: false,
-          ),
-          const SizedBox(height: 15),
-          GameTextFields(
-            controller: numPlayers,
-            hintTxt: 'Number of players',
-            obscureTxt: false,
+          DropdownButton<String>(
+            value: selectedSport,
+            onChanged: (newValue) {
+              setState(() { // Update state to reflect change
+                selectedSport = newValue!;
+              });
+            },
+            items: sports.map<DropdownMenuItem<String>>((String sport) {
+              return DropdownMenuItem<String>(
+                value: sport,
+                child: Text(sport),
+              );
+            }).toList(),
+            hint: const Text('Select a sport')
           ),
           const SizedBox(height: 15),
           GameTextFields(
             controller: gameDescription,
             hintTxt: 'Game details',
-            obscureTxt: false,
-          ),
-          const SizedBox(height: 15),
-          GameTextFields(
-            controller: gameLocation,
-            hintTxt: 'Location',
             obscureTxt: false,
           ),
           const SizedBox(height: 15),
@@ -77,20 +87,12 @@ class CreateGame extends StatelessWidget {
           //One Game Attribute at a time
           //Input validation
           CreateGameButton(
+            //Send them to select time page then to ->
+            //Send Them To Location Selection Page
             onTap: () async {
               // gameDetails()
               try {
-                Game game = Game(
-                    name.text,
-                    await User.getUserID(),
-                    sport.text, //Should be a drop down -> templates etc
-                    gameDescription.text, //Box Should expand
-                    Location(0, 2),
-                    int.parse(numPlayers.text),
-                    tz.TZDateTime.now(Location.get())
-                        .add(Duration(minutes: 15, seconds: 5))); //Calendar
-
-                game.instantiate();
+                sportsGames[selectedSport]!.instantiate();
               } catch (e) {
                 print("error: $e");
               }

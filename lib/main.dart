@@ -1,3 +1,4 @@
+import 'package:pickup/Functions/liveMaps.dart';
 import 'package:pickup/Pages/loginPage.dart';
 import 'package:pickup/Pages/home.dart';
 import 'package:pickup/Pages/root.dart';
@@ -58,6 +59,7 @@ class App extends StatelessWidget {
         '/login': (context) => LoginPage(),
         '/signup': (context) => SignUpPage(),
         '/login/home': (context) => const HomePage(),
+        '/login/liveMap': (context) => LiveMap(),
       },
     );
   }

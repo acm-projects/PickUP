@@ -100,6 +100,7 @@ class Game {
     final targetGame = await targetGameDoc.get();
 
     print((targetGame as Map<String, dynamic>)['location']);
+    return null;
   }
 
   // Read

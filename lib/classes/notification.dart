@@ -13,7 +13,7 @@ class LocalNotification {
         AndroidInitializationSettings('@mipmap/ic_launcher');
     final DarwinInitializationSettings initializationSettingsDarwin =
         DarwinInitializationSettings(
-            onDidReceiveLocalNotification: (id, title, body, payload) => null);
+            onDidReceiveLocalNotification: (id, title, body, payload) {});
     const LinuxInitializationSettings initializationSettingsLinux =
         LinuxInitializationSettings(defaultActionName: 'Open notification');
     final InitializationSettings initializationSettings =
@@ -22,7 +22,7 @@ class LocalNotification {
             iOS: initializationSettingsDarwin,
             linux: initializationSettingsLinux);
     _flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onDidReceiveNotificationResponse: (details) => null);
+        onDidReceiveNotificationResponse: (details) {});
 
     tz.initializeTimeZones();
 

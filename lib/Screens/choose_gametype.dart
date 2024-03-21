@@ -13,7 +13,7 @@ class GameCreation extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Create a Game'),
           flexibleSpace: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,

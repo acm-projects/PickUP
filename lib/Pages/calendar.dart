@@ -9,12 +9,14 @@ import 'package:timezone/timezone.dart' as tz;
 
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
+    return MaterialApp(
       title: 'dooboolab flutter calendar',
-      theme: new ThemeData(
+      theme: ThemeData(
         // This is the theme of your application.
         //
         // Try running your application with "flutter run". You'll see the
@@ -25,35 +27,35 @@ class MyApp extends StatelessWidget {
         // counter didn't reset back to zero; the application is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: new MyHomePage(title: 'Flutter Calendar Carousel Example'),
+      home: const MyHomePage(title: 'Flutter Calendar Carousel Example'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
+  const MyHomePage({super.key, required this.title});
 
   final String title;
 
   @override
-  _MyHomePageState createState() => new _MyHomePageState();
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
   DateTime _currentDate = DateTime.now();
-  DateTime _currentDate2 = DateTime.now();
+  final DateTime _currentDate2 = DateTime.now();
   //List<DateTime> _markedDate = [DateTime(2018, 9, 20), DateTime(2018, 10, 11)];
 
   @override
   Widget build(BuildContext context) {
     /// Example with custom icon
-    final _calendarCarousel = CalendarCarousel<Event>(
+    final calendarCarousel = CalendarCarousel<Event>(
       onDayPressed: (date, events) {
-        this.setState(() => _currentDate = date);
-        print(tz.TZDateTime.parse(Location.getTimeZone(), date.toIso8601String()).add(Duration(hours: 7)));
+        setState(() => _currentDate = date);
+        print(tz.TZDateTime.parse(Location.getTimeZone(), date.toIso8601String()).add(const Duration(hours: 7)));
         //if AM then regular if PM then double
       },
-      weekendTextStyle: TextStyle(
+      weekendTextStyle: const TextStyle(
         color: Colors.black,
       ),
       thisMonthDayBorderColor: Colors.grey,
@@ -64,21 +66,21 @@ class _MyHomePageState extends State<MyHomePage> {
       selectedDateTime: _currentDate2,
       showIconBehindDayText: true,
 //          daysHaveCircularBorder: false, /// null for not rendering any border, true for circular border, false for rectangular border
-      customGridViewPhysics: NeverScrollableScrollPhysics(),
+      customGridViewPhysics: const NeverScrollableScrollPhysics(),
       markedDateShowIcon: true,
       markedDateIconMaxShown: 2,
-      weekdayTextStyle: TextStyle(color: Colors.black),
-      selectedDayTextStyle: TextStyle(
+      weekdayTextStyle: const TextStyle(color: Colors.black),
+      selectedDayTextStyle: const TextStyle(
         color: Colors.white,
       ),
-      todayTextStyle: TextStyle(
+      todayTextStyle: const TextStyle(
         color: Colors.blue,
       ),
       markedDateIconBuilder: (event) {
-        return event.icon ?? Icon(Icons.help_outline);
+        return event.icon ?? const Icon(Icons.help_outline);
       },
-      minSelectedDate: _currentDate.subtract(Duration(days: 1)),
-      maxSelectedDate: _currentDate.add(Duration(days: 360)),
+      minSelectedDate: _currentDate.subtract(const Duration(days: 1)),
+      maxSelectedDate: _currentDate.add(const Duration(days: 360)),
       todayButtonColor: Colors.transparent,
       todayBorderColor: Colors.grey,
       markedDateMoreShowTotal:
@@ -88,8 +90,8 @@ class _MyHomePageState extends State<MyHomePage> {
     );
 
     return Scaffold(
-        appBar: new AppBar(
-          title: new Text(widget.title),
+        appBar: AppBar(
+          title: Text(widget.title),
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -98,19 +100,19 @@ class _MyHomePageState extends State<MyHomePage> {
             children: <Widget>[
               //custom icon
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 16.0),
-                child: _calendarCarousel,
+                margin: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: calendarCarousel,
               ), // This trailing comma makes auto-formatting nicer for build methods.
               //custom icon without header
               Container(
-                margin: EdgeInsets.only(
+                margin: const EdgeInsets.only(
                   top: 30.0,
                   bottom: 16.0,
                   left: 16.0,
                   right: 16.0,
                 ),
               ),
-              HourMinuteDropdowns(), //
+              const HourMinuteDropdowns(), //
             ],
           ),
         ));
@@ -118,6 +120,8 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 class HourMinuteDropdowns extends StatefulWidget {
+  const HourMinuteDropdowns({super.key});
+
   @override
   _HourMinuteDropdownsState createState() => _HourMinuteDropdownsState();
 }
@@ -149,7 +153,7 @@ class _HourMinuteDropdownsState extends State<HourMinuteDropdowns> {
               );
             }),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           DropdownButton<int>(
             value: selectedMinute,
             iconSize: 0,

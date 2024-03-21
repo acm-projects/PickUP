@@ -1,6 +1,6 @@
 import 'package:pickup/Pages/loginPage.dart';
 import 'package:pickup/Pages/home.dart';
-import 'package:pickup/Pages/root.dart';
+import 'package:pickup/Screens/start_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -35,10 +35,10 @@ void main() async {
       password: password,
     );
 
-    runApp(MaterialApp(home: HomePage()));
+    runApp(const MaterialApp(home: App()));
   } catch (e) {
     print("Account credentials don't match or exist.");
-    runApp(MaterialApp(home: LoginPage()));
+    runApp(const MaterialApp(home: App()));
   }
 }
 
@@ -51,7 +51,7 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
-        '/': (context) => const Root(),
+        '/': (context) => const StartScreen(),
         '/login': (context) => LoginPage(),
         '/signup': (context) => SignUpPage(),
         '/login/home': (context) => const HomePage(),

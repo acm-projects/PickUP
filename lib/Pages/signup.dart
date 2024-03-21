@@ -17,8 +17,9 @@ class SignUpPage extends StatelessWidget {
   Future<String?> signUserUp(BuildContext context) async {
     try {
       String email = usernameController.text;
-      if (!email.contains("@utdallas.edu"))
+      if (!email.contains("@utdallas.edu")) {
         throw "PickUp is a University of Texas at Dallas application only.";
+      }
       if (isConfirmed()) {
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: email,

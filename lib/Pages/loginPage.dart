@@ -37,7 +37,7 @@ class LoginPage extends StatelessWidget {
           ),
           const SizedBox(height: 50),
           Text(
-            'Welcome Back to PickUp! Let the games Begin!',
+            'Welcome to PickUp! Let the games Begin!',
             style: TextStyle(
               color: Colors.blue[400],
               fontSize: 18,

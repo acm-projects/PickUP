@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       home: MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key});
+
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -22,7 +26,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Settings'),
+        title: const Text('Settings'),
       ),
       body: Stack(
         children: [
@@ -32,17 +36,17 @@ class _MyHomePageState extends State<MyHomePage> {
             left: 0,
             child: Container(
               width: 200, // Set a fixed width for the settings panel
-              padding: EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     'Settings',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   SwitchListTile(
-                    title: Text('Dark Mode'),
+                    title: const Text('Dark Mode'),
                     value: _isDarkModeEnabled,
                     onChanged: (newValue) {
                       setState(() {
@@ -50,8 +54,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       });
                     },
                   ), //Needs to be a checklist
-                  SizedBox(height: 10),
-                  Text('Preffered Sports'),
+                  const SizedBox(height: 10),
+                  const Text('Preffered Sports'),
                   DropdownButton<String>(
                     value: _selectedThemeColor,
                     onChanged: (newValue) {

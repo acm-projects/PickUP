@@ -68,7 +68,7 @@ class _SignupState extends State<Signup> {
             const SizedBox(height: 10),
             TextButton(
               onPressed: () {
-                navigatorKey.currentState?.pushNamed('/Login');
+                //navigatorKey.currentState?.pushNamed('/Login');
               },
               child: const Text(
                 'Have an account? Login',

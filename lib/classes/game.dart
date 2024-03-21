@@ -91,6 +91,17 @@ class Game {
     await Game.join(_gameID);
   }
 
+  static Future<Object?> getGameLocation(String target) async {
+    CollectionReference activeGamesColl =
+      FirebaseFirestore.instance.collection("ActiveGames");
+      
+    final DocumentReference targetGameDoc = activeGamesColl.doc(target);
+
+    final targetGame = await targetGameDoc.get();
+
+    print((targetGame as Map<String, dynamic>)['location']);
+  }
+
   // Read
   static Future<Object?> fetch([String target = '']) async {
     print("Fetching $target");

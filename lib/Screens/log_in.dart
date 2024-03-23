@@ -101,7 +101,7 @@ class _LoginScreenState extends State<Login> {
         labelText: label,
         labelStyle: const TextStyle(color: Colors.white, fontFamily: 'LeagueSpartan', fontSize: 22.0,fontWeight: FontWeight.w900,),
         hintText: 'Enter your Text', 
-      hintStyle: TextStyle(color: Colors.white, fontFamily: 'LeagueSpartan', fontSize: 14.0, ),
+      hintStyle: const TextStyle(color: Colors.white, fontFamily: 'LeagueSpartan', fontSize: 14.0, ),
         enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
         focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
       ),

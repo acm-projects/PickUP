@@ -53,7 +53,7 @@ class PickUp extends StatelessWidget {
         '/GameCreation': (context) => const GameCreation(),
         '/createVolleyballGame': (context) => const createVolleyballGame(),
         '/createSoccerGame': (context) => const createSoccerGame(),
-        '/createTennisGame': (context) => const createTennisGame(),
+        'createSoccerGame': (context) => const createTennisGame(),
         '/createBasketballGame': (context) => const createBasketballGame(),
 
       },

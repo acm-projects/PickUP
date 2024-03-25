@@ -1,6 +1,4 @@
-/*
 import 'package:flutter/material.dart';
-
 
 class GameCreation extends StatelessWidget {
   const GameCreation({super.key});
@@ -11,15 +9,22 @@ class GameCreation extends StatelessWidget {
       home: Scaffold(
         backgroundColor: const Color(0xFF0C2219),
         appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.of(context).pop(); // Navigates back to the previous screen
+            },
+          ),
           title: const Text('Create a Game'),
+          titleTextStyle: const TextStyle(color: Colors.black, fontFamily: 'Mada', fontWeight: FontWeight.bold),
           flexibleSpace: Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  Color(0xFF80E046), // Green color #80E046
-                  Color(0xFF88F37F), // Lighter green color #88F37F
+                  Color(0xFF80E046), // Green color
+                  Color(0xFF88F37F), // Lighter green color
                 ],
               ),
             ),
@@ -29,102 +34,54 @@ class GameCreation extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              // First row with two buttons
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  // Volleyball Button
-                  Container(
-                    width: 100, // Set your desired width for a square shape
-                    height: 100, // Equal height to ensure square shape
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8), // Slightly rounded corners
-                        gradient: const LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [
-                            Color(0xFF80E046), 
-                            Color(0xFF88F37F), 
-                          ],
-                        ),
-                      ),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pushNamed("/createVolleyballGame");
-                      },
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8), // Slightly rounded corners
-                        ),
-                       
-                      ),
-                      child: const Text("Volleyball"),
-                    ),
-                  ),
-                  // Basketball Button
-                  SizedBox(
-                    width: 100, // Same width and height for square shape
-                    height: 100,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pushNamed("/createBasketballGame");
-                      },
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8), // Slightly rounded corners
-                        ),
-                        backgroundColor: Colors.red, // Button background color
-                      ),
-                      child: const Text("Basketball"),
-                    ),
-                  ),
+                  gradientButton("Volleyball", () => Navigator.of(context).pushNamed("/createVolleyballGame")),
+                  gradientButton("Basketball", () => Navigator.of(context).pushNamed("/createBasketballGame")),
                 ],
               ),
-              // Second row with two more buttons
-              Padding(
-                padding: const EdgeInsets.only(top: 20.0), // Adjust the space as needed
-                // Second row with two more buttons
-                child: Row(
+              const SizedBox(height: 30), // Spacing between rows
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  // Football Button
-                  SizedBox(
-                    width: 100, // Same width and height for square shape
-                    height: 100,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pushNamed("/createSoccerGame");
-                      },
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8), // Slightly rounded corners
-                        ),
-                        backgroundColor: Colors.green, // Button background color
-                      ),
-                      child: const Text("Soccer"),
-                    ),
-                  ),
-                  // Tennis Button
-                  SizedBox(
-                    width: 100, // Same width and height for square shape
-                    height: 100,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pushNamed("/createTennisGame");
-                      },
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8), // Slightly rounded corners
-                        ),
-                        backgroundColor: Colors.orange, // Button background color
-                      ),
-                      child: const Text("Tennis"),
-                    ),
-                  ),
+                  gradientButton("Soccer", () => Navigator.of(context).pushNamed("/createSoccerGame")),
+                  gradientButton("Tennis", () => Navigator.of(context).pushNamed("/createTennisGame")),
                 ],
               ),
-              ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget gradientButton(String text, VoidCallback onPressed) {
+    return Container(
+      width: 150,
+      height: 150,
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Color(0xFF80E046),
+            Color(0xFF88F37F),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(18),
+      ),
+      child: Ink(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(18),
+        ),
+        child: InkWell(
+          onTap: onPressed,
+          child: Center(
+            child: Text(
+              text,
+              style: const TextStyle(color: Colors.black, fontFamily: 'Mada', fontWeight: FontWeight.bold),
+            ),
           ),
         ),
       ),

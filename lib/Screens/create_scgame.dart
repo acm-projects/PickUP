@@ -1,3 +1,5 @@
+// ignore_for_file: camel_case_types
+
 import 'package:flutter/material.dart';
 //import 'Screens/choose_gametype.dart'; 
 
@@ -12,11 +14,13 @@ class createSoccerGame extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-           leading: IconButton(
+           
+             leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.of(context).pushNamed("/GameCreation");
+              Navigator.of(context).pop(); // Navigates back to the previous screen
             },
+          
           ),
           title: const Text('Create a Game'),
           flexibleSpace: Container(

@@ -12,6 +12,12 @@ class createVolleyballGame extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Create a Game'),
+           leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.of(context).pop(); // Navigates back to the previous screen
+            },
+          ),
           flexibleSpace: Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(

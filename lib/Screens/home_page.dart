@@ -280,6 +280,3 @@ class _HomePageState extends State<HomePage> {
     }
   }
 }
-
-git config --global user.email "ahmed.sidschool2004@gmail.com"
-  git config --global user.name "ahmedsid5086"

@@ -16,7 +16,7 @@ class GameCreation extends StatelessWidget {
             },
           ),
           title: const Text('Create a Game'),
-          titleTextStyle: const TextStyle(color: Colors.black, fontFamily: 'Mada', fontWeight: FontWeight.bold),
+          titleTextStyle: const TextStyle(color: Colors.black, fontFamily: 'Mada', fontWeight: FontWeight.bold, fontSize: 24),
           flexibleSpace: Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -80,7 +80,7 @@ class GameCreation extends StatelessWidget {
           child: Center(
             child: Text(
               text,
-              style: const TextStyle(color: Colors.black, fontFamily: 'Mada', fontWeight: FontWeight.bold),
+              style: const TextStyle(color: Colors.black, fontFamily: 'Mada', fontWeight: FontWeight.bold, fontSize: 24),
             ),
           ),
         ),

@@ -23,6 +23,7 @@ class createSoccerGame extends StatelessWidget {
           
           ),
           title: const Text('Create a Game'),
+          titleTextStyle: const TextStyle(color: Colors.black, fontFamily: 'Mada', fontWeight: FontWeight.bold, fontSize: 24),
           flexibleSpace: Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -115,21 +116,35 @@ class createSoccerGame extends StatelessWidget {
                 style: const TextStyle(color: Colors.white),
               ),
               TextButton(
-                style: TextButton.styleFrom(
-                  backgroundColor: Colors.green, // Button background color
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18.0), // Rounded corners
-                  ),
-                  padding: const EdgeInsets.symmetric(vertical: 16.0), // Padding inside the button
-                ),
-                onPressed: () {
-                  // Action when button is pressed
-                },
-                child: const Text(
-                  'Create a PickUp',
-                  style: TextStyle(color: Colors.white, fontSize: 16.0),
-              ),
-            ),
+  style: TextButton.styleFrom(
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(18.0), // Rounded corners
+    ),
+    padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20), // Padding inside the button
+    backgroundColor: Colors.transparent, // Set background color to transparent since we're using gradient
+  ),
+  onPressed: () {
+    // Action when button is pressed
+  },
+  child: Container(
+    decoration: BoxDecoration(
+      gradient: const LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [
+          Color(0xFF80E046), // Green color #80E046
+          Color(0xFF88F37F), // Green color #88F37F
+        ],
+      ),
+      borderRadius: BorderRadius.circular(18.0), // Rounded corners
+    ),
+    padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 20), // Padding inside the container
+    child: const Text(
+      'Create a PickUp',
+      style: TextStyle(color: Colors.black, fontSize: 26.0),
+    ),
+  ),
+),
           ],
         ),
       ),

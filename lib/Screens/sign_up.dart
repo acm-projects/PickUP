@@ -82,12 +82,9 @@ class _SignupState extends State<Signup> {
                   Colors.white,
                   BlendMode.srcATop,
                 ),
-                child: Image.network(
-                  'https://cf-00.iconduck.com/assets.00/volleyball-icon-96x96-hgtgwc0y.png',
-                  width: 96,
-                  height: 96,
-                ),
               ),
+               
+              
             ),
           ],
         ),

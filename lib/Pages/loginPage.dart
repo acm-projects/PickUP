@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:pickup/Functions/liveMaps.dart';
 import 'package:pickup/components/myButtons.dart';
 import 'package:pickup/components/my_textFields.dart';
 
@@ -16,7 +17,7 @@ class LoginPage extends StatelessWidget {
         email: usernameController.text,
         password: passwordController.text,
       );
-      Navigator.pushNamed(context, '/login/home');
+      Navigator.pushNamed(context, '/login/liveMap');
       return null;
     } catch (e) {
       print(e);

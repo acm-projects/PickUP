@@ -52,7 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final calendarCarousel = CalendarCarousel<Event>(
       onDayPressed: (date, events) {
         setState(() => _currentDate = date);
-        print(tz.TZDateTime.parse(Location.getTimeZone(), date.toIso8601String()).add(const Duration(hours: 7)));
+        //print(tz.TZDateTime.parse(Location.getTimeZone(), date.toIso8601String()).add(const Duration(hours: 7)));
         //if AM then regular if PM then double
       },
       weekendTextStyle: const TextStyle(

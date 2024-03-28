@@ -14,11 +14,13 @@ void main() => runApp(const PickUpApp());
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-class PickUpApp extends StatelessWidget {
+class PickUpApp extends StatelessWidget
+{
   const PickUpApp({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) 
+  {
     return MaterialApp(
       // Optionally use navigatorKey if you need it for navigating without context.
       navigatorKey: navigatorKey,
@@ -39,21 +41,29 @@ class PickUpApp extends StatelessWidget {
   }
 }
 
-class PickUp extends StatelessWidget {
+class PickUp extends StatelessWidget 
+{
   const PickUp({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFF1A3E2F),
-      body: Padding(
+  Widget build(BuildContext context) 
+  {
+    return Scaffold
+    (
+      backgroundColor: const Color(0xFF0C2219),
+      body: Padding
+      (
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
-        child: Column(
+        child: Column
+        (
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              'PickUP',
-              style: TextStyle(
+          children: 
+          [
+            const Text
+            (
+              'PickUp',
+              style: TextStyle
+              (
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontSize: 48,
@@ -64,14 +74,17 @@ class PickUp extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: () 
+                  {
                     Navigator.of(context).pushNamed('/Signup');
                   },
-                  style: ElevatedButton.styleFrom(
+                  style: ElevatedButton.styleFrom
+                  (
                     backgroundColor: const Color.fromARGB(255, 94, 160, 96),
                     padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                   ),
-                  child: const Text(
+                  child: const Text
+                  (
                     'Sign Up',
                     style: TextStyle(color: Colors.white, fontSize: 18),
                   ),
@@ -79,23 +92,21 @@ class PickUp extends StatelessWidget {
                 const SizedBox(width: 24),
                 const Text(
                   'or',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                  ),
+                  style: TextStyle(color: Colors.white, fontSize: 18,),
                 ),
                 const SizedBox(width: 24),
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: () 
+                  {
                     Navigator.of(context).pushNamed('/Login');
                   },
-                  style: ElevatedButton.styleFrom(
+                  style: ElevatedButton.styleFrom
+                  (
                     backgroundColor: const Color.fromARGB(255, 94, 160, 96),
                     padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                   ),
-                  child: const Text(
-                    'Login',
-                    style: TextStyle(color: Colors.white, fontSize: 18),
+                  child: const Text('Login',
+                  style: TextStyle(color: Colors.white, fontSize: 18),
                   ),
                 ),
               ],

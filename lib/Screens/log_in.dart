@@ -53,7 +53,7 @@ class _LoginScreenState extends State<Login> {
               alignment: Alignment.center,
               
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 15),
             // Login button with gradient
             buildGradientButton(context, 'Login', _login),
             const SizedBox(height: 20),
@@ -62,7 +62,7 @@ class _LoginScreenState extends State<Login> {
               alignment: Alignment.center,
               child: TextButton(
                 onPressed: () {
-                  Navigator.of(context).pushNamed('/Signup'); // Adjusted for direct navigation without global key
+                  Navigator.of(context).pushNamed('/chooseLocation'); // Adjusted for direct navigation without global key
                 },
                 child: const Text(
                   "Don't have an account? Sign up",
@@ -113,7 +113,7 @@ class _LoginScreenState extends State<Login> {
   Widget buildGradientButton(BuildContext context, String text, VoidCallback onPressed) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(30.0),
+        borderRadius: BorderRadius.circular(50.0),
         gradient: const LinearGradient(
           colors: [
             Color(0xFF80E046), // Green color #80E046
@@ -128,12 +128,12 @@ class _LoginScreenState extends State<Login> {
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.transparent,
           shadowColor: Colors.transparent,
-          padding: const EdgeInsets.symmetric(vertical: 16.0),
+          padding: const EdgeInsets.symmetric(vertical: 26.0, horizontal : 100),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
         ),
         child: Text(
           text,
-          style: const TextStyle(color: Colors.black, fontSize: 38.0, fontFamily: 'Mada',fontWeight: FontWeight.w900),
+          style: const TextStyle(color: Colors.black, fontSize: 28.0, fontFamily: 'Mada',fontWeight: FontWeight.w900),
         ),
       ),
     );

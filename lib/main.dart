@@ -5,7 +5,9 @@ import 'Screens/choose_gametype.dart';
 import 'Screens/create_vbgame.dart'; 
 import 'Screens/create_scgame.dart'; 
 import 'Screens/create_bbgame.dart'; 
-import 'Screens/create_tengame.dart'; 
+import 'Screens/create_tengame.dart';
+import 'Screens/choose_location.dart'; 
+import 'Screens/choose_time.dart';  
 void main() => runApp(const PickUp());
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -53,8 +55,10 @@ class PickUp extends StatelessWidget {
         '/GameCreation': (context) => const GameCreation(),
         '/createVolleyballGame': (context) => const createVolleyballGame(),
         '/createSoccerGame': (context) => const createSoccerGame(),
-        'createSoccerGame': (context) => const createTennisGame(),
+        '/createTennisGame': (context) => const createTennisGame(),
         '/createBasketballGame': (context) => const createBasketballGame(),
+        '/chooseTime': (context) => const chooseTime(),
+        '/chooseLocation': (context) => const chooseLocation(),
 
       },
     );

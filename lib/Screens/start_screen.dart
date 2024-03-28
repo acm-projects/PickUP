@@ -1,18 +1,31 @@
 import 'package:flutter/material.dart';
 
-class StartScreen extends StatelessWidget {
-  const StartScreen({super.key});
 
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'PickUP',
+      home: StartScreen(),
+    );
+  }
+}
+
+class StartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1A3E2F),
+      backgroundColor: Color(0xFF1A3E2F),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
+            Text(
               'PickUP',
               style: TextStyle(
                 color: Colors.white,
@@ -20,41 +33,41 @@ class StartScreen extends StatelessWidget {
                 fontSize: 48,
               ),
             ),
-            const SizedBox(height: 180),
+            SizedBox(height: 180),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/signup');
-                  },
+                   onPressed: () {
+                  Navigator.of(context).pushNamed('/Signup'); // Adjusted for direct navigation without global key
+                },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 94, 160, 96),
-                    padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                    backgroundColor: Color.fromARGB(255, 94, 160, 96),
+                    padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                   ),
-                  child: const Text(
+                  child: Text(
                     'Sign Up',
                     style: TextStyle(color: Colors.white, fontSize: 18),
                   ),
                 ),
-                const SizedBox(width: 24),
-                const Text(
+                SizedBox(width: 24),
+                Text(
                   'or',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,
                   ),
                 ),
-                const SizedBox(width: 24),
+                SizedBox(width: 24),
                 ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/login');
-                  },
+                   onPressed: () {
+                  Navigator.of(context).pushNamed('/'); // Adjusted for direct navigation without global key
+                },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 94, 160, 96),
-                    padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                    backgroundColor: Color.fromARGB(255, 94, 160, 96),
+                    padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                   ),
-                  child: const Text(
+                  child: Text(
                     'Login',
                     style: TextStyle(color: Colors.white, fontSize: 18),
                   ),

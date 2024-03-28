@@ -1,27 +1,35 @@
 import 'package:timezone/timezone.dart' as tz;
+import 'package:geolocator/geolocator.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert' as convert;
 
 class Location {
-  final double latitude;
-  final double longitude;
+  static double latitude = 0;
+  static double longitude = 0;
 
-  static tz.Location get() {
+  static void step() async {
+    if (await Geolocator.isLocationServiceEnabled() && await Geolocator.checkPermission() != LocationPermission.denied) {
+      Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+
+      // You can convert the values to strings if needed:
+      longitude = position.longitude;
+      latitude = position.latitude;
+    }
+  }
+
+  
+
+  static tz.Location getTimeZone() {
     return tz.getLocation(
         timezoneNames[DateTime.now().timeZoneOffset.inMilliseconds]);
   }
 
-  Location(this.latitude, this.longitude);
-
   // Convert Location object to a map
-  Map<String, dynamic> toMap() {
+  static Map<String, dynamic> get() {
     return {
       'latitude': latitude,
       'longitude': longitude,
     };
-  }
-
-  // Create a Location object from a map
-  factory Location.fromMap(Map<String, dynamic> map) {
-    return Location(map['latitude'], map['longitude']);
   }
 }
 

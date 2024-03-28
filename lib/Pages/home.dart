@@ -15,7 +15,7 @@ class HomePage extends StatelessWidget {
           onPressed: () async {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => CreateGame()),
+              MaterialPageRoute(builder: (context) => const CreateGame()),
             );
           },
         ),

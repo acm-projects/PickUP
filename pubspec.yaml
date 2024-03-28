@@ -45,6 +45,9 @@ dependencies:
   timezone: ^0.9.2
   flutter_calendar_carousel: ^2.4.2
   google_maps_flutter: ^2.6.0
+  geolocator: ^11.0.0
+  http: ^1.2.1
+  geocoding: ^3.0.0
 
 dev_dependencies:
   flutter_test:
@@ -69,9 +72,9 @@ flutter:
   uses-material-design: true
   # To add assets to your application, add an assets section, like this:
   assets:
-  - PickUP/assets/basketball_pin.png
-  - PickUP/assets/soccer-maps-pin.png
-  - PickUP/assets/volleyball_maps_pin.png
+  - assets/basketball_pin.png
+  - assets/soccer-maps-pin.png
+  - assets/volleyball_maps_pin.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

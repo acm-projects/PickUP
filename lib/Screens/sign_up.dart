@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:pickup/main.dart';
 
 
 class Signup extends StatefulWidget {
-  const Signup({Key? key}) : super(key: key);
+  const Signup({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -68,7 +67,7 @@ class _SignupState extends State<Signup> {
             const SizedBox(height: 10),
             TextButton(
               onPressed: () {
-                navigatorKey.currentState?.pushNamed('/Login');
+                //navigatorKey.currentState?.pushNamed('/Login');
               },
               child: const Text(
                 'Have an account? Login',

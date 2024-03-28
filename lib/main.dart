@@ -1,7 +1,7 @@
 import 'package:pickup/Functions/liveMaps.dart';
 import 'package:pickup/Pages/loginPage.dart';
 import 'package:pickup/Pages/home.dart';
-import 'package:pickup/Pages/root.dart';
+import 'package:pickup/Screens/start_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,8 +9,6 @@ import 'package:pickup/Pages/signup.dart';
 import 'package:pickup/classes/notification.dart';
 import 'package:pickup/classes/user.dart' as local_user;
 import 'dart:io' show Platform;
-import 'package:pickup/Pages/calendar.dart';
-import 'dart:async';
 
 void main() async {  
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,13 +36,12 @@ void main() async {
       password: password,
     );
 
-    runApp(MaterialApp(home: HomePage()));
+    runApp(const MaterialApp(home: App()));
   } catch (e) {
     print("Account credentials don't match or exist.");
-    runApp(MaterialApp(home: App()));
+    runApp(const MaterialApp(home: App()));
   }
 }
-
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -55,7 +52,7 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
-        '/': (context) => const Root(),
+        '/': (context) => const StartScreen(),
         '/login': (context) => LoginPage(),
         '/signup': (context) => SignUpPage(),
         '/login/home': (context) => const HomePage(),
@@ -64,5 +61,3 @@ class App extends StatelessWidget {
     );
   }
 }
-
-

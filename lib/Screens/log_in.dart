@@ -55,14 +55,14 @@ class _LoginScreenState extends State<Login> {
             ),
             const SizedBox(height: 15),
             // Login button with gradient
-            buildGradientButton(context, 'Login', _login),
+            buildGradientButton(context, 'Login'),
             const SizedBox(height: 20),
             // Sign up button
             Align(
               alignment: Alignment.center,
               child: TextButton(
                 onPressed: () {
-                  Navigator.of(context).pushNamed('/chooseLocation'); // Adjusted for direct navigation without global key
+                  Navigator.of(context).pushNamed('/Signup'); // Adjusted for direct navigation without global key
                 },
                 child: const Text(
                   "Don't have an account? Sign up",
@@ -110,7 +110,7 @@ class _LoginScreenState extends State<Login> {
     );
   }
 
-  Widget buildGradientButton(BuildContext context, String text, VoidCallback onPressed) {
+  Widget buildGradientButton(BuildContext context, String text) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(50.0),
@@ -124,7 +124,9 @@ class _LoginScreenState extends State<Login> {
         ),
       ),
       child: ElevatedButton(
-        onPressed: onPressed,
+         onPressed: () {
+        Navigator.of(context).pushNamed('/homePage');
+      },
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.transparent,
           shadowColor: Colors.transparent,

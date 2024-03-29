@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 // Ensure this import is correct and necessary
 
@@ -12,11 +13,24 @@ class Login extends StatefulWidget {
 
 class _LoginScreenState extends State<Login> {
   // Consider uncommenting these if you need to use them
-  // final TextEditingController _usernameController = TextEditingController();
-  // final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
-  void _login() {
-    // Implement your login logic
+  Future<String?> _login(BuildContext context) async {
+    try {
+      print(_usernameController.text);
+      print(_passwordController.text);
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _usernameController.text,
+        password: _passwordController.text,
+      );
+      
+      Navigator.pushNamed(context, '/homePage');
+      return null;
+    } catch (e) {
+      print(e);
+      return e.toString(); // Return error message if unsuccessful
+    }
   }
 
   @override
@@ -107,7 +121,7 @@ class _LoginScreenState extends State<Login> {
       ),
       style: const TextStyle(color: Colors.white, fontFamily: 'LeagueSpartan'),
       obscureText: isPassword,
-      //controller: isPassword ? _passwordController : _usernameController,
+      controller: isPassword ? _passwordController : _usernameController,
     );
   }
 
@@ -125,8 +139,8 @@ class _LoginScreenState extends State<Login> {
         ),
       ),
       child: ElevatedButton(
-         onPressed: () {
-        Navigator.of(context).pushNamed('/homePage');
+        onPressed: () {
+        _login(context);
       },
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.transparent,

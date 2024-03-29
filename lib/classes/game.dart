@@ -20,7 +20,7 @@ import 'dart:math';
 Map<String, dynamic> emptyMap = {};
 
 class Game {
-  String name;
+  String title;
   String organizer;
   String sport;
   String description;
@@ -30,16 +30,17 @@ class Game {
 
   final int _maxNumOfPlayers;
   final DateTime _timeCreated = DateTime.now();
-  final Map<String, dynamic> _location = Location.get(); //assume at the current pos
+  final Map<String, dynamic> _location =
+      Location.get(); //assume at the current pos
   final String _gameID = generateRandomHex();
 
   // Constructor
-  Game(this.name, this.organizer, this.sport, this.description,
+  Game(this.title, this.organizer, this.sport, this.description,
       this._maxNumOfPlayers, this.startTime);
 
   Map<String, dynamic> toMap() {
     return {
-      'name': name,
+      'title': title,
       'organizer': organizer,
       'gameID': _gameID,
       'sport': sport,
@@ -50,6 +51,8 @@ class Game {
       'maxNumOfPlayers': _maxNumOfPlayers,
       'timeCreated': _timeCreated.toIso8601String(),
       'startTime': startTime.toIso8601String(),
+      'checkedIn': {},
+      'chat': {},
     };
   }
 
@@ -73,6 +76,7 @@ class Game {
 
     final globablTargetGame =
         FirebaseFirestore.instance.collection("ActiveGames").doc(_gameID);
+        
     final usersTargetGame = usersActiveGames.doc(_gameID);
 
     DocumentSnapshot globablTargetGameSS = await globablTargetGame.get();
@@ -87,20 +91,8 @@ class Game {
       await globablTargetGame.set(toMap());
       await usersTargetGame.set(emptyMap);
     }
-    print(2);
+
     await Game.join(_gameID);
-  }
-
-  static Future<Object?> getGameLocation(String target) async {
-    CollectionReference activeGamesColl =
-      FirebaseFirestore.instance.collection("ActiveGames");
-      
-    final DocumentReference targetGameDoc = activeGamesColl.doc(target);
-
-    final targetGame = await targetGameDoc.get();
-
-    print((targetGame as Map<String, dynamic>)['location']);
-    return null;
   }
 
   // Read
@@ -132,22 +124,19 @@ class Game {
   static Future<void> edit(String target, Map<String, dynamic> doc) async {
     print("Editing $target");
 
-    try {
-      final DocumentReference targetGameDoc =
-          FirebaseFirestore.instance.collection("ActiveGames").doc(target);
+    final DocumentReference targetGameDoc =
+        FirebaseFirestore.instance.collection("ActiveGames").doc(target);
 
-      final targetGame = await targetGameDoc.get();
+    final targetGame = await targetGameDoc.get();
 
-      if (!targetGame.exists) throw "$target doesn't exist.";
+    if (!targetGame.exists) throw "$target doesn't exist.";
 
-      if ((targetGame.data() as Map<String, dynamic>)["organizer"] !=
-          await User.getUserID()) {
-        throw "You're not $target's owner!";
-      }
-      await targetGameDoc.set(doc);
-    } catch (e) {
-      print(e);
+    if ((targetGame.data() as Map<String, dynamic>)["organizer"] !=
+        await User.getUserID()) {
+      throw "You're not $target's owner!";
     }
+
+    await targetGameDoc.set(doc);
   }
 
   // Destroy
@@ -181,33 +170,33 @@ class Game {
         .collection("JoinedGames");
 
     try {
-    Map<String, dynamic> targetGame =
-        await Game.fetch(target) as Map<String, dynamic>;
+      Map<String, dynamic> targetGame =
+          await Game.fetch(target) as Map<String, dynamic>;
 
-    DocumentReference targetGameDoc = usersJoinedGames.doc(target);
+      DocumentReference targetGameDoc = usersJoinedGames.doc(target);
 
-    if ((await targetGameDoc.get()).exists) {
-      throw "You Have Already Joined This Game";
-    }
+      if ((await targetGameDoc.get()).exists) {
+        throw "You Have Already Joined This Game";
+      }
 
-    await targetGameDoc.set(emptyMap);
+      await targetGameDoc.set(emptyMap);
 
-    targetGame["players"].add(await User.getUserID());
-    targetGame["numOfPlayers"] = targetGame["players"].length;
+      targetGame["players"].add(await User.getUserID());
+      targetGame["numOfPlayers"] = targetGame["players"].length;
 
-    await Game.edit(target, targetGame);
+      await Game.edit(target, targetGame);
 
-    String targetGameSport = targetGame["sport"];
+      String targetGameSport = targetGame["sport"];
 
-    LocalNotification.scheduleNotification(
-        title: 'Your $targetGameSport Game is Starting in 15 minutes!',
-        body: "Ready to Check In? ",
-        payload: "payload",
-        scheduledTime:
-            tz.TZDateTime.parse(Location.getTimeZone(), targetGame["startTime"])
-                .subtract(const Duration(minutes: 15)));
+      LocalNotification.scheduleNotification(
+          title: 'Your $targetGameSport Game is Starting in 15 minutes!',
+          body: "Ready to Check In? ",
+          payload: "payload",
+          scheduledTime: tz.TZDateTime.parse(
+                  Location.getTimeZone(), targetGame["startTime"])
+              .subtract(const Duration(minutes: 15)));
     } catch (e) {
-    print(e);
+      print(e);
     }
   }
 
@@ -246,6 +235,30 @@ class Game {
     }
   }
 
+  static Future<void> checkIn(String target) async {
+    print('Checking In ${User.getUserID()}');
+
+    Map<String, dynamic> game =
+        (await Game.fetch(target)) as Map<String, dynamic>;
+    game["checkedIn"].add(User.getUserID());
+
+    await Game.edit(target, game);
+  }
+
+  static Future<void> message(String target, String msg) async {
+    Map<String, dynamic> doc = (await fetch(target)) as Map<String, dynamic>;
+
+    Map<String, dynamic> package = {
+        "message": msg,
+        "user": await User.getUserID(),
+      };
+
+    doc["chat"].putIfAbsent(DateTime.now().toIso8601String(), () => package);
+    print(doc["chat"]);
+
+    await edit(target, doc);
+  }
+
   // Firestore Document => Game
   static Future<Game?> firestoreToGame(String target) async {
     print("Converting $target to a Game object.");
@@ -254,7 +267,7 @@ class Game {
           (await fetch(target)) as Map<String, dynamic>;
 
       return Game(
-          jsonData["name"],
+          jsonData["title"],
           jsonData["organizer"],
           jsonData["sport"],
           jsonData["description"],

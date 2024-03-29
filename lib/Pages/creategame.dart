@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:pickup/components/createGameButton.dart';
 import 'package:pickup/components/gameTextFields.dart';
-import 'package:pickup/classes/gameTemplates.dart';
+import 'package:pickup/classes/game.dart';
+import 'package:pickup/classes/location.dart';
+import 'package:timezone/timezone.dart' as tz;
+import 'package:pickup/classes/user.dart';
 
 class CreateGame extends StatefulWidget {
   const CreateGame({super.key});
@@ -16,7 +19,6 @@ class CreateGameState extends State<CreateGame> {
   var numPlayers = TextEditingController();
   var gameDescription = TextEditingController();
   var name = TextEditingController();
-  var startTime = TextEditingController();
   String selectedSport = 'Basketball'; // Store the selected sport
 
   final List<String> sports = [
@@ -54,30 +56,24 @@ class CreateGameState extends State<CreateGame> {
             obscureTxt: false,
           ),
           DropdownButton<String>(
-            value: selectedSport,
-            onChanged: (newValue) {
-              setState(() { // Update state to reflect change
-                selectedSport = newValue!;
-              });
-            },
-            items: sports.map<DropdownMenuItem<String>>((String sport) {
-              return DropdownMenuItem<String>(
-                value: sport,
-                child: Text(sport),
-              );
-            }).toList(),
-            hint: const Text('Select a sport')
-          ),
+              value: selectedSport,
+              onChanged: (newValue) {
+                setState(() {
+                  // Update state to reflect change
+                  selectedSport = newValue!;
+                });
+              },
+              items: sports.map<DropdownMenuItem<String>>((String sport) {
+                return DropdownMenuItem<String>(
+                  value: sport,
+                  child: Text(sport),
+                );
+              }).toList(),
+              hint: const Text('Select a sport')),
           const SizedBox(height: 15),
           GameTextFields(
             controller: gameDescription,
             hintTxt: 'Game details',
-            obscureTxt: false,
-          ),
-          const SizedBox(height: 15),
-          GameTextFields(
-            controller: startTime,
-            hintTxt: 'Time',
             obscureTxt: false,
           ),
 
@@ -89,11 +85,17 @@ class CreateGameState extends State<CreateGame> {
             //Send Them To Location Selection Page
             onTap: () async {
               // gameDetails()
-              try {
-                sportsGames[selectedSport]!.instantiate();
-              } catch (e) {
-                print("error: $e");
-              }
+              Game x = Game("title", await User.getUserID(), "sport", "description", 8, tz.TZDateTime.now(Location.getTimeZone()).add(Duration(minutes: 16)));
+              await x.instantiate();
+              print(x.gameID);
+              await Game.message(x.gameID, "msg");
+              await Game.message(x.gameID, "msg1");
+              await Game.message(x.gameID, "msg2");
+              await Game.message(x.gameID, "msg3");
+              await Game.message(x.gameID, "msg4");
+              await Game.message(x.gameID, "msg5");
+              await Game.message(x.gameID, "msg6");
+              Navigator.pushNamed(context, '/login/home/create/calendar');
             },
           )
         ],

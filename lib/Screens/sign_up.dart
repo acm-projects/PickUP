@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class Signup extends StatefulWidget {
   const Signup({super.key});
 
@@ -103,11 +102,22 @@ class _SignupState extends State<Signup> {
     return TextFormField(
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: const TextStyle(color: Colors.white, fontFamily: 'LeagueSpartan', fontSize: 22.0,fontWeight: FontWeight.w900,),
-        hintText: 'Enter your Text', 
-        hintStyle: const TextStyle(  color: Colors.white, fontFamily: 'LeagueSpartan', fontSize: 14.0, ),
-        enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
-        focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+        labelStyle: const TextStyle(
+          color: Colors.white,
+          fontFamily: 'LeagueSpartan',
+          fontSize: 22.0,
+          fontWeight: FontWeight.w900,
+        ),
+        hintText: 'Enter your Text',
+        hintStyle: const TextStyle(
+          color: Colors.white,
+          fontFamily: 'LeagueSpartan',
+          fontSize: 14.0,
+        ),
+        enabledBorder: const UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.white)),
+        focusedBorder: const UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.white)),
       ),
       style: const TextStyle(color: Colors.white),
       obscureText: isPassword,
@@ -116,31 +126,37 @@ class _SignupState extends State<Signup> {
   }
 }
 
-Widget buildGradientButton(BuildContext context, String text, VoidCallback onPressed) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(30.0),
-        gradient: const LinearGradient(
-          colors: [
-            Color(0xFF80E046), // Green color #80E046
-            Color(0xFF88F37F), // Green color #88F37F
-          ],
-          begin: Alignment.centerLeft,
-          end: Alignment.centerRight,
-        ),
+Widget buildGradientButton(
+    BuildContext context, String text, VoidCallback onPressed) {
+  return Container(
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(30.0),
+      gradient: const LinearGradient(
+        colors: [
+          Color(0xFF80E046), // Green color #80E046
+          Color(0xFF88F37F), // Green color #88F37F
+        ],
+        begin: Alignment.centerLeft,
+        end: Alignment.centerRight,
       ),
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.transparent,
-          shadowColor: Colors.transparent,
-          padding: const EdgeInsets.symmetric(vertical: 16.0),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-        ),
-        child: Text(
-          text,
-          style: const TextStyle(color: Colors.black, fontSize: 24.0,fontWeight: FontWeight.bold, fontFamily: 'Mada'),
-        ),
+    ),
+    child: ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.transparent,
+        shadowColor: Colors.transparent,
+        padding: const EdgeInsets.symmetric(vertical: 16.0),
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
       ),
-    );
-  }
+      child: Text(
+        text,
+        style: const TextStyle(
+            color: Colors.black,
+            fontSize: 24.0,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'Mada'),
+      ),
+    ),
+  );
+}

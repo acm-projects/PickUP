@@ -1,15 +1,15 @@
 import 'package:pickup/Pages/loginPage.dart';
+import 'package:pickup/Pages/creategame.dart';
+import 'package:pickup/Pages/calendar.dart';
 import 'package:pickup/Pages/home.dart';
 import 'package:pickup/Screens/start_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pickup/Pages/signup.dart';
 import 'package:pickup/classes/notification.dart';
-import 'package:pickup/classes/user.dart' as local_user;
 import 'dart:io' show Platform;
 
-void main() async {  
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await LocalNotification.init();
@@ -25,21 +25,7 @@ void main() async {
         )
       : await Firebase.initializeApp();
 
-  //Automatic Login else Send to login/signup
-  try {
-    final String userID = await local_user.User.getUserID();
-    final String password = await local_user.User.getPassword();
-
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-      email: userID,
-      password: password,
-    );
-
-    runApp(const MaterialApp(home: App()));
-  } catch (e) {
-    print("Account credentials don't match or exist.");
-    runApp(const MaterialApp(home: App()));
-  }
+  runApp(const MaterialApp(home: App()));
 }
 
 class App extends StatelessWidget {
@@ -55,6 +41,9 @@ class App extends StatelessWidget {
         '/login': (context) => LoginPage(),
         '/signup': (context) => SignUpPage(),
         '/login/home': (context) => const HomePage(),
+        '/login/home/create': (context) => const CreateGame(),
+        '/login/home/create/calendar': (context) => const Calendar(),
+        //'/login/home/create/calendar/location': (context) => const Map(),
       },
     );
   }

@@ -15,7 +15,7 @@ class CreateGameButton extends StatelessWidget {
         decoration: const BoxDecoration(color: Colors.black),
         child: const Center(
           child: Text(
-            'Create Game',
+            'Choose A Time',
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,

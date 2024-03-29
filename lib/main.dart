@@ -9,8 +9,26 @@ import 'Screens/create_tengame.dart';
 import 'Screens/choose_location.dart';
 import 'Screens/choose_time.dart';
 import 'Screens/home_page.dart';
+import 'dart:io' show Platform;
+import 'package:firebase_core/firebase_core.dart';
 
-void main() => runApp(const PickUpApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  Platform.isAndroid
+      ? await Firebase.initializeApp(
+          options: const FirebaseOptions(
+            apiKey: "AIzaSyCQL-lqTgbOQhTv8F1Oj1YGsqlDCTb-Za8",
+            appId: "1:850087823328:android:49aae45eba0d0b47758d85",
+            messagingSenderId: "850087823328",
+            projectId: "utdpickup",
+          ),
+        )
+      : await Firebase.initializeApp();
+
+  runApp(const PickUpApp());
+
+}
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 

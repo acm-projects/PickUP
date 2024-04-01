@@ -12,37 +12,48 @@ class createVolleyballGame extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        backgroundColor: const Color(0xFF0C2219),
         appBar: AppBar(
-          title: const Text('Create a Game'),
-          titleTextStyle: const TextStyle(color: Colors.black, fontFamily: 'League', fontWeight: FontWeight.bold, fontSize: 24),
-           leading: IconButton(
+          leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
               Navigator.of(context).pop(); // Navigates back to the previous screen
             },
           ),
+          title: const Text('Choose a Volleyball Game'),
+          titleTextStyle: const TextStyle(
+            color: Colors.black,
+            fontFamily: 'Mada',
+            fontWeight: FontWeight.bold,
+            
+            fontSize: 24,
+          ),
+          backgroundColor: Colors.transparent, // Make AppBar background transparent
+          elevation: 0, // Removes shadow
           flexibleSpace: Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  Color(0xFF80E046), // Green color #80E046
-                  Color(0xFF88F37F), // Green color #88F37F
+                  Color(0xFF88F37F), 
+                  Color(0xFF88F37F),
                 ],
               ),
+              borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
+              // borderRadius: BorderRadius.circular(30), // Rounded corners
             ),
           ),
         ),
         body: Container(
           padding: const EdgeInsets.all(16.0),
-          color: const Color(0xFF0C2219),
+          //color: const Color(0xFF0C2219),
           child: Column(
             children: <Widget>[
                const SizedBox(height: 16.0),
               TextFormField(
                 decoration: const InputDecoration(
-                  labelText: 'Title',
+                  labelText: 'Game Title',
                   labelStyle: TextStyle(color: Colors.white, fontFamily: 'LeagueSpartan', fontSize: 22.0,fontWeight: FontWeight.w900,),
                   hintText: 'What would you like to name your game?',
                   hintStyle: TextStyle(color: Colors.grey),
@@ -89,8 +100,8 @@ class createVolleyballGame extends StatelessWidget {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              Color(0xFF80E046), // Green color
-              Color(0xFF88F37F), // Green color
+               Color(0xFF88F37F), 
+                  Color(0xFF88F37F),
             ],
           ),
           borderRadius: BorderRadius.circular(18.0), // Applies rounded corners to the container

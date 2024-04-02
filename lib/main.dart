@@ -13,7 +13,8 @@ import 'Screens/create_bbgame.dart';
 import 'Screens/create_tengame.dart';
 import 'Screens/choose_location.dart';
 import 'Screens/choose_time.dart';
-import 'Screens/home_page.dart';
+import 'Screens/choose_time.dart';
+import 'Screens/chat_page.dart';
 import 'dart:io' show Platform;
 import 'package:firebase_core/firebase_core.dart';
 
@@ -59,6 +60,7 @@ class PickUpApp extends StatelessWidget
         '/createBasketballGame': (context) => const createBasketballGame(),
         '/chooseTime': (context) => const ChooseTime(),
         '/chooseLocation': (context) => const chooseLocation(),
+        '/chatPage': (context) => const chatPage(),
       },
     );
   }

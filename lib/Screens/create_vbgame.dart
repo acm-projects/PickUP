@@ -20,7 +20,7 @@ class createVolleyballGame extends StatelessWidget {
               Navigator.of(context).pop(); // Navigates back to the previous screen
             },
           ),
-          title: const Text('Choose a Volleyball Game'),
+          title: const Text('Create a Volleyball Game'),
           titleTextStyle: const TextStyle(
             color: Colors.black,
             fontFamily: 'Mada',

@@ -83,6 +83,15 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Navigate to the chat page
+          Navigator.of(context).pushNamed('/chatPage');
+        },
+        backgroundColor: const Color(0xFF88F37F), // Light green color
+        child: const Icon(Icons.message, color: Colors.black), // Message icon
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 

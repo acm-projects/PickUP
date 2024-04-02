@@ -9,30 +9,35 @@ class chooseLocation extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         backgroundColor: const Color(0xFF0C2219),
-        appBar: AppBar(
-          title: const Text('Choose a Location'),
-          titleTextStyle: const TextStyle(
-            color: Colors.black,
-            fontFamily: 'Mada',
-            fontWeight: FontWeight.bold,
-            fontSize: 24,
-          ),
+         appBar: AppBar(
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
               Navigator.of(context).pop(); // Navigates back to the previous screen
             },
           ),
+          title: const Text('Choose a Location'),
+          titleTextStyle: const TextStyle(
+            color: Colors.black,
+            fontFamily: 'Mada',
+            fontWeight: FontWeight.bold,
+            
+            fontSize: 24,
+          ),
+          backgroundColor: Colors.transparent, // Make AppBar background transparent
+          elevation: 0, // Removes shadow
           flexibleSpace: Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  Color(0xFF80E046), // Green color
-                  Color(0xFF88F37F), // Lighter green color
+                  Color(0xFF88F37F), 
+                  Color(0xFF88F37F),
                 ],
               ),
+              borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
+              // borderRadius: BorderRadius.circular(30), // Rounded corners
             ),
           ),
         ),

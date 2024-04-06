@@ -130,11 +130,22 @@ class _SignupState extends State<Signup> {
     return TextFormField(
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: const TextStyle(color: Colors.white, fontFamily: 'LeagueSpartan', fontSize: 22.0,fontWeight: FontWeight.w900,),
-        hintText: 'Enter your Text', 
-        hintStyle: const TextStyle(  color: Colors.white, fontFamily: 'LeagueSpartan', fontSize: 14.0, ),
-        enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
-        focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+        labelStyle: const TextStyle(
+          color: Colors.white,
+          fontFamily: 'LeagueSpartan',
+          fontSize: 22.0,
+          fontWeight: FontWeight.w900,
+        ),
+        hintText: 'Enter your Text',
+        hintStyle: const TextStyle(
+          color: Colors.white,
+          fontFamily: 'LeagueSpartan',
+          fontSize: 14.0,
+        ),
+        enabledBorder: const UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.white)),
+        focusedBorder: const UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.white)),
       ),
       style: const TextStyle(color: Colors.white),
       obscureText: isPassword,

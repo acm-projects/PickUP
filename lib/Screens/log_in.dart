@@ -51,10 +51,9 @@ class _LoginScreenState extends State<Login> {
                 color: Colors.white,
                 fontSize: 40.0,
                 fontWeight: FontWeight.bold,
-                fontFamily: 'Mada', 
+                fontFamily: 'Mada',
               ),
               textAlign: TextAlign.left,
-              
             ),
             const SizedBox(height: 1),
             // Username field
@@ -66,7 +65,6 @@ class _LoginScreenState extends State<Login> {
             // Forgot password button
             const Align(
               alignment: Alignment.center,
-              
             ),
             const SizedBox(height: 15),
             // Login button with gradient
@@ -77,7 +75,8 @@ class _LoginScreenState extends State<Login> {
               alignment: Alignment.center,
               child: TextButton(
                 onPressed: () {
-                  Navigator.of(context).pushNamed('/Signup'); // Adjusted for direct navigation without global key
+                  Navigator.of(context).pushNamed(
+                      '/Signup'); // Adjusted for direct navigation without global key
                 },
                 child: const Text(
                   "Don't have an account? Sign up",
@@ -87,7 +86,6 @@ class _LoginScreenState extends State<Login> {
             ),
             const SizedBox(height: 20),
 
-            
             Align(
               alignment: Alignment.center,
               child: ColorFiltered(
@@ -102,22 +100,33 @@ class _LoginScreenState extends State<Login> {
                 ),
               ),
             ),
-            
           ],
         ),
       ),
     );
   }
 
-  TextFormField buildTextFormField({required String label, bool isPassword = false}) {
+  TextFormField buildTextFormField(
+      {required String label, bool isPassword = false}) {
     return TextFormField(
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: const TextStyle(color: Colors.white, fontFamily: 'LeagueSpartan', fontSize: 22.0,fontWeight: FontWeight.w900,),
-        hintText: 'Enter your Text', 
-      hintStyle: const TextStyle(color: Colors.white, fontFamily: 'LeagueSpartan', fontSize: 14.0, ),
-        enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
-        focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+        labelStyle: const TextStyle(
+          color: Colors.white,
+          fontFamily: 'LeagueSpartan',
+          fontSize: 22.0,
+          fontWeight: FontWeight.w900,
+        ),
+        hintText: 'Enter your Text',
+        hintStyle: const TextStyle(
+          color: Colors.white,
+          fontFamily: 'LeagueSpartan',
+          fontSize: 14.0,
+        ),
+        enabledBorder: const UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.white)),
+        focusedBorder: const UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.white)),
       ),
       style: const TextStyle(color: Colors.white, fontFamily: 'LeagueSpartan'),
       obscureText: isPassword,

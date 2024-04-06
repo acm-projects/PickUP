@@ -1,21 +1,8 @@
 import 'package:flutter/material.dart';
 
-
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'PickUP',
-      home: StartScreen(),
-    );
-  }
-}
-
 class StartScreen extends StatelessWidget {
+  const StartScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,8 +29,8 @@ class StartScreen extends StatelessWidget {
                   Navigator.of(context).pushNamed('/Signup'); // Adjusted for direct navigation without global key
                 },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color.fromARGB(255, 94, 160, 96),
-                    padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                    backgroundColor: const Color.fromARGB(255, 94, 160, 96),
+                    padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                   ),
                   child: Text(
                     'Sign Up',
@@ -64,8 +51,8 @@ class StartScreen extends StatelessWidget {
                   Navigator.of(context).pushNamed('/'); // Adjusted for direct navigation without global key
                 },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color.fromARGB(255, 94, 160, 96),
-                    padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                    backgroundColor: const Color.fromARGB(255, 94, 160, 96),
+                    padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                   ),
                   child: Text(
                     'Login',
@@ -79,4 +66,5 @@ class StartScreen extends StatelessWidget {
       ),
     );
   }
+  // ... other methods and build method
 }

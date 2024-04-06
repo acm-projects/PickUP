@@ -284,10 +284,14 @@
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
 <<<<<<< HEAD
 				7ED91E49535336BE613DAEB6 /* [CP] Embed Pods Frameworks */,
+<<<<<<< HEAD
 				7BE66B60B171FB97F640C321 /* [CP] Copy Pods Resources */,
 =======
 				762CFDF08EEED543EF2CC208 /* [CP] Embed Pods Frameworks */,
 >>>>>>> GameCreationIntegration
+=======
+				4029C3A5EDB0965A3509991E /* [CP] Copy Pods Resources */,
+>>>>>>> GameChat
 			);
 			buildRules = (
 			);
@@ -399,7 +403,11 @@
 			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" embed_and_thin";
 		};
 <<<<<<< HEAD
+<<<<<<< HEAD
 		7BE66B60B171FB97F640C321 /* [CP] Copy Pods Resources */ = {
+=======
+		4029C3A5EDB0965A3509991E /* [CP] Copy Pods Resources */ = {
+>>>>>>> GameChat
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (

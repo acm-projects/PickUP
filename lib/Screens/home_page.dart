@@ -53,7 +53,7 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(height: 20),
             // Upcoming Games Section
             _buildUpcomingGamesSection(),
-            const SizedBox(height: 105),
+            const SizedBox(height: 143),
             // Bottom "PickUP" Button
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 68),

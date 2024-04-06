@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'game_creation.dart'; // Placeholder for game creation page
+import 'game_creation.dart';
+import 'nav_bar.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -52,10 +53,10 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(height: 20),
             // Upcoming Games Section
             _buildUpcomingGamesSection(),
-            const SizedBox(height: 00),
+            const SizedBox(height: 105),
             // Bottom "PickUP" Button
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40),
+              padding: const EdgeInsets.symmetric(horizontal: 68),
               child: ElevatedButton(
                 onPressed: () {
                   // Navigate to the game creation page
@@ -77,7 +78,7 @@ class _HomePageState extends State<HomePage> {
                   child: Text(
                     'PickUP',
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 23,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
                     ),
@@ -187,6 +188,48 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
+            const SizedBox(height: 20),
+            // Check In Button with Drop Shadow
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.3),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: const Offset(0, 3), // changes position of shadow
+                  ),
+                ],
+              ),
+              child: ElevatedButton(
+                onPressed: () {
+                  // Handle check-in functionality
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color.fromARGB(
+                    255,
+                    20,
+                    157,
+                    57,
+                  ), // Green color for contrast
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30), // Rounded corners
+                  ),
+                ),
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                  child: Text(
+                    'Check In',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Color.fromARGB(255, 255, 255, 255),
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       );
@@ -215,11 +258,11 @@ class _HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const Text(
-              'Upcoming Games',
+              'Your Games',
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
-                fontSize: 20,
+                fontSize: 23,
               ),
             ),
             const SizedBox(height: 10),
@@ -240,7 +283,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     padding: const EdgeInsets.all(12),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Expanded(
                           child: Text(
@@ -248,24 +291,10 @@ class _HomePageState extends State<HomePage> {
                             style: const TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
+                              fontSize: 16, // Increased font size
                             ),
                             overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        ElevatedButton(
-                          onPressed: () {
-                            // Handle reminder functionality
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                const Color(0xFF88F37F), // Light green color
-                          ),
-                          child: const Text(
-                            'Remind Me',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            textAlign: TextAlign.center,
                           ),
                         ),
                       ],
@@ -280,6 +309,3 @@ class _HomePageState extends State<HomePage> {
     }
   }
 }
-
-git config --global user.email "ahmed.sidschool2004@gmail.com"
-  git config --global user.name "ahmedsid5086"

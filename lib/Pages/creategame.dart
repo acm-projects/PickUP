@@ -84,17 +84,15 @@ class CreateGameState extends State<CreateGame> {
             //Send them to select time page then to ->
             //Send Them To Location Selection Page
             onTap: () async {
+              String x = '858g98137a5i';
               // gameDetails()
-              Game x = Game("title", await User.getUserID(), "sport", "description", 8, tz.TZDateTime.now(Location.getTimeZone()).add(Duration(minutes: 16)));
-              await x.instantiate();
-              print(x.gameID);
-              await Game.message(x.gameID, "msg");
-              await Game.message(x.gameID, "msg1");
-              await Game.message(x.gameID, "msg2");
-              await Game.message(x.gameID, "msg3");
-              await Game.message(x.gameID, "msg4");
-              await Game.message(x.gameID, "msg5");
-              await Game.message(x.gameID, "msg6");
+              await Game.message(x, "msg");
+              await Game.message(x, "msg1");
+              await Game.message(x, "msg2");
+              await Game.message(x, "msg3");
+              await Game.message(x, "msg4");
+              await Game.message(x, "msg5");
+              await Game.message(x, "msg6");
               Navigator.pushNamed(context, '/login/home/create/calendar');
             },
           )

@@ -21,7 +21,6 @@ Map<String, dynamic> emptyMap = {};
 
 class Game {
   String title;
-  String organizer;
   String sport;
   String description;
   int numOfPlayers = 0;
@@ -35,13 +34,13 @@ class Game {
   final String _gameID = generateRandomHex();
 
   // Constructor
-  Game(this.title, this.organizer, this.sport, this.description,
+  Game(this.title, this.sport, this.description,
       this._maxNumOfPlayers, this.startTime);
 
-  Map<String, dynamic> toMap() {
+  Future<Map<String, dynamic>> toMap() async {
     return {
       'title': title,
-      'organizer': organizer,
+      'organizer': await User.getUserID(),
       'gameID': _gameID,
       'sport': sport,
       'description': description,
@@ -52,7 +51,7 @@ class Game {
       'timeCreated': _timeCreated.toIso8601String(),
       'startTime': startTime.toIso8601String(),
       'checkedIn': {},
-      'chat': {},
+      'chat': [],
     };
   }
 
@@ -85,10 +84,10 @@ class Game {
 
     if (globablTargetGameSS.exists) {
       //Prompt User to delete Games or become an official organizer
-      await globablTargetGame.update(toMap());
+      await globablTargetGame.update(await toMap());
       await usersTargetGame.update(emptyMap);
     } else {
-      await globablTargetGame.set(toMap());
+      await globablTargetGame.set(await toMap());
       await usersTargetGame.set(emptyMap);
     }
 
@@ -192,9 +191,11 @@ class Game {
           title: 'Your $targetGameSport Game is Starting in 15 minutes!',
           body: "Ready to Check In? ",
           payload: "payload",
-          scheduledTime: tz.TZDateTime.parse(
+          scheduledTime: tz.TZDateTime.now(Location.getTimeZone()).add(Duration(seconds: 5)));/*
+          
+          .parse(
                   Location.getTimeZone(), targetGame["startTime"])
-              .subtract(const Duration(minutes: 15)));
+              .subtract(const Duration(seconds: 10)));*/
     } catch (e) {
       print(e);
     }
@@ -246,15 +247,14 @@ class Game {
   }
 
   static Future<void> message(String target, String msg) async {
-    Map<String, dynamic> doc = (await fetch(target)) as Map<String, dynamic>;
+    Map<String, dynamic> doc = (await Game.fetch(target)) as Map<String, dynamic>;
 
     Map<String, dynamic> package = {
-        "message": msg,
-        "user": await User.getUserID(),
-      };
+      "message": msg,
+      "user": await User.getUserID(),
+    };
 
-    doc["chat"].putIfAbsent(DateTime.now().toIso8601String(), () => package);
-    print(doc["chat"]);
+    (doc["chat"] as List<dynamic>).add(package);
 
     await edit(target, doc);
   }
@@ -268,7 +268,6 @@ class Game {
 
       return Game(
           jsonData["title"],
-          jsonData["organizer"],
           jsonData["sport"],
           jsonData["description"],
           jsonData["maxNumOfPlayers"],

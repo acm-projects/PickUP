@@ -1,6 +1,5 @@
 import 'package:pickup/Functions/liveMaps.dart';
 import 'package:pickup/Pages/loginPage.dart';
-<<<<<<< HEAD
 import 'package:pickup/Screens/home_page.dart';
 import 'package:pickup/Screens/start_screen.dart';
 import 'package:firebase_core/firebase_core.dart';

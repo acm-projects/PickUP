@@ -15,6 +15,7 @@ class _LoginScreenState extends State<Login> {
   // Consider uncommenting these if you need to use them
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  String _errorMessage = '';
 
   Future<String?> _login(BuildContext context) async {
     try {
@@ -26,9 +27,15 @@ class _LoginScreenState extends State<Login> {
       );
       
       Navigator.pushNamed(context, '/homePage');
+      setState(() {
+        _errorMessage = ''; // Clear any previous error message
+      });
       return null;
     } catch (e) {
-      print(e);
+      setState(() {
+        _errorMessage = 'Incorrect username or password'; // Set the error message
+      });
+      
       return e.toString(); // Return error message if unsuccessful
     }
   }
@@ -61,8 +68,17 @@ class _LoginScreenState extends State<Login> {
             const SizedBox(height: 1),
             // Password field
             buildTextFormField(label: 'Password', isPassword: true),
+             if (_errorMessage.isNotEmpty) // Display the error message if not empty
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Text(
+                  _errorMessage,
+                  style: const TextStyle(color: Colors.red, fontSize: 14.0),
+                  textAlign: TextAlign.center,
+                ),
+              ),
             const SizedBox(height: 20),
-            // Forgot password button
+         
             const Align(
               alignment: Alignment.center,
             ),

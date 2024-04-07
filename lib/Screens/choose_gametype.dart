@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class GameCreation extends StatelessWidget {
-  const GameCreation({super.key});
+  const GameCreation({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -9,35 +9,37 @@ class GameCreation extends StatelessWidget {
       home: Scaffold(
         backgroundColor: const Color(0xFF0C2219),
         appBar: AppBar(
-  leading: IconButton(
-    icon: const Icon(Icons.arrow_back),
-    onPressed: () {
-      Navigator.of(context).pop(); // Navigates back to the previous screen
-    },
-  ),
-  title: const Text('Choose a Game Type'),
-  titleTextStyle: const TextStyle(color: Colors.black, fontFamily: 'Mada', fontWeight: FontWeight.bold, fontSize: 24),
-  flexibleSpace: Container(
-    decoration: const BoxDecoration(
-      gradient: LinearGradient(
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-        colors: [
-        Color(0xFF88F37F), // Green color
-          Color(0xFF88F37F), // Lighter green color
-        ],
-      ),
-    ),
-  ),
-  
-  shape: RoundedRectangleBorder(
-    
-      borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
-    
-  ),
-  
-),
-
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.of(context).pop(); // Navigates back to the previous screen
+            },
+          ),
+          title: const Text('Choose a Game Type'),
+          titleTextStyle: const TextStyle(
+            color: Colors.black,
+            fontFamily: 'Mada',
+            fontWeight: FontWeight.bold,
+            
+            fontSize: 24,
+          ),
+          backgroundColor: Colors.transparent, // Make AppBar background transparent
+          elevation: 0, // Removes shadow
+          flexibleSpace: Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Color(0xFF88F37F), // Same green color for a consistent look
+                  Color(0xFF88F37F),
+                ],
+              ),
+              borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
+              // borderRadius: BorderRadius.circular(30), // Rounded corners
+            ),
+          ),
+        ),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -79,23 +81,18 @@ class GameCreation extends StatelessWidget {
         ),
         borderRadius: BorderRadius.circular(28),
       ),
-      child: Ink(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(18),
-        ),
-        child: InkWell(
-          onTap: onPressed,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Icon(icon, color: Colors.black, size: 80), // Icon
-              const SizedBox(height: 10), // Space between icon and text
-              Text(
-                text,
-                style: const TextStyle(color: Colors.black, fontFamily: 'Mada', fontWeight: FontWeight.w500, fontSize: 20),
-              ),
-            ],
-          ),
+      child: InkWell(
+        onTap: onPressed,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Icon(icon, color: Colors.black, size: 80), // Icon
+            const SizedBox(height: 10), // Space between icon and text
+            Text(
+              text,
+              style: const TextStyle(color: Colors.black, fontFamily: 'Mada', fontWeight: FontWeight.w500, fontSize: 20),
+            ),
+          ],
         ),
       ),
     );

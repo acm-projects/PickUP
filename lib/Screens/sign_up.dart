@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pickup/main.dart';
 import 'package:pickup/classes/user.dart' as local_user;
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -105,10 +104,10 @@ class _SignupState extends State<Signup> {
               ),
             ),
             const SizedBox(height: 20),
-            Align(
+            const Align(
               alignment: Alignment.center,
               child: ColorFiltered(
-                colorFilter: const ColorFilter.mode(
+                colorFilter: ColorFilter.mode(
                   Colors.white,
                   BlendMode.srcATop,
                 ),

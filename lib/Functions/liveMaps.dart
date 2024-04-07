@@ -4,7 +4,6 @@ import 'package:pickup/classes/game.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_flutter_android/google_maps_flutter_android.dart';
 import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platform_interface.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
@@ -12,17 +11,19 @@ import 'dart:convert' as convert;
 const double CameraZoom = 16;
 const double CameraTilt = 80;
 const double CameraBearing = 30;
-const LatLng _utdCoordinates = const LatLng(32.9864, -96.7497); // UTD coordinates
-const LatLng _AngelsChickenCoordinates = const LatLng(32.9773, -96.8688);
+const LatLng _utdCoordinates = LatLng(32.9864, -96.7497); // UTD coordinates
+const LatLng _AngelsChickenCoordinates = LatLng(32.9773, -96.8688);
 
 class LiveMap extends StatefulWidget {
+  const LiveMap({super.key});
+
   @override
   _LiveMapState createState() => _LiveMapState();
 }
 
 class _LiveMapState extends State<LiveMap> {
-  Completer<GoogleMapController> _controller = Completer();
-  Set<Marker> _markers = Set<Marker>();
+  final Completer<GoogleMapController> _controller = Completer();
+  final Set<Marker> _markers = <Marker>{};
   late BitmapDescriptor customIcon;
 
   @override
@@ -40,7 +41,7 @@ class _LiveMapState extends State<LiveMap> {
 
   @override
   Widget build(BuildContext context) {
-    CameraPosition initialCameraPosition = CameraPosition(
+    CameraPosition initialCameraPosition = const CameraPosition(
       zoom: CameraZoom,
       tilt: CameraTilt,
       bearing: CameraBearing,
@@ -49,7 +50,7 @@ class _LiveMapState extends State<LiveMap> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Live Map'),
+        title: const Text('Live Map'),
       ),
       body: Container(
         child: Stack(
@@ -91,7 +92,7 @@ class _LiveMapState extends State<LiveMap> {
   }
 
   Future<List<double>?> getCoordinates(String address) async {
-    final apiKey = 'AIzaSyBPp3mPocXX-1j7jOuxHg_us96LyClD-H8'; // Replace with your actual API key
+    const apiKey = 'AIzaSyBPp3mPocXX-1j7jOuxHg_us96LyClD-H8'; // Replace with your actual API key
     final url = Uri.parse(
         'https://maps.googleapis.com/maps/api/geocode/json?address=$address&key=$apiKey');
     final response = await http.get(url);
@@ -109,19 +110,11 @@ class _LiveMapState extends State<LiveMap> {
   }
 
   void _createCustomMarkerFromAsset(BuildContext context) async {
-    if (customIcon == null) {
-      ImageConfiguration configuration = ImageConfiguration();
-      BitmapDescriptor.fromAssetImage(
-          configuration, 'assets/basketball_pin.png').then((icon) {
-        setState(() {
-          customIcon = icon;
-        });
-      });
-    }
+    
   }
 
   Marker CreateGameMarker(String sportType, LatLng gamePosition) {
-    Marker mk = new Marker(
+    Marker mk = Marker(
       markerId: MarkerId(sportType),
       icon: BitmapDescriptor.defaultMarker,
       position: gamePosition,

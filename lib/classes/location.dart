@@ -1,7 +1,6 @@
 import 'package:timezone/timezone.dart' as tz;
 import 'package:geolocator/geolocator.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert' as convert;import 'package:permission_handler/permission_handler.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class Location {
   static double latitude = 0;
@@ -28,8 +27,6 @@ class Location {
       print(position.longitude);
     }
   }
-
-  
 
   static tz.Location getTimeZone() {
     return tz.getLocation(

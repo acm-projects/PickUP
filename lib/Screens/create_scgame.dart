@@ -108,7 +108,7 @@ class createSoccerGame extends StatelessWidget {
           borderRadius: BorderRadius.circular(18.0), // Applies rounded corners to the container
         ),
         padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20), // Adjust padding to fit the text
-        child: Text(
+        child: const Text(
           'Next',
           style: TextStyle(
             color: Colors.black, // Text color

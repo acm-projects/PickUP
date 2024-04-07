@@ -1,7 +1,4 @@
-import 'package:pickup/Functions/liveMaps.dart';
-import 'package:pickup/Pages/loginPage.dart';
 import 'package:pickup/Screens/home_page.dart';
-import 'package:pickup/Screens/start_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'Screens/log_in.dart';
@@ -13,9 +10,7 @@ import 'Screens/create_bbgame.dart';
 import 'Screens/create_tengame.dart';
 import 'Screens/choose_location.dart';
 import 'Screens/choose_time.dart';
-import 'Screens/home_page.dart';
 import 'dart:io' show Platform;
-import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,7 +34,7 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class PickUpApp extends StatelessWidget
 {
-  const PickUpApp({Key? key}) : super(key: key);
+  const PickUpApp({super.key});
 
   @override
   Widget build(BuildContext context) 
@@ -59,7 +54,7 @@ class PickUpApp extends StatelessWidget
         '/createBasketballGame': (context) => const createBasketballGame(),
         '/chooseTime': (context) => const ChooseTime(),
         '/chooseLocation': (context) => const chooseLocation(),
-        '/chatPage': (context) => const chatPage(),
+        //'/chatPage': (context) => const chatPage(),
       },
     );
   }
@@ -67,7 +62,7 @@ class PickUpApp extends StatelessWidget
 
 class PickUp extends StatelessWidget 
 {
-  const PickUp({Key? key}) : super(key: key);
+  const PickUp({super.key});
 
   @override
   Widget build(BuildContext context) 

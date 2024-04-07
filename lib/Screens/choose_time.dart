@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart' show CalendarCarousel, Event;
-import 'package:timezone/timezone.dart' as tz;
 import 'package:intl/intl.dart';
 
 class ChooseTime extends StatefulWidget {
-  const ChooseTime({Key? key}) : super(key: key);
+  const ChooseTime({super.key});
 
   @override
   _ChooseTimeState createState() => _ChooseTimeState();
@@ -18,7 +17,7 @@ class _ChooseTimeState extends State<ChooseTime> {
 
  List<DropdownMenuItem<String>> getDropdownTimes() {
     List<DropdownMenuItem<String>> times = [];
-    TimeOfDay time = TimeOfDay(hour: 0, minute: 0);
+    TimeOfDay time = const TimeOfDay(hour: 0, minute: 0);
     DateFormat formatter = DateFormat('h:mm a');
     for (int i = 0; i < 96; i++) {
       final DateTime dateTime = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, time.hour, time.minute);
@@ -119,9 +118,9 @@ class _ChooseTimeState extends State<ChooseTime> {
                     calendarCarousel, // Display the calendar
                     const SizedBox(height: 20), // Spacing before the dropdown
                     DropdownButtonFormField<String>(
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Select Time',
-                        labelStyle: const TextStyle(color: Colors.white), 
+                        labelStyle: TextStyle(color: Colors.white), 
                         border: OutlineInputBorder(),
                          enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.white), // Border color
@@ -134,7 +133,7 @@ class _ChooseTimeState extends State<ChooseTime> {
                           _selectedTime = value;
                         });
                       },
-                       dropdownColor: Color(0xFF0C2219), // Dropdown menu background color
+                       dropdownColor: const Color(0xFF0C2219), // Dropdown menu background color
                     ),
                   ],
                 ),

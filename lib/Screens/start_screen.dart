@@ -6,13 +6,13 @@ class StartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF1A3E2F),
+      backgroundColor: const Color(0xFF1A3E2F),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
+            const Text(
               'PickUP',
               style: TextStyle(
                 color: Colors.white,
@@ -20,7 +20,7 @@ class StartScreen extends StatelessWidget {
                 fontSize: 48,
               ),
             ),
-            SizedBox(height: 180),
+            const SizedBox(height: 180),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -32,20 +32,20 @@ class StartScreen extends StatelessWidget {
                     backgroundColor: const Color.fromARGB(255, 94, 160, 96),
                     padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                   ),
-                  child: Text(
+                  child: const Text(
                     'Sign Up',
                     style: TextStyle(color: Colors.white, fontSize: 18),
                   ),
                 ),
-                SizedBox(width: 24),
-                Text(
+                const SizedBox(width: 24),
+                const Text(
                   'or',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,
                   ),
                 ),
-                SizedBox(width: 24),
+                const SizedBox(width: 24),
                 ElevatedButton(
                    onPressed: () {
                   Navigator.of(context).pushNamed('/'); // Adjusted for direct navigation without global key
@@ -54,7 +54,7 @@ class StartScreen extends StatelessWidget {
                     backgroundColor: const Color.fromARGB(255, 94, 160, 96),
                     padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                   ),
-                  child: Text(
+                  child: const Text(
                     'Login',
                     style: TextStyle(color: Colors.white, fontSize: 18),
                   ),

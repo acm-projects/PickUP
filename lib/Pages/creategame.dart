@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:pickup/components/createGameButton.dart';
 import 'package:pickup/components/gameTextFields.dart';
 import 'package:pickup/classes/game.dart';
-import 'package:pickup/classes/location.dart';
-import 'package:timezone/timezone.dart' as tz;
-import 'package:pickup/classes/user.dart';
 
 class CreateGame extends StatefulWidget {
   const CreateGame({super.key});

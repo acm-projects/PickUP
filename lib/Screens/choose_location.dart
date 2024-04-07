@@ -43,8 +43,8 @@ class chooseLocation extends StatelessWidget {
         ),
         body: Stack(
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(16.0),
+            const Padding(
+              padding: EdgeInsets.all(16.0),
               child: Column(
                 // Your column content here
               ),

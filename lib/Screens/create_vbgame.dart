@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 
 
 
-class createVolleyballGame extends StatelessWidget {
-  const createVolleyballGame({super.key});
+class CreateVolleyballGame extends StatelessWidget {
+  const CreateVolleyballGame({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +92,7 @@ class createVolleyballGame extends StatelessWidget {
         // The background is transparent to maintain the gradient effect from the container
       ),
       onPressed: () {
-        Navigator.of(context).pushNamed('/chooseLocation');
+        Navigator.of(context).pushNamed('/ChooseLocation');
       },
       child: Container(
         decoration: BoxDecoration(

@@ -1,7 +1,58 @@
 import 'package:flutter/material.dart';
+import 'package:pickup/classes/user.dart' as local_user;
+import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:async';
+import 'package:pickup/classes/game.dart';
 
-class StartScreen extends StatelessWidget {
+class StartScreen extends StatefulWidget {
   const StartScreen({super.key});
+
+  @override
+  _StartScreenState createState() => _StartScreenState();
+}
+
+void initLogin(BuildContext context) async {
+  try {
+    final String userID = await local_user.User.getUserID();
+    final String password = await local_user.User.getPassword();
+
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: userID,
+      password: password,
+    );
+
+    Navigator.pushNamed(context, '/Login/HomePage');
+  } catch (e) {
+    print(e);
+  }
+}
+
+class _StartScreenState extends State<StartScreen> {
+  // Now you can define initState() here
+  @override
+  //Automatic Login else Send to login/signup
+  void initState() {
+    super.initState();
+    initLogin(context);
+
+    int messageCount = 0;  
+
+    Timer? timer;
+
+    timer = Timer.periodic(Duration(milliseconds: 3000), (_) async {
+      List<dynamic> gameChat = (await Game.fetch('858g98137a5i') as Map<String, dynamic>)["chat"];
+
+      for (int i = messageCount; i < gameChat.length; i++) {
+        print(gameChat[i]);
+      }
+
+      messageCount = gameChat.length;
+
+      timer?.cancel();
+    });
+
+    // Your function to be executed when the page opens
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,12 +76,13 @@ class StartScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
-                   onPressed: () {
-                  Navigator.of(context).pushNamed('/Signup'); // Adjusted for direct navigation without global key
-                },
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/Signup');
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(255, 94, 160, 96),
-                    padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 32, vertical: 16),
                   ),
                   child: const Text(
                     'Sign Up',
@@ -47,12 +99,13 @@ class StartScreen extends StatelessWidget {
                 ),
                 const SizedBox(width: 24),
                 ElevatedButton(
-                   onPressed: () {
-                  Navigator.of(context).pushNamed('/'); // Adjusted for direct navigation without global key
-                },
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/Login');
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(255, 94, 160, 96),
-                    padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 32, vertical: 16),
                   ),
                   child: const Text(
                     'Login',

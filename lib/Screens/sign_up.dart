@@ -36,7 +36,7 @@ class _SignupState extends State<Signup> {
         );
         await local_user.User.createUser(
             _emailController.text, _passwordController.text);
-        Navigator.pushNamed(context, '/homePage');
+        Navigator.pushNamed(context, '/Login/HomePage');
       }
     } catch (e) {
       print(e);

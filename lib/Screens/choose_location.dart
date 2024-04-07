@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 // ignore: camel_case_types
-class chooseLocation extends StatelessWidget {
-  const chooseLocation({super.key});
+class ChooseLocation extends StatelessWidget {
+  const ChooseLocation({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +62,7 @@ class chooseLocation extends StatelessWidget {
                     backgroundColor: Colors.transparent,
                   ),
                   onPressed: () {
-                    Navigator.of(context).pushNamed('/chooseTime');
+                    Navigator.of(context).pushNamed('/ChooseTime');
                   },
                   child: Container(
                     decoration: BoxDecoration(

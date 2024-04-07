@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 
 
 
-class createTennisGame extends StatelessWidget {
-  const createTennisGame({super.key});
+class CreateTennisGame extends StatelessWidget {
+  const CreateTennisGame({super.key});
 
    @override
   Widget build(BuildContext context) {
@@ -92,7 +92,7 @@ class createTennisGame extends StatelessWidget {
         // The background is transparent to maintain the gradient effect from the container
       ),
       onPressed: () {
-        Navigator.of(context).pushNamed('/chooseLocation');
+        Navigator.of(context).pushNamed('/ChooseLocation');
       },
       child: Container(
         decoration: BoxDecoration(

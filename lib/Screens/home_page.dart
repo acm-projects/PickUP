@@ -58,7 +58,7 @@ class _HomePageState extends State<HomePage> {
               padding: const EdgeInsets.symmetric(horizontal: 40),
               child: ElevatedButton(
                 onPressed: () {
-                    Navigator.of(context).pushNamed('/chooseGameType');
+                    Navigator.of(context).pushNamed('/ChooseGameType');
                   },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF88F37F), // Light green color

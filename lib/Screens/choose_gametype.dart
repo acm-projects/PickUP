@@ -47,16 +47,16 @@ class GameCreation extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  gradientButton("Volleyball", Icons.sports_volleyball, () => Navigator.of(context).pushNamed("/createVolleyballGame")),
-                  gradientButton("Basketball", Icons.sports_basketball, () => Navigator.of(context).pushNamed("/createBasketballGame")),
+                  gradientButton("Volleyball", Icons.sports_volleyball, () => Navigator.of(context).pushNamed("/CreateVolleyballGame")),
+                  gradientButton("Basketball", Icons.sports_basketball, () => Navigator.of(context).pushNamed("/CreateBasketballGame")),
                 ],
               ),
               const SizedBox(height: 30), // Spacing between rows
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  gradientButton("Soccer", Icons.sports_soccer, () => Navigator.of(context).pushNamed("/createSoccerGame")),
-                  gradientButton("Tennis", Icons.sports_tennis, () => Navigator.of(context).pushNamed("/createTennisGame")),
+                  gradientButton("Soccer", Icons.sports_soccer, () => Navigator.of(context).pushNamed("/CreateSoccerGame")),
+                  gradientButton("Tennis", Icons.sports_tennis, () => Navigator.of(context).pushNamed("/CreateTennisGame")),
                 ],
               ),
             ],

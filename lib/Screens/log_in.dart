@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:pickup/classes/user.dart' as local_user;
 
 // Ensure this import is correct and necessary
 
@@ -26,12 +27,16 @@ class _LoginScreenState extends State<Login> {
         password: _passwordController.text,
       );
       
-      Navigator.pushNamed(context, '/homePage');
+      Navigator.pushNamed(context, '/Login/HomePage');
+
+      await local_user.User.createUser(
+        _usernameController.text, _passwordController.text);
       setState(() {
         _errorMessage = ''; // Clear any previous error message
       });
       return null;
     } catch (e) {
+      print(e);
       setState(() {
         _errorMessage = 'Incorrect username or password'; // Set the error message
       });

@@ -151,7 +151,7 @@ class _ChooseTimeState extends State<ChooseTime> {
                       backgroundColor: Colors.transparent,
                     ),
                     onPressed: () {
-                     Navigator.of(context).pushNamed('/homePage');
+                     Navigator.of(context).pushNamed('/Login/HomePage');
                     },
                     child: Container(
                       decoration: BoxDecoration(

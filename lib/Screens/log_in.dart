@@ -26,11 +26,11 @@ class _LoginScreenState extends State<Login> {
         email: _usernameController.text,
         password: _passwordController.text,
       );
-      
+
       Navigator.pushNamed(context, '/Login/HomePage');
 
       await local_user.User.createUser(
-        _usernameController.text, _passwordController.text);
+          _usernameController.text, _passwordController.text);
       setState(() {
         _errorMessage = ''; // Clear any previous error message
       });
@@ -38,9 +38,10 @@ class _LoginScreenState extends State<Login> {
     } catch (e) {
       print(e);
       setState(() {
-        _errorMessage = 'Incorrect username or password'; // Set the error message
+        _errorMessage =
+            'Incorrect username or password'; // Set the error message
       });
-      
+
       return e.toString(); // Return error message if unsuccessful
     }
   }
@@ -73,7 +74,8 @@ class _LoginScreenState extends State<Login> {
             const SizedBox(height: 1),
             // Password field
             buildTextFormField(label: 'Password', isPassword: true),
-             if (_errorMessage.isNotEmpty) // Display the error message if not empty
+            if (_errorMessage
+                .isNotEmpty) // Display the error message if not empty
               Padding(
                 padding: const EdgeInsets.only(top: 8.0),
                 child: Text(
@@ -83,7 +85,7 @@ class _LoginScreenState extends State<Login> {
                 ),
               ),
             const SizedBox(height: 20),
-         
+
             const Align(
               alignment: Alignment.center,
             ),
@@ -170,17 +172,22 @@ class _LoginScreenState extends State<Login> {
       ),
       child: ElevatedButton(
         onPressed: () {
-        _login(context);
-      },
+          _login(context);
+        },
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.transparent,
           shadowColor: Colors.transparent,
-          padding: const EdgeInsets.symmetric(vertical: 26.0, horizontal : 100),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+          padding: const EdgeInsets.symmetric(vertical: 26.0, horizontal: 100),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
         ),
         child: Text(
           text,
-          style: const TextStyle(color: Colors.black, fontSize: 28.0, fontFamily: 'Mada',fontWeight: FontWeight.w900),
+          style: const TextStyle(
+              color: Colors.black,
+              fontSize: 28.0,
+              fontFamily: 'Mada',
+              fontWeight: FontWeight.w900),
         ),
       ),
     );

@@ -1,8 +1,26 @@
 import 'package:flutter/material.dart';
 
+/*
+import 'dart:async';
+import 'package:pickup/classes/game.dart';
 
+int messageCount = 0;  
 
+Timer? timer;
 
+timer = Timer.periodic(Duration(milliseconds: 3000), (_) async {
+  List<dynamic> gameChat = (await Game.fetch('858g98137a5i') as Map<String, dynamic>)["chat"];
+
+  for (int i = messageCount; i < gameChat.length; i++) {
+    print(gameChat[i]);
+  }
+
+  messageCount = gameChat.length;
+
+  timer?.cancel();
+});
+
+*/
 
 class chatPage extends StatelessWidget {
   const chatPage({super.key});
@@ -10,44 +28,44 @@ class chatPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        backgroundColor: const Color(0xFF0C2219),
-        appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.of(context).pop(); // Navigates back to the previous screen
-            },
-          ),
-          title: const Text('Chat'),
-          titleTextStyle: const TextStyle(
-            color: Colors.black,
-            fontFamily: 'Mada',
-            fontWeight: FontWeight.bold,
-            
-            fontSize: 24,
-          ),
-          backgroundColor: Colors.transparent, // Make AppBar background transparent
-          elevation: 0, // Removes shadow
-          flexibleSpace: Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Color(0xFF88F37F), 
-                  Color(0xFF88F37F),
-                ],
-              ),
-              borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
-              // borderRadius: BorderRadius.circular(30), // Rounded corners
+        home: Scaffold(
+      backgroundColor: const Color(0xFF0C2219),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context)
+                .pop(); // Navigates back to the previous screen
+          },
+        ),
+        title: const Text('Chat'),
+        titleTextStyle: const TextStyle(
+          color: Colors.black,
+          fontFamily: 'Mada',
+          fontWeight: FontWeight.bold,
+          fontSize: 24,
+        ),
+        backgroundColor:
+            Colors.transparent, // Make AppBar background transparent
+        elevation: 0, // Removes shadow
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Color(0xFF88F37F),
+                Color(0xFF88F37F),
+              ],
             ),
+            borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
+            // borderRadius: BorderRadius.circular(30), // Rounded corners
           ),
         ),
-        body: Container(
-          padding: const EdgeInsets.all(16.0),
-          //color: const Color(0xFF0C2219),
-         
+      ),
+      body: Container(
+        padding: const EdgeInsets.all(16.0),
+        //color: const Color(0xFF0C2219),
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.green[900],
@@ -66,8 +84,6 @@ class chatPage extends StatelessWidget {
           ),
         ],
       ),
-    )
-    );
-    
+    ));
   }
 }

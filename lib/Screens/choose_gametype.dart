@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pickup/classes/game.dart';
 
 class GameCreation extends StatelessWidget {
   const GameCreation({super.key});
@@ -12,7 +13,8 @@ class GameCreation extends StatelessWidget {
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.of(context).pop(); // Navigates back to the previous screen
+              Navigator.of(context)
+                  .pop(); // Navigates back to the previous screen
             },
           ),
           title: const Text('Choose a Game Type'),
@@ -20,10 +22,10 @@ class GameCreation extends StatelessWidget {
             color: Colors.black,
             fontFamily: 'Mada',
             fontWeight: FontWeight.bold,
-            
             fontSize: 24,
           ),
-          backgroundColor: Colors.transparent, // Make AppBar background transparent
+          backgroundColor:
+              Colors.transparent, // Make AppBar background transparent
           elevation: 0, // Removes shadow
           flexibleSpace: Container(
             decoration: const BoxDecoration(
@@ -47,16 +49,16 @@ class GameCreation extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  gradientButton("Volleyball", Icons.sports_volleyball, () => Navigator.of(context).pushNamed("/CreateVolleyballGame")),
-                  gradientButton("Basketball", Icons.sports_basketball, () => Navigator.of(context).pushNamed("/CreateBasketballGame")),
+                  gradientButton("Volleyball", Icons.sports_volleyball, context),
+                  gradientButton("Basketball", Icons.sports_basketball, context),
                 ],
               ),
               const SizedBox(height: 30), // Spacing between rows
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  gradientButton("Soccer", Icons.sports_soccer, () => Navigator.of(context).pushNamed("/CreateSoccerGame")),
-                  gradientButton("Tennis", Icons.sports_tennis, () => Navigator.of(context).pushNamed("/CreateTennisGame")),
+                  gradientButton("Soccer", Icons.sports_soccer, context),
+                  gradientButton("Tennis", Icons.sports_tennis, context),
                 ],
               ),
             ],
@@ -66,7 +68,8 @@ class GameCreation extends StatelessWidget {
     );
   }
 
-  Widget gradientButton(String text, IconData icon, VoidCallback onPressed) {
+  Widget gradientButton(
+      String text, IconData icon, BuildContext context) {
     return Container(
       width: 150,
       height: 150,
@@ -82,7 +85,10 @@ class GameCreation extends StatelessWidget {
         borderRadius: BorderRadius.circular(28),
       ),
       child: InkWell(
-        onTap: onPressed,
+        onTap: () {
+          Game.currentGame.sport = text;
+          Navigator.of(context).pushNamed('/ConfigureGame', arguments: text);
+        },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -90,7 +96,11 @@ class GameCreation extends StatelessWidget {
             const SizedBox(height: 10), // Space between icon and text
             Text(
               text,
-              style: const TextStyle(color: Colors.black, fontFamily: 'Mada', fontWeight: FontWeight.w500, fontSize: 20),
+              style: const TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'Mada',
+                  fontWeight: FontWeight.w500,
+                  fontSize: 20),
             ),
           ],
         ),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pickup/components/createGameButton.dart';
 import 'package:pickup/components/gameTextFields.dart';
-import 'package:pickup/classes/game.dart';
 
 class CreateGame extends StatefulWidget {
   const CreateGame({super.key});
@@ -81,15 +80,6 @@ class CreateGameState extends State<CreateGame> {
             //Send them to select time page then to ->
             //Send Them To Location Selection Page
             onTap: () async {
-              String x = '858g98137a5i';
-              // gameDetails()
-              await Game.message(x, "msg");
-              await Game.message(x, "msg1");
-              await Game.message(x, "msg2");
-              await Game.message(x, "msg3");
-              await Game.message(x, "msg4");
-              await Game.message(x, "msg5");
-              await Game.message(x, "msg6");
               Navigator.pushNamed(context, '/login/home/create/calendar');
             },
           )

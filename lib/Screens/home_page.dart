@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -58,8 +57,8 @@ class _HomePageState extends State<HomePage> {
               padding: const EdgeInsets.symmetric(horizontal: 40),
               child: ElevatedButton(
                 onPressed: () {
-                    Navigator.of(context).pushNamed('/ChooseGameType');
-                  },
+                  Navigator.of(context).pushNamed('/ChooseGameType');
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF88F37F), // Light green color
                   shape: RoundedRectangleBorder(
@@ -283,4 +282,3 @@ class _HomePageState extends State<HomePage> {
     }
   }
 }
-

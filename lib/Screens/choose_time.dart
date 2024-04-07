@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
-import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart' show CalendarCarousel, Event;
+import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
+    show CalendarCarousel;
 import 'package:intl/intl.dart';
+import 'package:pickup/classes/location.dart';
+import 'package:pickup/classes/game.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 class ChooseTime extends StatefulWidget {
   const ChooseTime({super.key});
@@ -12,28 +16,33 @@ class ChooseTime extends StatefulWidget {
 
 class _ChooseTimeState extends State<ChooseTime> {
   DateTime _currentDate = DateTime.now();
-  final DateTime _currentDate2 = DateTime.now();
-  String? _selectedTime; 
+  String? _selectedTime;
 
- List<DropdownMenuItem<String>> getDropdownTimes() {
+  List<DropdownMenuItem<String>> getDropdownTimes() {
     List<DropdownMenuItem<String>> times = [];
     TimeOfDay time = const TimeOfDay(hour: 0, minute: 0);
     DateFormat formatter = DateFormat('h:mm a');
     for (int i = 0; i < 96; i++) {
-      final DateTime dateTime = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, time.hour, time.minute);
+      final DateTime dateTime = DateTime(DateTime.now().year,
+          DateTime.now().month, DateTime.now().day, time.hour, time.minute);
       times.add(DropdownMenuItem(
         value: formatter.format(dateTime),
-        child: Text(formatter.format(dateTime), style: const TextStyle(color: Colors.white)), // Items text color
+        child: Text(formatter.format(dateTime),
+            style: const TextStyle(color: Colors.white)), // Items text color
       ));
-      time = (time.minute + 15) >= 60 ? TimeOfDay(hour: time.hour + 1, minute: (time.minute + 15) % 60) : time.replacing(minute: time.minute + 15);
+      time = (time.minute + 15) >= 60
+          ? TimeOfDay(hour: time.hour + 1, minute: (time.minute + 15) % 60)
+          : time.replacing(minute: time.minute + 15);
     }
     return times;
   }
-   @override
+
+  @override
   Widget build(BuildContext context) {
     final calendarCarousel = CalendarCarousel<Event>(
       onDayPressed: (date, events) {
         setState(() => _currentDate = date);
+        print(date);
       },
       weekendTextStyle: const TextStyle(
         color: Colors.white, // Change weekend text to white
@@ -52,7 +61,8 @@ class _ChooseTimeState extends State<ChooseTime> {
       todayTextStyle: const TextStyle(
         color: Colors.white, // Change today text style to white
       ),
-      todayButtonColor: Colors.transparent, // Keep today's background transparent or adjust as needed
+      todayButtonColor: Colors
+          .transparent, // Keep today's background transparent or adjust as needed
       selectedDayTextStyle: const TextStyle(
         color: Colors.white, // Change selected day text to white
       ),
@@ -64,22 +74,26 @@ class _ChooseTimeState extends State<ChooseTime> {
       ),
       thisMonthDayBorderColor: Colors.grey, // Adjust as needed
       weekFormat: false,
+      showOnlyCurrentMonthDate: true,
+      minSelectedDate: _currentDate.subtract(const Duration(days: 1)),
+      maxSelectedDate: _currentDate.add(const Duration(days: 62)),
       height: 420.0,
-      selectedDateTime: _currentDate2,
+      selectedDateTime: _currentDate,
       todayBorderColor: Colors.grey,
-      markedDateMoreShowTotal: true, // null for not showing hidden events indicator
+      markedDateMoreShowTotal:
+          true, // null for not showing hidden events indicator
       // More customization options and properties can be added as needed
     );
-
 
     return MaterialApp(
       home: Scaffold(
         backgroundColor: const Color(0xFF0C2219),
-         appBar: AppBar(
+        appBar: AppBar(
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.of(context).pop(); // Navigates back to the previous screen
+              Navigator.of(context)
+                  .pop(); // Navigates back to the previous screen
             },
           ),
           title: const Text('Choose a Date & Time'),
@@ -87,10 +101,10 @@ class _ChooseTimeState extends State<ChooseTime> {
             color: Colors.black,
             fontFamily: 'Mada',
             fontWeight: FontWeight.bold,
-            
             fontSize: 24,
           ),
-          backgroundColor: Colors.transparent, // Make AppBar background transparent
+          backgroundColor:
+              Colors.transparent, // Make AppBar background transparent
           elevation: 0, // Removes shadow
           flexibleSpace: Container(
             decoration: const BoxDecoration(
@@ -98,7 +112,7 @@ class _ChooseTimeState extends State<ChooseTime> {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  Color(0xFF88F37F), 
+                  Color(0xFF88F37F),
                   Color(0xFF88F37F),
                 ],
               ),
@@ -107,7 +121,7 @@ class _ChooseTimeState extends State<ChooseTime> {
             ),
           ),
         ),
-         body: SingleChildScrollView(
+        body: SingleChildScrollView(
           child: Column(
             children: <Widget>[
               Padding(
@@ -120,10 +134,11 @@ class _ChooseTimeState extends State<ChooseTime> {
                     DropdownButtonFormField<String>(
                       decoration: const InputDecoration(
                         labelText: 'Select Time',
-                        labelStyle: TextStyle(color: Colors.white), 
+                        labelStyle: TextStyle(color: Colors.white),
                         border: OutlineInputBorder(),
-                         enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white), // Border color
+                        enabledBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.white), // Border color
                         ),
                       ),
                       value: _selectedTime,
@@ -133,13 +148,15 @@ class _ChooseTimeState extends State<ChooseTime> {
                           _selectedTime = value;
                         });
                       },
-                       dropdownColor: const Color(0xFF0C2219), // Dropdown menu background color
+                      dropdownColor: const Color(
+                          0xFF0C2219), // Dropdown menu background color
                     ),
                   ],
                 ),
               ),
               Align(
-                alignment: Alignment.bottomCenter, // Aligns the button to the bottom center
+                alignment: Alignment
+                    .bottomCenter, // Aligns the button to the bottom center
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: TextButton(
@@ -147,11 +164,13 @@ class _ChooseTimeState extends State<ChooseTime> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(18.0),
                       ),
-                      padding: const EdgeInsets.symmetric(vertical: 25.0, horizontal: 30),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 25.0, horizontal: 30),
                       backgroundColor: Colors.transparent,
                     ),
                     onPressed: () {
-                     Navigator.of(context).pushNamed('/Login/HomePage');
+                      Game.currentGame.startTime = tz.TZDateTime.parse(Location.getTimeZone(), _currentDate.toIso8601String());
+                      Navigator.of(context).pushNamed('/ChooseLocation');
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -165,9 +184,10 @@ class _ChooseTimeState extends State<ChooseTime> {
                         ),
                         borderRadius: BorderRadius.circular(18.0),
                       ),
-                      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10.0, horizontal: 20),
                       child: const Text(
-                        'Create Game',
+                        'Next',
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 20,

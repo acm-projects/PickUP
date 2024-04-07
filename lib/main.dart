@@ -5,14 +5,13 @@ import 'Screens/log_in.dart';
 import 'Screens/sign_up.dart';
 import 'Screens/start_screen.dart';
 import 'Screens/choose_gametype.dart';
-import 'Screens/create_vbgame.dart';
-import 'Screens/create_scgame.dart';
-import 'Screens/create_bbgame.dart';
-import 'Screens/create_tengame.dart';
+import 'Screens/config_game.dart';
 import 'Screens/choose_location.dart';
 import 'Screens/choose_time.dart';
 import 'package:pickup/classes/notification.dart';
 import 'dart:io' show Platform;
+
+import 'Pages/calendar.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,18 +30,15 @@ void main() async {
       : await Firebase.initializeApp();
 
   runApp(const PickUpApp());
-
 }
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-class PickUpApp extends StatelessWidget
-{
+class PickUpApp extends StatelessWidget {
   const PickUpApp({super.key});
 
   @override
-  Widget build(BuildContext context) 
-  {
+  Widget build(BuildContext context) {
     return MaterialApp(
       // Optionally use navigatorKey if you need it for navigating without context.
       navigatorKey: navigatorKey,
@@ -53,10 +49,7 @@ class PickUpApp extends StatelessWidget
         '/Login': (context) => const Login(),
         '/ChooseGameType': (context) => const GameCreation(),
         '/Login/HomePage': (context) => const HomePage(),
-        '/CreateVolleyballGame': (context) => const CreateVolleyballGame(),
-        '/CreateSoccerGame': (context) => const CreateSoccerGame(),
-        '/CreateTennisGame': (context) => const CreateTennisGame(),
-        '/CreateBasketballGame': (context) => const CreateBasketballGame(),
+        '/ConfigureGame': (context) => const ConfigureGame(),
         '/ChooseTime': (context) => const ChooseTime(),
         '/ChooseLocation': (context) => const ChooseLocation(),
         //'/chatPage': (context) => const chatPage(),

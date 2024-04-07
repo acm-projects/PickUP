@@ -9,11 +9,12 @@ class ChooseLocation extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         backgroundColor: const Color(0xFF0C2219),
-         appBar: AppBar(
+        appBar: AppBar(
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.of(context).pop(); // Navigates back to the previous screen
+              Navigator.of(context)
+                  .pop(); // Navigates back to the previous screen
             },
           ),
           title: const Text('Choose a Location'),
@@ -21,10 +22,10 @@ class ChooseLocation extends StatelessWidget {
             color: Colors.black,
             fontFamily: 'Mada',
             fontWeight: FontWeight.bold,
-            
             fontSize: 24,
           ),
-          backgroundColor: Colors.transparent, // Make AppBar background transparent
+          backgroundColor:
+              Colors.transparent, // Make AppBar background transparent
           elevation: 0, // Removes shadow
           flexibleSpace: Container(
             decoration: const BoxDecoration(
@@ -32,7 +33,7 @@ class ChooseLocation extends StatelessWidget {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  Color(0xFF88F37F), 
+                  Color(0xFF88F37F),
                   Color(0xFF88F37F),
                 ],
               ),
@@ -46,11 +47,12 @@ class ChooseLocation extends StatelessWidget {
             const Padding(
               padding: EdgeInsets.all(16.0),
               child: Column(
-                // Your column content here
-              ),
+                  // Your column content here
+                  ),
             ),
             Align(
-              alignment: Alignment.bottomCenter, // Aligns the button to the bottom center
+              alignment: Alignment
+                  .bottomCenter, // Aligns the button to the bottom center
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: TextButton(
@@ -58,11 +60,12 @@ class ChooseLocation extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(18.0),
                     ),
-                    padding: const EdgeInsets.symmetric(vertical: 25.0, horizontal: 30),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 25.0, horizontal: 30),
                     backgroundColor: Colors.transparent,
                   ),
                   onPressed: () {
-                    Navigator.of(context).pushNamed('/ChooseTime');
+                    Navigator.of(context).pushNamed('/Login/HomePage');
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -76,9 +79,10 @@ class ChooseLocation extends StatelessWidget {
                       ),
                       borderRadius: BorderRadius.circular(18.0),
                     ),
-                    padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 50),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 12.0, horizontal: 50),
                     child: const Text(
-                      'Next',
+                      'Create Game',
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 20,

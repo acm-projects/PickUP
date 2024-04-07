@@ -7,7 +7,6 @@ import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platf
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
-
 const double CameraZoom = 16;
 const double CameraTilt = 80;
 const double CameraBearing = 30;
@@ -84,7 +83,8 @@ class _LiveMapState extends State<LiveMap> {
           icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
           infoWindow: InfoWindow(
             title: "Tapped Location",
-            snippet: "Latitude: ${tappedPoint.latitude}, Longitude: ${tappedPoint.longitude}",
+            snippet:
+                "Latitude: ${tappedPoint.latitude}, Longitude: ${tappedPoint.longitude}",
           ),
         ),
       );
@@ -92,7 +92,8 @@ class _LiveMapState extends State<LiveMap> {
   }
 
   Future<List<double>?> getCoordinates(String address) async {
-    const apiKey = 'AIzaSyBPp3mPocXX-1j7jOuxHg_us96LyClD-H8'; // Replace with your actual API key
+    const apiKey =
+        'AIzaSyBPp3mPocXX-1j7jOuxHg_us96LyClD-H8'; // Replace with your actual API key
     final url = Uri.parse(
         'https://maps.googleapis.com/maps/api/geocode/json?address=$address&key=$apiKey');
     final response = await http.get(url);
@@ -102,16 +103,15 @@ class _LiveMapState extends State<LiveMap> {
       // Parse the JSON response
       final results = data['results'] as List;
       if (results.isNotEmpty) {
-        final location = results[0]['geometry']['location'] as Map<String, dynamic>;
+        final location =
+            results[0]['geometry']['location'] as Map<String, dynamic>;
         return [location['lat'] as double, location['lng'] as double];
       }
     }
     return null;
   }
 
-  void _createCustomMarkerFromAsset(BuildContext context) async {
-    
-  }
+  void _createCustomMarkerFromAsset(BuildContext context) async {}
 
   Marker CreateGameMarker(String sportType, LatLng gamePosition) {
     Marker mk = Marker(
@@ -129,8 +129,10 @@ class _LiveMapState extends State<LiveMap> {
 
     for (final game in activeGames) {
       _markers.add(
-        CreateGameMarker(game["sport"],
-            LatLng(game["location"]["latitude"], game["location"]["longitude"])),
+        CreateGameMarker(
+            game["sport"],
+            LatLng(
+                game["location"]["latitude"], game["location"]["longitude"])),
       );
     }
   }

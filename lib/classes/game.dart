@@ -26,16 +26,17 @@ class Game {
   int numOfPlayers = 0;
   tz.TZDateTime startTime;
   List<String> players = []; // User IDs
+  static Game currentGame =
+      Game("", "", "", 0, tz.TZDateTime.now(Location.getTimeZone()));
 
   final int _maxNumOfPlayers;
-  final DateTime _timeCreated = DateTime.now();
   final Map<String, dynamic> _location =
       Location.get(); //assume at the current pos
   final String _gameID = generateRandomHex();
 
   // Constructor
-  Game(this.title, this.sport, this.description,
-      this._maxNumOfPlayers, this.startTime);
+  Game(this.title, this.sport, this.description, this._maxNumOfPlayers,
+      this.startTime);
 
   Future<Map<String, dynamic>> toMap() async {
     return {
@@ -48,7 +49,7 @@ class Game {
       'location': _location,
       'numOfPlayers': numOfPlayers,
       'maxNumOfPlayers': _maxNumOfPlayers,
-      'timeCreated': _timeCreated.toIso8601String(),
+      'timeCreated': DateTime.now(),
       'startTime': startTime.toIso8601String(),
       'checkedIn': {},
       'chat': [],
@@ -58,7 +59,6 @@ class Game {
   // Accessors (Getters)
   String get gameID => _gameID;
   int get maxNumOfPlayers => _maxNumOfPlayers;
-  DateTime get timeCreated => _timeCreated;
   Map<String, dynamic> get location => _location;
 
   Future<void> updateGame() async {
@@ -75,7 +75,7 @@ class Game {
 
     final globablTargetGame =
         FirebaseFirestore.instance.collection("ActiveGames").doc(_gameID);
-        
+
     final usersTargetGame = usersActiveGames.doc(_gameID);
 
     DocumentSnapshot globablTargetGameSS = await globablTargetGame.get();
@@ -191,7 +191,10 @@ class Game {
           title: 'Your $targetGameSport Game is Starting in 15 minutes!',
           body: "Ready to Check In? ",
           payload: "payload",
-          scheduledTime: tz.TZDateTime.now(Location.getTimeZone()).add(const Duration(seconds: 5)));/*
+          scheduledTime: tz.TZDateTime.now(Location.getTimeZone()).add(
+              const Duration(
+                  seconds:
+                      5))); /*
           
           .parse(
                   Location.getTimeZone(), targetGame["startTime"])
@@ -247,7 +250,8 @@ class Game {
   }
 
   static Future<void> message(String target, String msg) async {
-    Map<String, dynamic> doc = (await Game.fetch(target)) as Map<String, dynamic>;
+    Map<String, dynamic> doc =
+        (await Game.fetch(target)) as Map<String, dynamic>;
 
     Map<String, dynamic> package = {
       "message": msg,

@@ -13,7 +13,7 @@ class Signup extends StatefulWidget {
 class _SignupState extends State<Signup> {
   // ignore: unused_field
   final _formKey = GlobalKey<FormState>();
-  final _firstNameController= TextEditingController();
+  final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
@@ -29,7 +29,8 @@ class _SignupState extends State<Signup> {
       if (!email.contains("@utdallas.edu")) {
         throw "PickUp is a University of Texas at Dallas application only.";
       }
-      if (_passwordController.text == _confirmPasswordController.text) { //Confirm Password
+      if (_passwordController.text == _confirmPasswordController.text) {
+        //Confirm Password
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: email,
           password: _passwordController.text,
@@ -112,8 +113,6 @@ class _SignupState extends State<Signup> {
                   BlendMode.srcATop,
                 ),
               ),
-               
-              
             ),
           ],
         ),
@@ -153,32 +152,39 @@ class _SignupState extends State<Signup> {
   }
 }
 
-
-Widget buildGradientButton(BuildContext context, String text, Future<String?> Function(BuildContext) onPressedF) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(30.0),
-        gradient: const LinearGradient(
-          colors: [
-            Color(0xFF80E046), // Green color #80E046
-            Color(0xFF88F37F), // Green color #88F37F
-          ],
-          begin: Alignment.centerLeft,
-          end: Alignment.centerRight,
-        ),
+Widget buildGradientButton(BuildContext context, String text,
+    Future<String?> Function(BuildContext) onPressedF) {
+  return Container(
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(30.0),
+      gradient: const LinearGradient(
+        colors: [
+          Color(0xFF80E046), // Green color #80E046
+          Color(0xFF88F37F), // Green color #88F37F
+        ],
+        begin: Alignment.centerLeft,
+        end: Alignment.centerRight,
       ),
-      child: ElevatedButton(
-        onPressed: () { onPressedF(context); },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.transparent,
-          shadowColor: Colors.transparent,
-          padding: const EdgeInsets.symmetric(vertical: 16.0),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-        ),
-        child: Text(
-          text,
-          style: const TextStyle(color: Colors.black, fontSize: 24.0,fontWeight: FontWeight.bold, fontFamily: 'Mada'),
-        ),
+    ),
+    child: ElevatedButton(
+      onPressed: () {
+        onPressedF(context);
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.transparent,
+        shadowColor: Colors.transparent,
+        padding: const EdgeInsets.symmetric(vertical: 16.0),
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
       ),
-    );
-  }
+      child: Text(
+        text,
+        style: const TextStyle(
+            color: Colors.black,
+            fontSize: 24.0,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'Mada'),
+      ),
+    ),
+  );
+}

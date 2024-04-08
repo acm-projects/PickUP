@@ -141,23 +141,6 @@ class ConfigureGame extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.green[900],
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home, color: Colors.white),
-            label: 'Home', // 'label' is the correct property, not a Text widget
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search, color: Colors.white),
-            label: 'Search',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person, color: Colors.white),
-            label: 'Profile',
-          ),
-        ],
-      ),
     ));
   }
 }

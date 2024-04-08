@@ -9,6 +9,7 @@ import 'Screens/config_game.dart';
 import 'Screens/choose_location.dart';
 import 'Screens/choose_time.dart';
 import 'package:pickup/classes/notification.dart';
+import 'Screens/nav_bar.dart';
 import 'dart:io' show Platform;
 
 import 'Pages/calendar.dart';
@@ -48,7 +49,7 @@ class PickUpApp extends StatelessWidget {
         '/Signup': (context) => const Signup(),
         '/Login': (context) => const Login(),
         '/ChooseGameType': (context) => const GameCreation(),
-        '/Login/HomePage': (context) => const HomePage(),
+        '/Login/HomePage': (context) => MainPage(),
         '/ConfigureGame': (context) => const ConfigureGame(),
         '/ChooseTime': (context) => const ChooseTime(),
         '/ChooseLocation': (context) => const ChooseLocation(),

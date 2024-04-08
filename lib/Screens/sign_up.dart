@@ -19,10 +19,6 @@ class _SignupState extends State<Signup> {
   final _confirmPasswordController = TextEditingController();
   final _emailController = TextEditingController();
 
-  // You can define your TextEditingController here for each field if needed.
-  // TextEditingController _firstNameController = TextEditingController();
-  // Add other controllers here
-
   Future<String?> signUp(BuildContext context) async {
     try {
       String email = _emailController.text;
@@ -36,7 +32,10 @@ class _SignupState extends State<Signup> {
           password: _passwordController.text,
         );
         await local_user.User.createUser(
-            _emailController.text, _passwordController.text);
+            _emailController.text,
+            _passwordController.text,
+            _firstNameController.text,
+            _lastNameController.text);
         Navigator.pushNamed(context, '/Login/HomePage');
       }
     } catch (e) {
@@ -97,7 +96,7 @@ class _SignupState extends State<Signup> {
             const SizedBox(height: 10),
             TextButton(
               onPressed: () {
-                //navigatorKey.currentState?.pushNamed('/Login');
+                Navigator.of(context).pushNamed('/Login');
               },
               child: const Text(
                 'Have an account? Login',

@@ -80,7 +80,8 @@ class Game {
 
     DocumentSnapshot globablTargetGameSS = await globablTargetGame.get();
 
-    if ((await usersActiveGames.get()).docs.length >= 5) return;
+    if ((await usersActiveGames.get()).docs.length >= 5)
+      throw 'You have reached the limit of games you can make';
 
     if (globablTargetGameSS.exists) {
       //Prompt User to delete Games or become an official organizer
@@ -191,7 +192,7 @@ class Game {
           id: 0,
           title: 'Your $targetGameSport Game is Starting in 15 minutes!',
           body: "Ready to Check In? ",
-          payload: "payload",
+          payload: "payload", //just the homepage so they can checkin
           scheduledTime: tz.TZDateTime.now(Location.getTimeZone())
               .add(const Duration(seconds: 5)));
     } catch (e) {
@@ -238,15 +239,14 @@ class Game {
     print('Checking In ${User.getUserID()}');
 
     Map<String, dynamic> game =
-        (await Game.fetch(target)) as Map<String, dynamic>;
+        await Game.fetch(target) as Map<String, dynamic>;
     game["checkedIn"].add(User.getUserID());
 
     await Game.edit(target, game);
   }
 
   static Future<void> message(String target, String msg) async {
-    Map<String, dynamic> doc =
-        (await Game.fetch(target)) as Map<String, dynamic>;
+    Map<String, dynamic> doc = await Game.fetch(target) as Map<String, dynamic>;
 
     Map<String, dynamic> package = {
       "message": msg,
@@ -256,6 +256,38 @@ class Game {
     (doc["chat"] as List<dynamic>).add(package);
 
     await edit(target, doc);
+  }
+
+  static Future<List<Map<String, dynamic>>> search(
+      String target, Map<String, dynamic> attributes) async {
+    //sport, title, startTime, gameID
+
+    List<Object?> games = await Game.fetch(target) as List<Object?>;
+
+    List<Map<String, dynamic>> matches = [];
+
+    for (final object in games) {
+      Map<String, dynamic> game = object as Map<String, dynamic>;
+
+      if (attributes["title"] == game["title"]) {
+        matches.add(game);
+      } else if (attributes["sport"] == game["sport"]) {
+        matches.add(game);
+      } else if (attributes["gameID"] == game["gameID"]) {
+        matches.add(game);
+      }
+    }
+
+    return matches;
+  }
+
+  static Future<List<Map<String, dynamic>>> sort(
+      String target, String sort) async {
+    List<Object?> games = await Game.fetch(target) as List<Object?>;
+
+    List<Map<String, dynamic>> matches = [];
+
+    return matches;
   }
 
   // Firestore Document => Game

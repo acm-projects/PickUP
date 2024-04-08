@@ -43,6 +43,7 @@ class _StartScreenState extends State<StartScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            //BackgroundPattern(),
             const Text(
               'PickUP',
               style: TextStyle(
@@ -100,4 +101,48 @@ class _StartScreenState extends State<StartScreen> {
     );
   }
   // ... other methods and build method
+}
+
+class BackgroundPattern extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Positioned.fill(
+      child: Stack(
+        children: [
+          // Add transparent images of sports balls positioned as desired
+          Positioned(
+            top: 100,
+            left: 50,
+            child: Image.asset(
+              'assets/basketball-hoop.png',
+              width: 100,
+              height: 100,
+              color: Colors.white.withOpacity(0.3), // Adjust opacity as needed
+            ),
+          ),
+          Positioned(
+            top: 200,
+            right: 100,
+            child: Image.asset(
+              'assets/volleyball.png',
+              width: 120,
+              height: 120,
+              color: Colors.white.withOpacity(0.3), // Adjust opacity as needed
+            ),
+          ),
+          Positioned(
+            bottom: 150,
+            left: 80,
+            child: Image.asset(
+              'assets/soccer-ball.png',
+              width: 90,
+              height: 90,
+              color: Colors.white.withOpacity(0.3), // Adjust opacity as needed
+            ),
+          ),
+          // Add more images as needed
+        ],
+      ),
+    );
+  }
 }

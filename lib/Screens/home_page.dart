@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'choose_gametype.dart';
+import 'package:slider_button/slider_button.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-
+  const HomePage({Key? key}) : super(key: key);
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -10,7 +11,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   List<Map<String, dynamic>> _activeGames = [];
   List<Map<String, dynamic>> _upcomingGames = [];
-
   @override
   void initState() {
     super.initState();
@@ -41,7 +41,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0C2219),
+      backgroundColor: const Color(0xFF1A3E2F),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -51,13 +51,19 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(height: 20),
             // Upcoming Games Section
             _buildUpcomingGamesSection(),
-            const SizedBox(height: 00),
+            const SizedBox(height: 125),
             // Bottom "PickUP" Button
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40),
+              padding: const EdgeInsets.symmetric(horizontal: 68),
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).pushNamed('/ChooseGameType');
+                  // Navigate to the game creation page
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => GameCreation(),
+                    ),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF88F37F), // Light green color
@@ -70,7 +76,7 @@ class _HomePageState extends State<HomePage> {
                   child: Text(
                     'PickUP',
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 23,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
                     ),
@@ -82,15 +88,6 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Navigate to the chat page
-          Navigator.of(context).pushNamed('/chatPage');
-        },
-        backgroundColor: const Color(0xFF88F37F), // Light green color
-        child: const Icon(Icons.message, color: Colors.black), // Message icon
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 
@@ -114,7 +111,6 @@ class _HomePageState extends State<HomePage> {
     } else {
       // Display the first active game only
       final Map<String, dynamic> game = _activeGames.first;
-
       return Container(
         decoration: const BoxDecoration(
           color: Color(0xFF88F37F),
@@ -189,6 +185,25 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
+            const SizedBox(height: 20),
+            // SliderButton for Check In
+            Center(
+              child: SliderButton(
+                action: () async {
+                  /// Do something here OnSlideComplete
+                  print("complete");
+                },
+                backgroundColor: Color.fromARGB(255, 19, 189, 7),
+                label: const Text(
+                  "Slide to Check In",
+                  style: TextStyle(
+                    color: Color(0xff4a4a4a),
+                    fontWeight: FontWeight.w500,
+                    fontSize: 17,
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       );
@@ -198,8 +213,8 @@ class _HomePageState extends State<HomePage> {
   Widget _buildUpcomingGamesSection() {
     if (_upcomingGames.isEmpty) {
       // Display message if there are no upcoming games
-      return const Padding(
-        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
         child: Text(
           'No Upcoming Games',
           style: TextStyle(
@@ -207,6 +222,7 @@ class _HomePageState extends State<HomePage> {
             fontWeight: FontWeight.bold,
             fontSize: 18,
           ),
+          textAlign: TextAlign.center,
         ),
       );
     } else {
@@ -216,13 +232,15 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Text(
-              'Upcoming Games',
+            const SizedBox(height: 10),
+            Text(
+              'Your Games',
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
-                fontSize: 20,
+                fontSize: 23,
               ),
+              textAlign: TextAlign.center, // Centered text
             ),
             const SizedBox(height: 10),
             ListView.builder(
@@ -242,7 +260,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     padding: const EdgeInsets.all(12),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Expanded(
                           child: Text(
@@ -250,24 +268,10 @@ class _HomePageState extends State<HomePage> {
                             style: const TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
+                              fontSize: 16, // Increased font size
                             ),
                             overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        ElevatedButton(
-                          onPressed: () {
-                            // Handle reminder functionality
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                const Color(0xFF88F37F), // Light green color
-                          ),
-                          child: const Text(
-                            'Remind Me',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            textAlign: TextAlign.start, // Left-aligned text
                           ),
                         ),
                       ],

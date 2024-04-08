@@ -2,6 +2,9 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:pickup/classes/location.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+const SECURE_STORAGE = FlutterSecureStorage();
 
 class LocalNotification {
   static final FlutterLocalNotificationsPlugin
@@ -67,6 +70,8 @@ class LocalNotification {
         payload: payload,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime);
+
+    
   }
 
   static void removeNotification(int id) async {

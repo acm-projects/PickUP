@@ -1,11 +1,24 @@
 import 'package:flutter/material.dart';
 
+class ChatPage extends StatefulWidget {
+  const ChatPage({super.key});
 
+  @override
+  _ChatPageState createState() => _ChatPageState();
+}
 
+class _ChatPageState extends State<ChatPage> {
+  final List<String> _messages = [];
+  final TextEditingController _controller = TextEditingController();
 
-
-class chatPage extends StatelessWidget {
-  const chatPage({super.key});
+  void _sendMessage() {
+    if (_controller.text.isNotEmpty) {
+      setState(() {
+        _messages.add(_controller.text);
+        _controller.clear();
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +37,6 @@ class chatPage extends StatelessWidget {
             color: Colors.black,
             fontFamily: 'Mada',
             fontWeight: FontWeight.bold,
-            
             fontSize: 24,
           ),
           backgroundColor: Colors.transparent, // Make AppBar background transparent
@@ -35,39 +47,76 @@ class chatPage extends StatelessWidget {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  Color(0xFF88F37F), 
+                  Color(0xFF88F37F),
                   Color(0xFF88F37F),
                 ],
               ),
               borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
-              // borderRadius: BorderRadius.circular(30), // Rounded corners
             ),
           ),
         ),
-        body: Container(
-          padding: const EdgeInsets.all(16.0),
-          //color: const Color(0xFF0C2219),
-         
+        body: Column(
+          children: [
+            Expanded(
+              child: ListView.builder(
+                itemCount: _messages.length,
+                itemBuilder: (context, index) => ListTile(
+                  title: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.lightGreen[400],
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(_messages[index]),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: _controller,
+                      decoration: const InputDecoration(
+                        hintText: "Type a message",
+                        fillColor: Colors.white,
+                        filled: true,
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.send, color: Colors.green),
+                    onPressed: _sendMessage,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: Colors.green[900],
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home, color: Colors.white),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.search, color: Colors.white),
+              label: 'Search',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person, color: Colors.white),
+              label: 'Profile',
+            ),
+          ],
+        ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.green[900],
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home, color: Colors.white),
-            label: 'Home', // 'label' is the correct property, not a Text widget
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search, color: Colors.white),
-            label: 'Search',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person, color: Colors.white),
-            label: 'Profile',
-          ),
-        ],
-      ),
-    )
     );
-    
   }
 }

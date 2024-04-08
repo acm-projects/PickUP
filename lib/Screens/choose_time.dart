@@ -169,7 +169,9 @@ class _ChooseTimeState extends State<ChooseTime> {
                       backgroundColor: Colors.transparent,
                     ),
                     onPressed: () {
-                      Game.currentGame.startTime = tz.TZDateTime.parse(Location.getTimeZone(), _currentDate.toIso8601String());
+                      Game.currentGame.startTime = tz.TZDateTime.parse(
+                          Location.getTimeZone(),
+                          _currentDate.toIso8601String());
                       Navigator.of(context).pushNamed('/ChooseLocation');
                     },
                     child: Container(

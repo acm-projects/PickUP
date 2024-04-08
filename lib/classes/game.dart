@@ -188,17 +188,12 @@ class Game {
       String targetGameSport = targetGame["sport"];
 
       LocalNotification.scheduleNotification(
+          id: 0,
           title: 'Your $targetGameSport Game is Starting in 15 minutes!',
           body: "Ready to Check In? ",
           payload: "payload",
-          scheduledTime: tz.TZDateTime.now(Location.getTimeZone()).add(
-              const Duration(
-                  seconds:
-                      5))); /*
-          
-          .parse(
-                  Location.getTimeZone(), targetGame["startTime"])
-              .subtract(const Duration(seconds: 10)));*/
+          scheduledTime: tz.TZDateTime.now(Location.getTimeZone())
+              .add(const Duration(seconds: 5)));
     } catch (e) {
       print(e);
     }

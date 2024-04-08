@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pickup/classes/game.dart';
 
 // ignore: camel_case_types
 class ChooseLocation extends StatelessWidget {
@@ -65,6 +66,8 @@ class ChooseLocation extends StatelessWidget {
                     backgroundColor: Colors.transparent,
                   ),
                   onPressed: () {
+                    Game.currentGame.instantiate();
+                    //UI pops up that confirms that it was created
                     Navigator.of(context).pushNamed('/Login/HomePage');
                   },
                   child: Container(

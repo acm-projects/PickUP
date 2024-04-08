@@ -49,8 +49,10 @@ class GameCreation extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  gradientButton("Volleyball", Icons.sports_volleyball, context),
-                  gradientButton("Basketball", Icons.sports_basketball, context),
+                  gradientButton(
+                      "Volleyball", Icons.sports_volleyball, context),
+                  gradientButton(
+                      "Basketball", Icons.sports_basketball, context),
                 ],
               ),
               const SizedBox(height: 30), // Spacing between rows
@@ -68,8 +70,7 @@ class GameCreation extends StatelessWidget {
     );
   }
 
-  Widget gradientButton(
-      String text, IconData icon, BuildContext context) {
+  Widget gradientButton(String text, IconData icon, BuildContext context) {
     return Container(
       width: 150,
       height: 150,

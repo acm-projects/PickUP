@@ -8,16 +8,16 @@ class Location {
   static double longitude = 0;
 
   static void step() async {
-    if (await Geolocator.isLocationServiceEnabled() && await Geolocator.checkPermission() != LocationPermission.denied) {
-      Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    if (await Geolocator.isLocationServiceEnabled() &&
+        await Geolocator.checkPermission() != LocationPermission.denied) {
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
 
       // You can convert the values to strings if needed:
       longitude = position.longitude;
       latitude = position.latitude;
     }
   }
-
-  
 
   static tz.Location getTimeZone() {
     return tz.getLocation(

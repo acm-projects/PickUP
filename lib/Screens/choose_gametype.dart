@@ -12,11 +12,16 @@ class GameCreation extends StatelessWidget {
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.of(context).pop(); // Navigates back to the previous screen
+              Navigator.of(context)
+                  .pop(); // Navigates back to the previous screen
             },
           ),
           title: const Text('Create a Game'),
-          titleTextStyle: const TextStyle(color: Colors.black, fontFamily: 'Mada', fontWeight: FontWeight.bold, fontSize: 24),
+          titleTextStyle: const TextStyle(
+              color: Colors.black,
+              fontFamily: 'Mada',
+              fontWeight: FontWeight.bold,
+              fontSize: 24),
           flexibleSpace: Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -37,16 +42,28 @@ class GameCreation extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  gradientButton("Volleyball", () => Navigator.of(context).pushNamed("/createVolleyballGame")),
-                  gradientButton("Basketball", () => Navigator.of(context).pushNamed("/createBasketballGame")),
+                  gradientButton(
+                      "Volleyball",
+                      () => Navigator.of(context)
+                          .pushNamed("/createVolleyballGame")),
+                  gradientButton(
+                      "Basketball",
+                      () => Navigator.of(context)
+                          .pushNamed("/createBasketballGame")),
                 ],
               ),
               const SizedBox(height: 30), // Spacing between rows
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  gradientButton("Soccer", () => Navigator.of(context).pushNamed("/createSoccerGame")),
-                  gradientButton("Tennis", () => Navigator.of(context).pushNamed("/createTennisGame")),
+                  gradientButton(
+                      "Soccer",
+                      () =>
+                          Navigator.of(context).pushNamed("/createSoccerGame")),
+                  gradientButton(
+                      "Tennis",
+                      () =>
+                          Navigator.of(context).pushNamed("/createTennisGame")),
                 ],
               ),
             ],
@@ -80,7 +97,11 @@ class GameCreation extends StatelessWidget {
           child: Center(
             child: Text(
               text,
-              style: const TextStyle(color: Colors.black, fontFamily: 'Mada', fontWeight: FontWeight.bold, fontSize: 24),
+              style: const TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'Mada',
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24),
             ),
           ),
         ),

@@ -1,4 +1,4 @@
-import 'package:pickup/classes/game.dart';
+/*import 'package:pickup/classes/game.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 var basketballGame = Game(
@@ -53,10 +53,4 @@ Map<String, Game> sportsGames = {
   'Volleyball': volleyballBeachGame,
   'Baseball': baseballPickupGame,
 };
-
-
-
-
-
-
-
+*/

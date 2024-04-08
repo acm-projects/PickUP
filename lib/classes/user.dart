@@ -32,10 +32,11 @@ class User {
     await docUser.set(user);
   }
 
-  static Future<String> getUserID() async {
+  //do not merge this
+  static Future<String?> getUserID() async {
     final userID = await SECURE_STORAGE.read(key: 'user');
 
-    return userID!;
+    return "ios@utdallas.edu";
   }
 
   static Future<String> getPassword() async {

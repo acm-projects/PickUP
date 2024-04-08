@@ -54,20 +54,20 @@ class CreateGameState extends State<CreateGame> {
             obscureTxt: false,
           ),
           DropdownButton<String>(
-            value: selectedSport,
-            onChanged: (newValue) {
-              setState(() { // Update state to reflect change
-                selectedSport = newValue!;
-              });
-            },
-            items: sports.map<DropdownMenuItem<String>>((String sport) {
-              return DropdownMenuItem<String>(
-                value: sport,
-                child: Text(sport),
-              );
-            }).toList(),
-            hint: const Text('Select a sport')
-          ),
+              value: selectedSport,
+              onChanged: (newValue) {
+                setState(() {
+                  // Update state to reflect change
+                  selectedSport = newValue!;
+                });
+              },
+              items: sports.map<DropdownMenuItem<String>>((String sport) {
+                return DropdownMenuItem<String>(
+                  value: sport,
+                  child: Text(sport),
+                );
+              }).toList(),
+              hint: const Text('Select a sport')),
           const SizedBox(height: 15),
           GameTextFields(
             controller: gameDescription,
@@ -90,7 +90,7 @@ class CreateGameState extends State<CreateGame> {
             onTap: () async {
               // gameDetails()
               try {
-                sportsGames[selectedSport]!.instantiate();
+                //sportsGames[selectedSport]!.instantiate();
               } catch (e) {
                 print("error: $e");
               }

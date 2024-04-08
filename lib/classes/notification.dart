@@ -53,9 +53,10 @@ class LocalNotification {
       {required String title,
       required String body,
       required String payload,
-      required tz.TZDateTime scheduledTime}) async {
+      required tz.TZDateTime scheduledTime,
+      required int id}) async {
     await FlutterLocalNotificationsPlugin().zonedSchedule(
-        0,
+        id,
         title,
         body,
         scheduledTime,
@@ -66,5 +67,9 @@ class LocalNotification {
         payload: payload,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime);
+  }
+
+  static void removeNotification(int id) async {
+    await FlutterLocalNotificationsPlugin().cancel(id);
   }
 }

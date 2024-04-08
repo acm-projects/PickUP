@@ -16,28 +16,12 @@ class ChooseTime extends StatefulWidget {
 
 class _ChooseTimeState extends State<ChooseTime> {
   DateTime _currentDate = DateTime.now();
-  String? _selectedTime;
-
-  List<DropdownMenuItem<String>> getDropdownTimes() {
-    List<DropdownMenuItem<String>> times = [];
-    TimeOfDay time = const TimeOfDay(hour: 0, minute: 0);
-    DateFormat formatter = DateFormat('h:mm a');
-    for (int i = 0; i < 96; i++) {
-      final DateTime dateTime = DateTime(DateTime.now().year,
-          DateTime.now().month, DateTime.now().day, time.hour, time.minute);
-      times.add(DropdownMenuItem(
-        value: formatter.format(dateTime),
-        child: Text(formatter.format(dateTime),
-            style: const TextStyle(color: Colors.white)), // Items text color
-      ));
-      time = (time.minute + 15) >= 60
-          ? TimeOfDay(hour: time.hour + 1, minute: (time.minute + 15) % 60)
-          : time.replacing(minute: time.minute + 15);
-    }
-    return times;
-  }
-
-  @override
+  final DateTime _currentDate2 = DateTime.now();
+  TextEditingController _hourController = TextEditingController();
+  TextEditingController _minuteController = TextEditingController();
+  bool _isPM = false; // false for AM, true for PM
+ 
+   @override
   Widget build(BuildContext context) {
     final calendarCarousel = CalendarCarousel<Event>(
       onDayPressed: (date, events) {
@@ -130,26 +114,59 @@ class _ChooseTimeState extends State<ChooseTime> {
                   children: [
                     const SizedBox(height: 20),
                     calendarCarousel, // Display the calendar
-                    const SizedBox(height: 20), // Spacing before the dropdown
-                    DropdownButtonFormField<String>(
-                      decoration: const InputDecoration(
-                        labelText: 'Select Time',
-                        labelStyle: TextStyle(color: Colors.white),
-                        border: OutlineInputBorder(),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.white), // Border color
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextFormField(
+                            controller: _hourController,
+                            decoration: InputDecoration(
+                              labelText: 'Hour',
+                              labelStyle: TextStyle(color: Colors.white),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white),
+                              ),
+                            ),
+                            keyboardType: TextInputType.number,
+                            style: TextStyle(color: Colors.white),
+                          ),
                         ),
-                      ),
-                      value: _selectedTime,
-                      items: getDropdownTimes(),
-                      onChanged: (value) {
-                        setState(() {
-                          _selectedTime = value;
-                        });
-                      },
-                      dropdownColor: const Color(
-                          0xFF0C2219), // Dropdown menu background color
+                        SizedBox(width: 10),
+                        Expanded(
+                          child: TextFormField(
+                            controller: _minuteController,
+                            decoration: InputDecoration(
+                              labelText: 'Minute',
+                              labelStyle: TextStyle(color: Colors.white),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white),
+                              ),
+                            ),
+                            keyboardType: TextInputType.number,
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                        SizedBox(width: 5),
+                        // Toggle switch for AM/PM
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              _isPM ? 'PM' : 'AM',
+                              style: TextStyle(color: Colors.white, fontSize: 18),
+                            ),
+                            Switch(
+                              value: _isPM,
+                              onChanged: (value) {
+                                setState(() {
+                                  _isPM = value;
+                                });
+                              },
+                              activeTrackColor: Colors.lightGreenAccent,
+                              activeColor: Colors.green,
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ],
                 ),

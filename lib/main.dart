@@ -8,6 +8,7 @@ import 'Screens/choose_gametype.dart';
 import 'Screens/config_game.dart';
 import 'Screens/choose_location.dart';
 import 'Screens/choose_time.dart';
+import 'Screens/chat_page.dart';
 import 'package:pickup/classes/notification.dart';
 import 'dart:io' show Platform;
 
@@ -47,14 +48,11 @@ class PickUpApp extends StatelessWidget {
         '/': (context) => const StartScreen(),
         '/Signup': (context) => const Signup(),
         '/Login': (context) => const Login(),
-        '/chooseGameType': (context) => const GameCreation(),
-        '/homePage': (context) => const HomePage(),
-        '/createVolleyballGame': (context) => const createVolleyballGame(),
-        '/createSoccerGame': (context) => const createSoccerGame(),
-        '/createTennisGame': (context) => const createTennisGame(),
-        '/createBasketballGame': (context) => const createBasketballGame(),
-        '/chooseTime': (context) => const ChooseTime(),
-        '/chooseLocation': (context) => const chooseLocation(),
+        '/ChooseGameType': (context) => const GameCreation(),
+        '/Login/HomePage': (context) => const HomePage(),
+        '/ConfigureGame': (context) => const ConfigureGame(),
+        '/ChooseTime': (context) => const ChooseTime(),
+        '/ChooseLocation': (context) => const ChooseLocation(),
         '/chatPage': (context) => const ChatPage(),
       },
     );

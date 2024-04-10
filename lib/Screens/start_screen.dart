@@ -104,6 +104,8 @@ class _StartScreenState extends State<StartScreen> {
 }
 
 class BackgroundPattern extends StatelessWidget {
+  const BackgroundPattern({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Positioned.fill(

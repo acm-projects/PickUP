@@ -1,4 +1,3 @@
-import 'package:pickup/Screens/home_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'Screens/log_in.dart';
@@ -12,8 +11,6 @@ import 'Screens/chat_page.dart';
 import 'package:pickup/classes/notification.dart';
 import 'Screens/nav_bar.dart';
 import 'dart:io' show Platform;
-
-import 'Pages/calendar.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -50,7 +47,7 @@ class PickUpApp extends StatelessWidget {
         '/Signup': (context) => const Signup(),
         '/Login': (context) => const Login(),
         '/ChooseGameType': (context) => const GameCreation(),
-        '/Login/HomePage': (context) => MainPage(),
+        '/Login/HomePage': (context) => const MainPage(),
         '/ConfigureGame': (context) => const ConfigureGame(),
         '/ChooseTime': (context) => const ChooseTime(),
         '/ChooseLocation': (context) => const ChooseLocation(),

@@ -20,7 +20,8 @@ class NavigationBar extends StatefulWidget {
   final ValueChanged<int> onDestinationSelected;
   final Duration animationDuration;
   final NavigationDestinationLabelBehavior labelBehavior;
-  NavigationBar({
+  const NavigationBar({
+    super.key,
     required this.destinations,
     required this.selectedIndex,
     required this.onDestinationSelected,
@@ -37,7 +38,7 @@ class _NavigationBarState extends State<NavigationBar> {
     return AnimatedContainer(
       duration: widget.animationDuration,
       height: 64, // Increased height
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Color(0xFF72CD52), // Navigation bar color
         borderRadius:
             BorderRadius.vertical(top: Radius.circular(20)), // Rounded corners
@@ -64,7 +65,7 @@ class _NavigationBarState extends State<NavigationBar> {
                       ? destination.selectedIcon
                       : destination.icon,
                 ),
-                SizedBox(height: 4),
+                const SizedBox(height: 4),
               ],
             ),
           );
@@ -75,6 +76,8 @@ class _NavigationBarState extends State<NavigationBar> {
 }
 
 class MainPage extends StatefulWidget {
+  const MainPage({super.key});
+
   @override
   _MainPageState createState() => _MainPageState();
 }
@@ -82,21 +85,23 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   int index = 0;
   final screens = [
-    HomePage(),
-    GameCreation(),
-    GameCreation(),
-    ProfilePage(),
+    const HomePage(),
+    const GameCreation(),
+    const GameCreation(),
+    const ProfilePage(),
   ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF72CD52), // Background color of the scaffold
+      backgroundColor:
+          const Color(0xFF72CD52), // Background color of the scaffold
       extendBody: true,
       body: screens[index],
       bottomNavigationBar: NavigationBar(
         selectedIndex: index,
         labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
-        animationDuration: Duration(milliseconds: 300), // Animation duration
+        animationDuration:
+            const Duration(milliseconds: 300), // Animation duration
         onDestinationSelected: (index) {
           setState(() {
             this.index = index;
@@ -104,23 +109,23 @@ class _MainPageState extends State<MainPage> {
         },
         destinations: [
           NavigationDestination(
-            icon: Icon(Icons.home_outlined, size: 30),
-            selectedIcon: Icon(Icons.home, size: 30),
+            icon: const Icon(Icons.home_outlined, size: 30),
+            selectedIcon: const Icon(Icons.home, size: 30),
             label: 'Home',
           ),
           NavigationDestination(
-            icon: Icon(Icons.map_outlined, size: 30),
-            selectedIcon: Icon(Icons.map, size: 30),
+            icon: const Icon(Icons.map_outlined, size: 30),
+            selectedIcon: const Icon(Icons.map, size: 30),
             label: 'Map',
           ),
           NavigationDestination(
-            icon: Icon(Icons.add_outlined, size: 30),
-            selectedIcon: Icon(Icons.add, size: 30),
+            icon: const Icon(Icons.add_outlined, size: 30),
+            selectedIcon: const Icon(Icons.add, size: 30),
             label: 'Create Game',
           ),
           NavigationDestination(
-            icon: Icon(Icons.person_outlined, size: 30),
-            selectedIcon: Icon(Icons.person, size: 30),
+            icon: const Icon(Icons.person_outlined, size: 30),
+            selectedIcon: const Icon(Icons.person, size: 30),
             label: 'Profile',
           ),
         ],

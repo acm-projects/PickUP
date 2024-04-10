@@ -80,8 +80,9 @@ class Game {
 
     DocumentSnapshot globablTargetGameSS = await globablTargetGame.get();
 
-    if ((await usersActiveGames.get()).docs.length >= 5)
+    if ((await usersActiveGames.get()).docs.length >= 5) {
       throw 'You have reached the limit of games you can make';
+    }
 
     if (globablTargetGameSS.exists) {
       //Prompt User to delete Games or become an official organizer

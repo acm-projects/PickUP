@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'start_screen.dart';
 import 'dart:io';
-import 'package:image_picker/image_picker.dart';
 import '../classes/user.dart';
 
 class ProfilePage extends StatefulWidget {
+  const ProfilePage({super.key});
+
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
@@ -14,19 +15,19 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF1A3E2F), // Background color
+      backgroundColor: const Color(0xFF1A3E2F), // Background color
       body: Column(
         children: [
           Container(
-            decoration: BoxDecoration(
-              color: const Color(0xFF88F37F),
+            decoration: const BoxDecoration(
+              color: Color(0xFF88F37F),
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(20),
                 bottomRight: Radius.circular(20),
               ),
             ),
-            padding: EdgeInsets.symmetric(vertical: 10),
-            child: Center(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: const Center(
               // Center the row
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -71,21 +72,21 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ),
                       ),
-                      SizedBox(width: 20),
+                      const SizedBox(width: 20),
                       // Name and Email
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             userName, // Display the updated username
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: 5),
-                          Text(
+                          const SizedBox(height: 5),
+                          const Text(
                             'ronaldo@example.com', // Replace with user's email
                             style: TextStyle(
                               color: Colors.white,
@@ -96,7 +97,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   // Options
                   buildOptionRow(context, 'Stats', Icons.arrow_forward),
                   buildOptionRow(context, 'Edit Profile', Icons.arrow_forward),
@@ -125,7 +126,7 @@ class _ProfilePageState extends State<ProfilePage> {
               await User.logOut();
               Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (context) => StartScreen()),
+                MaterialPageRoute(builder: (context) => const StartScreen()),
                 (route) => false,
               );
             } else {
@@ -136,13 +137,13 @@ class _ProfilePageState extends State<ProfilePage> {
             children: [
               Text(
                 title,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Spacer(),
+              const Spacer(),
               if (icon != null)
                 Icon(
                   icon,
@@ -151,8 +152,8 @@ class _ProfilePageState extends State<ProfilePage> {
             ],
           ),
         ),
-        SizedBox(height: 10),
-        Divider(
+        const SizedBox(height: 10),
+        const Divider(
           color: Colors.white,
           thickness: 1,
         ),
@@ -162,7 +163,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   void _showEditProfileDialog(BuildContext context) {
     TextEditingController nameController = TextEditingController();
-    File? _image; // Variable to hold the selected image
+    File? image; // Variable to hold the selected image
     /*
     getImage() async {
       final pickedFile =
@@ -179,7 +180,7 @@ class _ProfilePageState extends State<ProfilePage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Edit Profile'),
+          title: const Text('Edit Profile'),
           content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -187,20 +188,20 @@ class _ProfilePageState extends State<ProfilePage> {
                 // Text field for entering the name
                 TextField(
                   controller: nameController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Enter name here',
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 // Button for selecting a profile photo
                 ElevatedButton(
                   onPressed: () {},
-                  child: Text('Select Profile Photo'),
+                  child: const Text('Select Profile Photo'),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 // Display the selected image
-                _image != null ? Image.file(_image!) : SizedBox(),
-                SizedBox(height: 20),
+                image != null ? Image.file(image) : const SizedBox(),
+                const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
                     // Update the username and profile photo when the button is pressed
@@ -211,7 +212,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     });
                     Navigator.of(context).pop();
                   },
-                  child: Text('Update Profile'),
+                  child: const Text('Update Profile'),
                 ),
               ],
             ),

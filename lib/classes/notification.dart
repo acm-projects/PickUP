@@ -70,8 +70,6 @@ class LocalNotification {
         payload: payload,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime);
-
-    
   }
 
   static void removeNotification(int id) async {

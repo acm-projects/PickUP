@@ -3,7 +3,7 @@ import 'choose_gametype.dart';
 import 'package:slider_button/slider_button.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -36,6 +36,8 @@ class _HomePageState extends State<HomePage> {
         'gameTime': '5:00 PM',
       },
     ];
+
+    
   }
 
   @override
@@ -61,7 +63,7 @@ class _HomePageState extends State<HomePage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => GameCreation(),
+                      builder: (context) => const GameCreation(),
                     ),
                   );
                 },
@@ -192,8 +194,9 @@ class _HomePageState extends State<HomePage> {
                 action: () async {
                   /// Do something here OnSlideComplete
                   print("complete");
+                  return null;
                 },
-                backgroundColor: Color.fromARGB(255, 19, 189, 7),
+                backgroundColor: const Color.fromARGB(255, 19, 189, 7),
                 label: const Text(
                   "Slide to Check In",
                   style: TextStyle(
@@ -213,8 +216,8 @@ class _HomePageState extends State<HomePage> {
   Widget _buildUpcomingGamesSection() {
     if (_upcomingGames.isEmpty) {
       // Display message if there are no upcoming games
-      return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+      return const Padding(
+        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
         child: Text(
           'No Upcoming Games',
           style: TextStyle(
@@ -233,7 +236,7 @@ class _HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const SizedBox(height: 10),
-            Text(
+            const Text(
               'Your Games',
               style: TextStyle(
                 color: Colors.white,

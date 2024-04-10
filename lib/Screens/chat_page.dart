@@ -29,7 +29,8 @@ class _ChatPageState extends State<ChatPage> {
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.of(context).pop(); // Navigates back to the previous screen
+              Navigator.of(context)
+                  .pop(); // Navigates back to the previous screen
             },
           ),
           title: const Text('Chat'),
@@ -39,7 +40,8 @@ class _ChatPageState extends State<ChatPage> {
             fontWeight: FontWeight.bold,
             fontSize: 24,
           ),
-          backgroundColor: Colors.transparent, // Make AppBar background transparent
+          backgroundColor:
+              Colors.transparent, // Make AppBar background transparent
           elevation: 0, // Removes shadow
           flexibleSpace: Container(
             decoration: const BoxDecoration(

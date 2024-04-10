@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
     show CalendarCarousel;
-import 'package:intl/intl.dart';
 import 'package:pickup/classes/location.dart';
 import 'package:pickup/classes/game.dart';
 import 'package:timezone/timezone.dart' as tz;
@@ -16,12 +15,11 @@ class ChooseTime extends StatefulWidget {
 
 class _ChooseTimeState extends State<ChooseTime> {
   DateTime _currentDate = DateTime.now();
-  final DateTime _currentDate2 = DateTime.now();
-  TextEditingController _hourController = TextEditingController();
-  TextEditingController _minuteController = TextEditingController();
+  final TextEditingController _hourController = TextEditingController();
+  final TextEditingController _minuteController = TextEditingController();
   bool _isPM = false; // false for AM, true for PM
- 
-   @override
+
+  @override
   Widget build(BuildContext context) {
     final calendarCarousel = CalendarCarousel<Event>(
       onDayPressed: (date, events) {
@@ -119,7 +117,7 @@ class _ChooseTimeState extends State<ChooseTime> {
                         Expanded(
                           child: TextFormField(
                             controller: _hourController,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               labelText: 'Hour',
                               labelStyle: TextStyle(color: Colors.white),
                               enabledBorder: OutlineInputBorder(
@@ -127,14 +125,14 @@ class _ChooseTimeState extends State<ChooseTime> {
                               ),
                             ),
                             keyboardType: TextInputType.number,
-                            style: TextStyle(color: Colors.white),
+                            style: const TextStyle(color: Colors.white),
                           ),
                         ),
-                        SizedBox(width: 10),
+                        const SizedBox(width: 10),
                         Expanded(
                           child: TextFormField(
                             controller: _minuteController,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               labelText: 'Minute',
                               labelStyle: TextStyle(color: Colors.white),
                               enabledBorder: OutlineInputBorder(
@@ -142,17 +140,18 @@ class _ChooseTimeState extends State<ChooseTime> {
                               ),
                             ),
                             keyboardType: TextInputType.number,
-                            style: TextStyle(color: Colors.white),
+                            style: const TextStyle(color: Colors.white),
                           ),
                         ),
-                        SizedBox(width: 5),
+                        const SizedBox(width: 5),
                         // Toggle switch for AM/PM
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
                               _isPM ? 'PM' : 'AM',
-                              style: TextStyle(color: Colors.white, fontSize: 18),
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 18),
                             ),
                             Switch(
                               value: _isPM,

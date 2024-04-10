@@ -252,6 +252,7 @@ class Game {
     Map<String, dynamic> package = {
       "message": msg,
       "user": await User.getUserID(),
+      "time": DateTime.now().toIso8601String()
     };
 
     (doc["chat"] as List<dynamic>).add(package);

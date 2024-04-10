@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pickup/classes/user.dart' as local_user;
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:pickup/classes/game.dart';
+import 'dart:async';
 
 class StartScreen extends StatefulWidget {
   const StartScreen({super.key});
@@ -32,6 +34,22 @@ class _StartScreenState extends State<StartScreen> {
   void initState() {
     super.initState();
     initLogin(context);
+
+    int messageCount = 0;  
+
+    Timer? timer;
+
+    timer = Timer.periodic(Duration(milliseconds: 3000), (_) async {
+      List<dynamic> gameChat = (await Game.fetch('858g98137a5i') as Map<String, dynamic>)["chat"];
+
+      for (int i = messageCount; i < gameChat.length; i++) {
+        print(gameChat[i]);
+      }
+
+      messageCount = gameChat.length;
+
+      timer?.cancel();
+    });
   }
 
   @override

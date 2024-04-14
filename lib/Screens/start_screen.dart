@@ -35,8 +35,8 @@ class _StartScreenState extends State<StartScreen> {
     super.initState();
     initLogin(context);
 
-    int messageCount = 0;  
-
+    int messageCount = 0;
+    /*
     Timer? timer;
 
     timer = Timer.periodic(Duration(milliseconds: 3000), (_) async {
@@ -50,6 +50,7 @@ class _StartScreenState extends State<StartScreen> {
 
       timer?.cancel();
     });
+    */
   }
 
   @override

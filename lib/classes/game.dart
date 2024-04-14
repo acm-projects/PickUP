@@ -315,6 +315,6 @@ class Game {
 
 String generateRandomHex() {
   var random = Random.secure();
-  var values = List<int>.generate(6, (i) => random.nextInt(256));
+  var values = List<int>.generate(9, (i) => random.nextInt(256));
   return values.map((e) => e.toRadixString(25).padLeft(2, '0')).join();
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'choose_gametype.dart';
 import 'package:slider_button/slider_button.dart';
+import 'package:pickup/classes/game.dart';
+import 'dart:async';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -36,27 +38,44 @@ class _HomePageState extends State<HomePage> {
         'gameTime': '5:00 PM',
       },
     ];
+    Timer.periodic(Duration(milliseconds: 3000), (_) async {
+      //List<dynamic> gameChat = (await Game.fetch('858g98137a5i') as Map<String, dynamic>)["chat"];
 
-    
+      setState(() {
+        _upcomingGames.add({
+          'teamName1': 'Chelsea',
+          'teamName2': 'Man UTD',
+          'gameTime': '7:30 PM',
+        });
+      });
+    });
+    //Cancel timer you navigate away
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0C2219),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // Active Game Section
-            _buildActiveGamesSection(),
-            const SizedBox(height: 20),
-            // Upcoming Games Section
-            _buildUpcomingGamesSection(),
-            const SizedBox(height: 125),
-            // Bottom "PickUP" Button
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 68),
+      backgroundColor: const Color(0xFF1A3E2F),
+      body: Column(
+        children: [
+          _buildActiveGamesSection(),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  // Active Game Section
+                  // Upcoming Games Section
+                  _buildUpcomingGamesSection(),
+                ],
+              ),
+            ),
+          ),
+          // Bottom "PickUP" Button
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 70),
               child: ElevatedButton(
                 onPressed: () {
                   // Navigate to the game creation page
@@ -86,12 +105,11 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-            const SizedBox(height: 20),
-          ],
-        ),
+          ),
+        ],
       ),
     );
-  }
+}
 
   Widget _buildActiveGamesSection() {
     if (_activeGames.isEmpty) {
@@ -194,7 +212,6 @@ class _HomePageState extends State<HomePage> {
                 action: () async {
                   /// Do something here OnSlideComplete
                   print("complete");
-                  return null;
                 },
                 backgroundColor: const Color.fromARGB(255, 19, 189, 7),
                 label: const Text(

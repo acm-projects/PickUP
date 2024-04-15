@@ -91,7 +91,7 @@ class App extends StatelessWidget {
         '/login/home': (context) => const HomePage(),
         '/login/home/create': (context) => const CreateGame(),
         //'/login/home/create/calendar': (context) => const Calendar(),
-        '/login/home/create/calendar/location': (context) => DirectionsMap(),
+        '/login/home/create/calendar/location': (context) => LiveMap(),
       },
     );
   }

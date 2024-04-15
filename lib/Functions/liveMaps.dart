@@ -14,7 +14,7 @@ import 'package:location/location.dart';
 
 import 'package:timezone/timezone.dart' as tz;
 
-const double CameraZoom = 16;
+const double CameraZoom = 17;
 const double CameraTilt = 80;
 const double CameraBearing = 30;
 const LatLng _utdCoordinates =
@@ -44,7 +44,7 @@ class _LiveMapState extends State<LiveMap> {
   void initState() {
     super.initState();
     //populate();
-    //getLocationUpdates();
+    getLocationUpdates();
     //displayRoute(start, end);
     // Call function to load custom icon
     //_createCustomMarkerFromAsset(context);
@@ -69,10 +69,10 @@ class _LiveMapState extends State<LiveMap> {
       appBar: AppBar(
         title: Text('Live Map'),
       ),
-      body: /*currentPosition == null
+      body: currentPosition == null
       ? const Center(
               child: Text("Loading..."),
-            ) */
+            ):
           Container(
         child: Stack(
           children: [
@@ -124,7 +124,7 @@ class _LiveMapState extends State<LiveMap> {
       
       _markers.add(
         Marker(
-          markerId: MarkerId(tappedPoint.toString()),
+          markerId: MarkerId(Game.currentGame.gameID),
           position: tappedPoint,
           icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
           infoWindow: InfoWindow(
@@ -291,7 +291,7 @@ class _LiveMapState extends State<LiveMap> {
       );
     });
   }
-/*LocationData? currentLocation;
+LocationData? currentLocation;
 void getCurrentLocation() async {
   Location location = Location();
   location.getLocation().then(
@@ -300,13 +300,13 @@ void getCurrentLocation() async {
     },
   );
   
-}*/
+}
 
   Future<void> positionCamera(LatLng pos) async {
     final GoogleMapController controller = await _controller.future;
     CameraPosition _newCameraPosition = CameraPosition(
       target: pos,
-      zoom: 13,
+      zoom: CameraZoom,
     );
     await controller.animateCamera(
       CameraUpdate.newCameraPosition(_newCameraPosition),
@@ -339,8 +339,15 @@ void getCurrentLocation() async {
           currentPosition =
               LatLng(currentLocation.latitude!, currentLocation.longitude!);
           positionCamera(currentPosition!);
-        });
-      }
-    });
-  }
+        _markers.removeWhere((marker) => marker.markerId.value == 'Home');
+        _markers.add(Marker(
+          markerId: MarkerId('Home'),
+          position: currentPosition!,
+          icon: BitmapDescriptor.defaultMarker,
+          infoWindow: InfoWindow(title: 'Home'),
+        ));
+      });
+    }
+  });
+}
 }

@@ -19,28 +19,30 @@ import 'dart:math';
 
 Map<String, dynamic> emptyMap = {};
 
+
+
 class Game {
-  String title;
+  String name;
   String sport;
   String description;
   int numOfPlayers = 0;
   tz.TZDateTime startTime;
   List<String> players = []; // User IDs
-  static Game currentGame =
-      Game("", "", "", 10, tz.TZDateTime.now(Location.getTimeZone()));
-  Map<String, dynamic> location =
-    Location.get(); //assume at the current pos
+  Map<String, dynamic> location = Location.get(); //assume at the current pos
+
+  static Game currentGame = Game("", "", "", 0, tz.TZDateTime.now(Location.getTimeZone()));
 
   final int _maxNumOfPlayers;
+  final DateTime _timeCreated = DateTime.now();
   final String _gameID = generateRandomHex();
 
   // Constructor
-  Game(this.title, this.sport, this.description, this._maxNumOfPlayers,
-      this.startTime);
+  Game(this.name, this.sport, this.description,
+      this._maxNumOfPlayers, this.startTime);
 
   Future<Map<String, dynamic>> toMap() async {
     return {
-      'title': title,
+      'name': name,
       'organizer': await User.getUserID(),
       'gameID': _gameID,
       'sport': sport,
@@ -49,16 +51,15 @@ class Game {
       'location': location,
       'numOfPlayers': numOfPlayers,
       'maxNumOfPlayers': _maxNumOfPlayers,
-      'timeCreated': DateTime.now(),
+      'timeCreated': _timeCreated.toIso8601String(),
       'startTime': startTime.toIso8601String(),
-      'checkedIn': {},
-      'chat': [],
     };
   }
 
   // Accessors (Getters)
   String get gameID => _gameID;
   int get maxNumOfPlayers => _maxNumOfPlayers;
+  DateTime get timeCreated => _timeCreated;
 
   Future<void> updateGame() async {
     //Before any action is taken the values must be updated
@@ -69,12 +70,11 @@ class Game {
     print("Instantiating $_gameID");
     CollectionReference usersActiveGames = FirebaseFirestore.instance
         .collection("Users")
-        .doc(await User.getUserID())
+        .doc("ios@utdallas.edu")
         .collection("ActiveGames");
 
     final globablTargetGame =
         FirebaseFirestore.instance.collection("ActiveGames").doc(_gameID);
-
     final usersTargetGame = usersActiveGames.doc(_gameID);
 
     DocumentSnapshot globablTargetGameSS = await globablTargetGame.get();
@@ -89,8 +89,20 @@ class Game {
       await globablTargetGame.set(await toMap());
       await usersTargetGame.set(emptyMap);
     }
-
+    print(2);
     await Game.join(_gameID);
+  }
+
+  static Future<Object?> getGameLocation(String target) async {
+    CollectionReference activeGamesColl =
+        FirebaseFirestore.instance.collection("ActiveGames");
+
+    final DocumentReference targetGameDoc = activeGamesColl.doc(target);
+
+    final targetGame = await targetGameDoc.get();
+
+    print((targetGame as Map<String, dynamic>)['location']);
+    return null;
   }
 
   // Read
@@ -113,7 +125,8 @@ class Game {
 
     final QuerySnapshot activeGames = await activeGamesColl.get();
 
-    final activeGamesData = activeGames.docs.map((e) => e.data()).toList();
+    final activeGamesData =
+        activeGames.docs.map((e) => e.data() as Map<String, dynamic>).toList();
 
     return activeGamesData;
   }
@@ -122,19 +135,22 @@ class Game {
   static Future<void> edit(String target, Map<String, dynamic> doc) async {
     print("Editing $target");
 
-    final DocumentReference targetGameDoc =
-        FirebaseFirestore.instance.collection("ActiveGames").doc(target);
+    try {
+      final DocumentReference targetGameDoc =
+          FirebaseFirestore.instance.collection("ActiveGames").doc(target);
 
-    final targetGame = await targetGameDoc.get();
+      final targetGame = await targetGameDoc.get();
 
-    if (!targetGame.exists) throw "$target doesn't exist.";
+      if (!targetGame.exists) throw "$target doesn't exist.";
 
-    if ((targetGame.data() as Map<String, dynamic>)["organizer"] !=
-        await User.getUserID()) {
-      throw "You're not $target's owner!";
+      if ((targetGame.data() as Map<String, dynamic>)["organizer"] !=
+          await User.getUserID()) {
+        throw "You're not $target's owner!";
+      }
+      await targetGameDoc.set(doc);
+    } catch (e) {
+      print(e);
     }
-
-    await targetGameDoc.set(doc);
   }
 
   // Destroy
@@ -191,8 +207,9 @@ class Game {
           title: 'Your $targetGameSport Game is Starting in 15 minutes!',
           body: "Ready to Check In? ",
           payload: "payload",
-          scheduledTime: tz.TZDateTime.now(Location.getTimeZone())
-              .add(const Duration(seconds: 5)));
+          scheduledTime: tz.TZDateTime.parse(
+                  Location.getTimeZone(), targetGame["startTime"])
+              .subtract(const Duration(minutes: 15)));
     } catch (e) {
       print(e);
     }
@@ -233,30 +250,6 @@ class Game {
     }
   }
 
-  static Future<void> checkIn(String target) async {
-    print('Checking In ${User.getUserID()}');
-
-    Map<String, dynamic> game =
-        (await Game.fetch(target)) as Map<String, dynamic>;
-    game["checkedIn"].add(User.getUserID());
-
-    await Game.edit(target, game);
-  }
-
-  static Future<void> message(String target, String msg) async {
-    Map<String, dynamic> doc =
-        (await Game.fetch(target)) as Map<String, dynamic>;
-
-    Map<String, dynamic> package = {
-      "message": msg,
-      "user": await User.getUserID(),
-    };
-
-    (doc["chat"] as List<dynamic>).add(package);
-
-    await edit(target, doc);
-  }
-
   // Firestore Document => Game
   static Future<Game?> firestoreToGame(String target) async {
     print("Converting $target to a Game object.");
@@ -265,7 +258,7 @@ class Game {
           (await fetch(target)) as Map<String, dynamic>;
 
       return Game(
-          jsonData["title"],
+          jsonData["name"],
           jsonData["sport"],
           jsonData["description"],
           jsonData["maxNumOfPlayers"],

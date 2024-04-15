@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
+import 'reset_password.dart';
+import 'stats.dart';
 import 'start_screen.dart';
 import 'dart:io';
-import '../classes/user.dart';
-
+import 'package:image_picker/image_picker.dart';
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
-
 class _ProfilePageState extends State<ProfilePage> {
   String userName = 'Ronaldo'; // Initial username
   @override
@@ -20,7 +20,14 @@ class _ProfilePageState extends State<ProfilePage> {
         children: [
           Container(
             decoration: const BoxDecoration(
-              color: Color(0xFF88F37F),
+              gradient: LinearGradient(
+                colors: [
+                  Color(0xFF80F37F),
+                  Color(0xFF80E046)
+                ], // Gradient colors
+                begin: Alignment.topCenter, // Start point of the gradient
+                end: Alignment.bottomCenter, // End point of the gradient
+              ),
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(20),
                 bottomRight: Radius.circular(20),
@@ -113,20 +120,29 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
     );
   }
-
   Widget buildOptionRow(BuildContext context, String title, IconData? icon) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         InkWell(
-          onTap: () async {
-            if (title == 'Reset Password') {
-              print("reset pw");
-            } else if (title == 'Log Out') {
-              await User.logOut();
+          onTap: () {
+            if (title == 'Stats') {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => StatsPage()),
+              );
+            } 
+            else if (title == 'Reset Password') {
+              Navigator.push(
+                context,
+               MaterialPageRoute(builder: (context) => StatsPage()),
+              );
+            } 
+            
+            else if (title == 'Log Out') {
               Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (context) => const StartScreen()),
+                MaterialPageRoute(builder: (context) => StartScreen()),
                 (route) => false,
               );
             } else {
@@ -160,14 +176,14 @@ class _ProfilePageState extends State<ProfilePage> {
       ],
     );
   }
-
   void _showEditProfileDialog(BuildContext context) {
     TextEditingController nameController = TextEditingController();
-    File? image; // Variable to hold the selected image
-    /*
-    getImage() async {
-      final pickedFile =
-          await ImagePicker().getImage(source: ImageSource.gallery);
+    File? _image; // Variable to hold the selected image
+    _getImage() async {
+       final ImagePicker picker = ImagePicker();  // Create an instance of ImagePicker
+    final XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);  // Correct method to pick an image
+      //final pickedFile =
+          //await ImagePicker()._getImage(source: ImageSource.gallery);
       setState(() {
         if (pickedFile != null) {
           _image = File(pickedFile.path);
@@ -175,7 +191,7 @@ class _ProfilePageState extends State<ProfilePage> {
           print('No image selected.');
         }
       });
-    }*/
+    }
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -195,12 +211,12 @@ class _ProfilePageState extends State<ProfilePage> {
                 const SizedBox(height: 20),
                 // Button for selecting a profile photo
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: _getImage,
                   child: const Text('Select Profile Photo'),
                 ),
                 const SizedBox(height: 20),
                 // Display the selected image
-                image != null ? Image.file(image) : const SizedBox(),
+                _image != null ? Image.file(_image!) : const SizedBox(),
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
@@ -222,3 +238,4 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 }
+

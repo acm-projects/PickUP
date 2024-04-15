@@ -14,8 +14,7 @@ class ChooseLocation extends StatelessWidget {
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.of(context)
-                  .pop(); // Navigates back to the previous screen
+              Navigator.of(context).pop();
             },
           ),
           title: const Text('Choose a Location'),

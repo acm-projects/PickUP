@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-import 'choose_gametype.dart';
-import 'package:slider_button/slider_button.dart';
-import 'package:pickup/classes/game.dart';
-import 'dart:async';
 
+import 'nav_bar.dart';
+import 'package:slider_button/slider_button.dart';
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({Key? key}) : super(key: key);
   @override
   _HomePageState createState() => _HomePageState();
 }
-
 class _HomePageState extends State<HomePage> {
   List<Map<String, dynamic>> _activeGames = [];
   List<Map<String, dynamic>> _upcomingGames = [];
@@ -38,70 +35,194 @@ class _HomePageState extends State<HomePage> {
         'gameTime': '5:00 PM',
       },
     ];
-    Timer.periodic(Duration(milliseconds: 3000), (_) async {
-      //List<dynamic> gameChat = (await Game.fetch('858g98137a5i') as Map<String, dynamic>)["chat"];
-
-      setState(() {
-        _upcomingGames.add({
-          'teamName1': 'Chelsea',
-          'teamName2': 'Man UTD',
-          'gameTime': '7:30 PM',
-        });
-      });
-    });
-    //Cancel timer you navigate away
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF1A3E2F),
-      body: Column(
-        children: [
-          _buildActiveGamesSection(),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  // Active Game Section
-                  // Upcoming Games Section
-                  _buildUpcomingGamesSection(),
-                ],
-              ),
-            ),
-          ),
-          // Bottom "PickUP" Button
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 70),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // Active Game Section
+            _buildActiveGamesSection(),
+            const SizedBox(height: 20),
+            // Upcoming Games Section
+            _buildUpcomingGamesSection(),
+            const SizedBox(height: 125),
+            // Bottom "PickUP" Button
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 68),
               child: ElevatedButton(
-                onPressed: () {
-                  // Navigate to the game creation page
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const GameCreation(),
-                    ),
-                  );
-                },
+               onPressed: () {
+                   
+                    Navigator.of(context).pushNamed('/gameCreation');
+                  },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF88F37F), // Light green color
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30), // Rounded corners
                   ),
+                  backgroundColor: Colors.transparent,
+                  padding: EdgeInsets.zero,
+                  elevation: 5, // Set primary color to transparent
                 ),
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 12),
-                  child: Text(
-                    'PickUP',
-                    style: TextStyle(
-                      fontSize: 23,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                child: Ink(
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [
+                        Color(0xFF80F37F),
+                        Color(0xFF80E046)
+                      ], // Gradient colors
+                      begin: Alignment.topCenter, // Start point of the gradient
+                      end: Alignment.bottomCenter, // End point of the gradient
+                    ),
+                    borderRadius: BorderRadius.circular(30), // Rounded corners
+                  ),
+                  child: Container(
+                    constraints: const BoxConstraints(
+                        minHeight: 60, minWidth: double.infinity),
+                    alignment: Alignment.center,
+                    child: const Text(
+                      'PickUP',
+                      style: TextStyle(
+                        fontSize: 23,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black, // Text color
+                      ),
                     ),
                   ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+          ],
+        ),
+      ),
+    );
+  }
+  Widget _buildActiveGamesSection() {
+  if (_activeGames.isEmpty) {
+    // Display message if there are no active games
+    return Container(
+      decoration: const BoxDecoration(
+        color: Color(0xFF88F37F),
+        borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
+      ),
+      padding: const EdgeInsets.all(16),
+      child: const Text(
+        'No Active Games',
+        style: TextStyle(
+          color: Colors.black,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  } else {
+    // Display the first active game only
+    final Map<String, dynamic> game = _activeGames.first;
+    return Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Color(0xFF80F37F),
+            Color(0xFF80E046)
+          ], // Gradient colors
+          begin: Alignment.topCenter, // Start point of the gradient
+          end: Alignment.bottomCenter, // End point of the gradient
+        ),
+        borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
+      ),
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const Text(
+            'Active Game',
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            ),
+          ),
+          const SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Text(
+                '${game['teamName1']}',
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const Text(
+                'vs',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                '${game['teamName2']}',
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 5),
+          Text(
+            '${game['gameTime']}',
+            style: const TextStyle(
+              color: Colors.black,
+            ),
+          ),
+          const SizedBox(height: 5),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.location_on, color: Colors.black),
+              const SizedBox(width: 5),
+              Text(
+                '${game['location']}',
+                style: const TextStyle(
+                  color: Colors.black,
+                ),
+              ),
+              const Spacer(),
+              const Icon(Icons.access_time, color: Colors.black),
+              const SizedBox(width: 5),
+              const Text(
+                '5 min before',
+                style: TextStyle(
+                  color: Colors.black,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          // SliderButton for Check In
+          Center(
+            child: SliderButton(
+              action: () async {
+                /// Do something here OnSlide
+                return true;
+              },
+              label: const Text(
+                "Slide to Check In",
+                style: TextStyle(
+                  color: Color(0xff4a4a4a),
+                  fontWeight: FontWeight.w500,
+                  fontSize: 17,
+                ),
+              ),
+              icon: const Text(
+                "✓",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 44,
                 ),
               ),
             ),
@@ -109,127 +230,8 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
     );
-}
-
-  Widget _buildActiveGamesSection() {
-    if (_activeGames.isEmpty) {
-      // Display message if there are no active games
-      return Container(
-        decoration: const BoxDecoration(
-          color: Color(0xFF88F37F),
-          borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
-        ),
-        padding: const EdgeInsets.all(16),
-        child: const Text(
-          'No Active Games',
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      );
-    } else {
-      // Display the first active game only
-      final Map<String, dynamic> game = _activeGames.first;
-      return Container(
-        decoration: const BoxDecoration(
-          color: Color(0xFF88F37F),
-          borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
-        ),
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Text(
-              'Active Game',
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-              ),
-            ),
-            const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Text(
-                  '${game['teamName1']}',
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const Text(
-                  'vs',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  '${game['teamName2']}',
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 5),
-            Text(
-              '${game['gameTime']}',
-              style: const TextStyle(
-                color: Colors.black,
-              ),
-            ),
-            const SizedBox(height: 5),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(Icons.location_on, color: Colors.black),
-                const SizedBox(width: 5),
-                Text(
-                  '${game['location']}',
-                  style: const TextStyle(
-                    color: Colors.black,
-                  ),
-                ),
-                const Spacer(),
-                const Icon(Icons.access_time, color: Colors.black),
-                const SizedBox(width: 5),
-                const Text(
-                  '5 min before',
-                  style: TextStyle(
-                    color: Colors.black,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            // SliderButton for Check In
-            Center(
-              child: SliderButton(
-                action: () async {
-                  /// Do something here OnSlideComplete
-                  print("complete");
-                },
-                backgroundColor: const Color.fromARGB(255, 19, 189, 7),
-                label: const Text(
-                  "Slide to Check In",
-                  style: TextStyle(
-                    color: Color(0xff4a4a4a),
-                    fontWeight: FontWeight.w500,
-                    fontSize: 17,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-    }
   }
-
+}
   Widget _buildUpcomingGamesSection() {
     if (_upcomingGames.isEmpty) {
       // Display message if there are no upcoming games
@@ -306,3 +308,24 @@ class _HomePageState extends State<HomePage> {
     }
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

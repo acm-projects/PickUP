@@ -6,10 +6,12 @@ import 'Screens/start_screen.dart';
 import 'Screens/choose_gametype.dart';
 import 'Screens/config_game.dart';
 import 'Screens/choose_location.dart';
+import 'Screens/home_page.dart';
 import 'Screens/choose_time.dart';
 import 'Screens/chat_page.dart';
 import 'package:pickup/classes/notification.dart';
 import 'Screens/nav_bar.dart';
+import 'Screens/stats.dart';
 import 'dart:io' show Platform;
 
 void main() async {
@@ -43,15 +45,16 @@ class PickUpApp extends StatelessWidget {
       navigatorKey: navigatorKey,
       initialRoute: '/',
       routes: {
-        '/': (context) => const StartScreen(),
+        '/': (context) =>  StartScreen(),
         '/Signup': (context) => const Signup(),
         '/Login': (context) => const Login(),
         '/ChooseGameType': (context) => const GameCreation(),
-        '/Login/HomePage': (context) => const MainPage(),
+        '/homePage': (context) => const HomePage(),
         '/ConfigureGame': (context) => const ConfigureGame(),
         '/ChooseTime': (context) => const ChooseTime(),
         '/ChooseLocation': (context) => const ChooseLocation(),
         '/chatPage': (context) => const ChatPage(),
+        '/statsPage': (context) => StatsPage(),
       },
     );
   }

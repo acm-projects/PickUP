@@ -58,7 +58,7 @@ class _SignupState extends State<Signup> {
             const Padding(
               padding: EdgeInsets.only(left: 1.0),
               child: Text(
-                'Sign Up',
+                'Create a Account',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 40.0,
@@ -92,7 +92,7 @@ class _SignupState extends State<Signup> {
               controller: _confirmPasswordController,
             ),
             const SizedBox(height: 30),
-            buildGradientButton(context, 'Create Account', signUp),
+            buildGradientButton(context, 'Sign Up', signUp),
             const SizedBox(height: 10),
             TextButton(
               onPressed: () {

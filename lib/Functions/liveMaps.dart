@@ -119,7 +119,7 @@ class _LiveMapState extends State<LiveMap> {
   // Handler for when the map is tapped
   void _onMapTapped(LatLng tappedPoint) {
     setState(() {
-      Game.currentGame.location = {
+      Game.currentGame.coordinates = {
         "latitude": tappedPoint.latitude,
         "longitude": tappedPoint.longitude,
       };
@@ -236,7 +236,7 @@ class _LiveMapState extends State<LiveMap> {
               markerId: MarkerId(game["gameID"]),
               icon: iconColor,
               position: LatLng(
-                  game["location"]["latitude"], game["location"]["longitude"]),
+                  game["coordinates"]["latitude"], game["coordinates"]["longitude"]),
             ),
           );
         });

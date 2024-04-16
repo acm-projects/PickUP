@@ -309,31 +309,6 @@ void filterTurnData(){
     setState(() {});
   }
 
-  /*void populate() async {
-    List<Map<String, dynamic>> activeGames =
-        (await Game.fetch()) as List<Map<String, dynamic>>;
-    print(activeGames);
-
-    for (final game in activeGames) {
-      try {
-        setState(() {
-          _markers.add(
-            Marker(
-              markerId: MarkerId(game["sport"]),
-              icon: BitmapDescriptor.defaultMarkerWithHue(
-                  BitmapDescriptor.hueViolet),
-              position: LatLng(
-                  game["location"]["latitude"], game["location"]["longitude"]),
-            ),
-          );
-        });
-      } catch (e) {
-        print(gam)
-        print(e);
-      }
-    }
-  }*/
-
   Marker CreateGameMarker(String sportType, LatLng gamePosition) {
     print('Sport type: ' + sportType);
     print('Game position: ' + gamePosition.toString());
@@ -436,7 +411,7 @@ void populate() async {
               markerId: MarkerId(game["gameID"]),
               icon: iconColor,
               position: LatLng(
-                  game["location"]["latitude"], game["location"]["longitude"]),
+                  game["coordinates"]["latitude"], game["coordinates"]["longitude"]),
             ),
           );
         });

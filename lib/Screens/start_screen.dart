@@ -13,11 +13,11 @@ class StartScreen extends StatefulWidget {
 
 void initLogin(BuildContext context) async {
   try {
-    final String userID = await local_user.User.getUserID();
+    final String? userID = await local_user.User.getUserID();
     final String password = await local_user.User.getPassword();
 
     await FirebaseAuth.instance.signInWithEmailAndPassword(
-      email: userID,
+      email: userID!,
       password: password,
     );
 

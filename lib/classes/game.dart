@@ -29,13 +29,12 @@ class Game {
   int numOfPlayers = 0;
   tz.TZDateTime startTime;
   List<String> players = []; // User IDs
-  Map<String, dynamic> location = Location.get(); //assume at the current pos
+  Map<String, dynamic> coordinates =
+    Location.get(); //assume at the current pos
 
   static Game currentGame = Game("", "", "", 0, tz.TZDateTime.now(Location.getTimeZone()));
 
   final int _maxNumOfPlayers;
-  final Map<String, dynamic> _location =
-      Location.get(); //assume at the current pos
   final DateTime _timeCreated = DateTime.now();
   final String _gameID = generateRandomHex();
 

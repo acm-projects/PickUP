@@ -132,7 +132,7 @@ class _HomePageState extends State<HomePage> {
           Align(
             alignment: Alignment.bottomCenter,
             child: Padding(
-              padding: const EdgeInsets.only(bottom: 70),
+              padding: const EdgeInsets.only(bottom: 80),
               child: ElevatedButton(
                 onPressed: () {
                   // Navigate to the game creation page
@@ -150,7 +150,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 child: const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 12),
+                  padding: EdgeInsets.symmetric(vertical: 9, horizontal: 120),
                   child: Text(
                     'PickUP',
                     style: TextStyle(

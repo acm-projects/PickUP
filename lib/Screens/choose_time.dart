@@ -193,8 +193,8 @@ class _ChooseTimeState extends State<ChooseTime> {
                       print(_isPM ? 12 : 0);
 
                       date = date.add(Duration(
-                          hours: int.parse(_hourController.text) +
-                              (_isPM  && _hourController.text != "12" ? 12 : 0),
+                          hours: (int.parse(_hourController.text) +
+                              (_isPM ? 12 : 0)),
                           minutes: int.parse(_minuteController.text)));
 
                       print(date);

@@ -52,7 +52,6 @@ class _HomePageState extends State<HomePage> {
         tz.TZDateTime date =
             tz.TZDateTime.parse(Location.getTimeZone(), gameInfo["startTime"]);
 
-        print(date);
         String morningOrNight = date.hour - 12 >= 0 ? "PM" : "AM";
 
         final Map<int, String> monthsInYear = {
@@ -71,7 +70,7 @@ class _HomePageState extends State<HomePage> {
         };
 
         String startTime =
-            "${monthsInYear[date.month]} ${date.day} ${date.hour % 13}:${date.minute} ${morningOrNight}";
+            "${monthsInYear[date.month]} ${date.day} ${date.hour - 12 > 0 ? date.hour - 12: date.hour}:${date.minute.toString().padLeft(2, '0')} ${morningOrNight}";
 
         bool doesContain = false;
 
@@ -207,16 +206,20 @@ class _HomePageState extends State<HomePage> {
           sliderWidget = Center(
             child: SliderButton(
               action: () async {
+                setState(() async {
                 /// Do something here OnSlideComplete
                 await Game.checkIn(closestGame["id"]);
+
+                print(_upcomingGames.length);
                 for (int index = 0; index < _upcomingGames.length; index++) {
-                  if (_upcomingGames[index]["id"] == game) {
+                  if (_upcomingGames[index]["id"] == game["id"]) {
                     _upcomingGames.remove(_upcomingGames[index]);
+                      sliderWidget = null;
+                      await Game.leave(closestGame["id"]);
+                      break;
                   }
                 }
-                sliderWidget = null;
-                await Game.leave(closestGame["id"]);
-                sliderWidget = null;
+                });
               },
               backgroundColor: const Color.fromARGB(255, 19, 189, 7),
               label: const Text(

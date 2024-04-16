@@ -35,7 +35,6 @@ class Game {
   static Game currentGame = Game("", "", "", 0, tz.TZDateTime.now(Location.getTimeZone()));
 
   final int _maxNumOfPlayers;
-  final DateTime _timeCreated = DateTime.now();
   final String _gameID = generateRandomHex();
 
   // Constructor
@@ -56,7 +55,7 @@ class Game {
       'maxNumOfPlayers': _maxNumOfPlayers,
       'timeCreated': DateTime.now(),
       'startTime': startTime.toIso8601String(),
-      'checkedIn': {},
+      'checkedIn': [],
       'chat': [],
     };
   }
@@ -267,11 +266,15 @@ class Game {
   }
 
   static Future<void> checkIn(String target) async {
-    print('Checking In ${User.getUserID()}');
+    print('Checking In ${await User.getUserID()}');
 
     Map<String, dynamic> game =
-        await Game.fetch(target) as Map<String, dynamic>;
-    game["checkedIn"].add(User.getUserID());
+      await Game.fetch(target) as Map<String, dynamic>;
+
+    print(game);
+    
+    game["checkedIn"].add((await User.getUserID())!);
+    print(target);
 
     await Game.edit(target, game);
   }

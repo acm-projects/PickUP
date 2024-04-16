@@ -194,7 +194,7 @@ class _ChooseTimeState extends State<ChooseTime> {
 
                       date = date.add(Duration(
                           hours: int.parse(_hourController.text) +
-                              (_isPM ? 12 : 0),
+                              (_isPM  && _hourController.text != "12" ? 12 : 0),
                           minutes: int.parse(_minuteController.text)));
 
                       print(date);
@@ -202,14 +202,11 @@ class _ChooseTimeState extends State<ChooseTime> {
                       Game.currentGame.startTime = tz.TZDateTime.parse(
                           Location.getTimeZone(), date.toIso8601String());
 
-                      /*
-
-                      if (date.add(const Duration(minutes: 15)).isBefore(DateTime.now())) {
+                      if (date.subtract(const Duration(minutes: 15)).isAfter(DateTime.now())) {
                         Navigator.of(context).pushNamed('/ChooseLocation');
                       } else {
-                        print("Your Game Time Must Be 15 minutes after the Current Time");
-                      }*/
-                      Navigator.of(context).pushNamed('/ChooseLocation');
+                        print("Your Game Time Must Be 15 minutes Atleast After the Current Time");
+                      }
                     },
                     child: Container(
                       decoration: BoxDecoration(

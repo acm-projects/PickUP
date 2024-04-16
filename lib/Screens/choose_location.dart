@@ -68,7 +68,7 @@ class ChooseLocation extends StatelessWidget {
                   onPressed: () {
                     Game.currentGame.instantiate();
                     //UI pops up that confirms that it was created
-                    for (int i = 0; i < 3; i++) {
+                    for (int i = 0; i < 4; i++) {
                       Navigator.of(context).pop();
                     }
                   },

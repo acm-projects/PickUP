@@ -51,6 +51,8 @@ class _HomePageState extends State<HomePage> {
             await Game.fetch(game) as Map<String, dynamic>;
         tz.TZDateTime date =
             tz.TZDateTime.parse(Location.getTimeZone(), gameInfo["startTime"]);
+
+        print(date);
         String morningOrNight = date.hour - 12 >= 0 ? "PM" : "AM";
 
         final Map<int, String> monthsInYear = {
@@ -69,7 +71,7 @@ class _HomePageState extends State<HomePage> {
         };
 
         String startTime =
-            "${monthsInYear[date.month]} ${date.day} ${date.hour % 12}:${date.minute} ${morningOrNight}";
+            "${monthsInYear[date.month]} ${date.day} ${date.hour % 13}:${date.minute} ${morningOrNight}";
 
         bool doesContain = false;
 
@@ -200,8 +202,6 @@ class _HomePageState extends State<HomePage> {
         differenceInMinutes = closestGame["date"]
             .difference(tz.TZDateTime.now(Location.getTimeZone()))
             .inMinutes;
-
-        print(differenceInMinutes);
 
         if (differenceInMinutes <= 15 && differenceInMinutes >= 0) {
           sliderWidget = Center(

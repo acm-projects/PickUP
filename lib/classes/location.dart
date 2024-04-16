@@ -1,13 +1,21 @@
 import 'package:timezone/timezone.dart' as tz;
 import 'package:geolocator/geolocator.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert' as convert;
+import 'package:permission_handler/permission_handler.dart';
 
 class Location {
   static double latitude = 0;
   static double longitude = 0;
+  static String name = '';
+
+  static Future<void> requestLocationPermission() async {
+    await Permission.location.request();
+  }
 
   static void step() async {
+    if (await Geolocator.checkPermission() == LocationPermission.denied) {
+      await requestLocationPermission();
+    }
+
     if (await Geolocator.isLocationServiceEnabled() &&
         await Geolocator.checkPermission() != LocationPermission.denied) {
       Position position = await Geolocator.getCurrentPosition(
@@ -16,6 +24,7 @@ class Location {
       // You can convert the values to strings if needed:
       longitude = position.longitude;
       latitude = position.latitude;
+      print(position.longitude);
     }
   }
 

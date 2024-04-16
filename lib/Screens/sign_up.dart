@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pickup/classes/user.dart' as local_user;
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -11,13 +13,36 @@ class Signup extends StatefulWidget {
 class _SignupState extends State<Signup> {
   // ignore: unused_field
   final _formKey = GlobalKey<FormState>();
+  final _firstNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
+  final _emailController = TextEditingController();
 
-  // You can define your TextEditingController here for each field if needed.
-  // TextEditingController _firstNameController = TextEditingController();
-  // Add other controllers here
-
-  void _signup() {
-    // Implement your signup logic
+  Future<String?> signUp(BuildContext context) async {
+    try {
+      String email = _emailController.text;
+      if (!email.contains("@utdallas.edu")) {
+        throw "PickUp is a University of Texas at Dallas application only.";
+      }
+      if (_passwordController.text == _confirmPasswordController.text) {
+        //Confirm Password
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: email,
+          password: _passwordController.text,
+        );
+        await local_user.User.createUser(
+            _emailController.text,
+            _passwordController.text,
+            _firstNameController.text,
+            _lastNameController.text);
+        Navigator.pushNamed(context, '/Login/HomePage');
+      }
+    } catch (e) {
+      print(e);
+      return e.toString(); // Return error message if unsuccessful
+    }
+    return null;
   }
 
   @override
@@ -46,27 +71,32 @@ class _SignupState extends State<Signup> {
             const SizedBox(height: 10),
             _buildTextFormField(
               label: 'First Name',
-              // controller: _firstNameController,
+              controller: _firstNameController,
             ),
             _buildTextFormField(
               label: 'Last Name',
-              // controller: _lastNameController,
+              controller: _lastNameController,
             ),
             _buildTextFormField(
               label: 'UTD Email Address',
-              // controller: _emailController,
+              controller: _emailController,
             ),
             _buildTextFormField(
               label: 'Password',
               isPassword: true,
-              // controller: _passwordController,
+              controller: _passwordController,
+            ),
+            _buildTextFormField(
+              label: 'Confirm Password',
+              isPassword: true,
+              controller: _confirmPasswordController,
             ),
             const SizedBox(height: 30),
-            buildGradientButton(context, 'Create Account', _signup),
+            buildGradientButton(context, 'Create Account', signUp),
             const SizedBox(height: 10),
             TextButton(
               onPressed: () {
-                //navigatorKey.currentState?.pushNamed('/Login');
+                Navigator.of(context).pushNamed('/Login');
               },
               child: const Text(
                 'Have an account? Login',
@@ -74,10 +104,10 @@ class _SignupState extends State<Signup> {
               ),
             ),
             const SizedBox(height: 20),
-            Align(
+            const Align(
               alignment: Alignment.center,
               child: ColorFiltered(
-                colorFilter: const ColorFilter.mode(
+                colorFilter: ColorFilter.mode(
                   Colors.white,
                   BlendMode.srcATop,
                 ),
@@ -92,7 +122,7 @@ class _SignupState extends State<Signup> {
   TextFormField _buildTextFormField({
     required String label,
     bool isPassword = false,
-    // TextEditingController? controller,
+    TextEditingController? controller,
   }) {
     return TextFormField(
       decoration: InputDecoration(
@@ -116,13 +146,13 @@ class _SignupState extends State<Signup> {
       ),
       style: const TextStyle(color: Colors.white),
       obscureText: isPassword,
-      // controller: controller,
+      controller: controller,
     );
   }
 }
 
-Widget buildGradientButton(
-    BuildContext context, String text, VoidCallback onPressed) {
+Widget buildGradientButton(BuildContext context, String text,
+    Future<String?> Function(BuildContext) onPressedF) {
   return Container(
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(30.0),
@@ -136,7 +166,9 @@ Widget buildGradientButton(
       ),
     ),
     child: ElevatedButton(
-      onPressed: onPressed,
+      onPressed: () {
+        onPressedF(context);
+      },
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.transparent,
         shadowColor: Colors.transparent,

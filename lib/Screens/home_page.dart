@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'choose_gametype.dart';
+import 'package:pickup/classes/user.dart';
+import 'package:slider_button/slider_button.dart';
+import 'package:pickup/classes/game.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:pickup/classes/location.dart';
+import 'package:timezone/timezone.dart' as tz;
+import 'dart:async';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
-
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -10,6 +17,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   List<Map<String, dynamic>> _activeGames = [];
   List<Map<String, dynamic>> _upcomingGames = [];
+
+  Widget? sliderWidget;
 
   @override
   void initState() {
@@ -24,41 +33,102 @@ class _HomePageState extends State<HomePage> {
       }
     ];
     // Mock data for upcoming games
-    _upcomingGames = [
-      {
-        'teamName1': 'Arsenal',
-        'teamName2': 'Liverpool',
-        'gameTime': '3:00 PM',
-      },
-      {
-        'teamName1': 'Barcelona',
-        'teamName2': 'Real Madrid',
-        'gameTime': '5:00 PM',
-      },
-    ];
+    _upcomingGames = [];
+
+    Future<void> getActiveGames() async {
+      CollectionReference usersJoinedGames = FirebaseFirestore.instance
+          .collection("Users")
+          .doc(await User.getUserID())
+          .collection("JoinedGames");
+
+      List<String> games =
+          (await usersJoinedGames.get()).docs.map((doc) => doc.id).toList();
+
+      for (final game in games) {
+        if (game == 'bedrock') continue;
+        Map<String, dynamic> gameInfo =
+            await Game.fetch(game) as Map<String, dynamic>;
+        tz.TZDateTime date =
+            tz.TZDateTime.parse(Location.getTimeZone(), gameInfo["startTime"]);
+        String morningOrNight = date.hour - 12 >= 0 ? "PM" : "AM";
+
+        final Map<int, String> monthsInYear = {
+          1: 'January',
+          2: 'February',
+          3: 'March',
+          4: 'April',
+          5: 'May',
+          6: 'June',
+          7: 'July',
+          8: 'August',
+          9: 'September',
+          10: 'October',
+          11: 'November',
+          12: 'December',
+        };
+
+        String startTime =
+            "${monthsInYear[date.month]} ${date.day} ${date.hour % 12}:${date.minute} ${morningOrNight}";
+
+        bool doesContain = false;
+
+        for (final ugame in _upcomingGames) {
+          if (ugame["id"] == game) doesContain = true;
+        }
+
+        if (doesContain) continue;
+
+        setState(() {
+          _upcomingGames.add({
+            'title': gameInfo["title"],
+            'startTime': startTime,
+            'id': game,
+            'date': date,
+          });
+        });
+      }
+    }
+
+    getActiveGames();
+    Timer.periodic(const Duration(milliseconds: 3000), (_) async {
+      await getActiveGames();
+    });
+    //Cancel timer you navigate away
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF1A3E2F),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // Active Game Section
-            _buildActiveGamesSection(),
-            const SizedBox(height: 20),
-            // Upcoming Games Section
-            _buildUpcomingGamesSection(),
-            const SizedBox(height: 00),
-            // Bottom "PickUP" Button
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40),
+      body: Column(
+        children: [
+          _buildActiveGamesSection(),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  // Active Game Section
+                  // Upcoming Games Section
+                  _buildUpcomingGamesSection(),
+                ],
+              ),
+            ),
+          ),
+          // Bottom "PickUP" Button
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 70),
               child: ElevatedButton(
                 onPressed: () {
                   // Navigate to the game creation page
-                  Navigator.pushNamed(context, '/login/home/create');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const GameCreation(),
+                    ),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF88F37F), // Light green color
@@ -71,7 +141,7 @@ class _HomePageState extends State<HomePage> {
                   child: Text(
                     'PickUP',
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 23,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
                     ),
@@ -79,9 +149,8 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-            const SizedBox(height: 20),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -105,7 +174,45 @@ class _HomePageState extends State<HomePage> {
       );
     } else {
       // Display the first active game only
-      final Map<String, dynamic> game = _activeGames.first;
+      Map<String, dynamic> closestGame = {};
+
+      int differenceInMinutes = 0;
+
+      for (final game in _upcomingGames) {
+        if (closestGame.isNotEmpty) {
+          if (closestGame["date"].isBefore(game["date"])) closestGame = game;
+          print(closestGame["date"]);
+          differenceInMinutes = tz.TZDateTime.now(Location.getTimeZone())
+              .difference(closestGame["date"])
+              .inMinutes;
+
+          print(differenceInMinutes);
+
+          if (differenceInMinutes <= 15) {
+            sliderWidget = Center(
+              child: SliderButton(
+                action: () async {
+                  /// Do something here OnSlideComplete
+                  print("complete");
+                  sliderWidget = null;
+                },
+                backgroundColor: const Color.fromARGB(255, 19, 189, 7),
+                label: const Text(
+                  "Slide to Check In",
+                  style: TextStyle(
+                    color: Color(0xff4a4a4a),
+                    fontWeight: FontWeight.w500,
+                    fontSize: 17,
+                  ),
+                ),
+              ),
+            );
+          }
+        } else {
+          closestGame = game;
+        }
+      }
+      //MAKE LOCATION NAMED
 
       return Container(
         decoration: const BoxDecoration(
@@ -129,21 +236,7 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Text(
-                  '${game['teamName1']}',
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const Text(
-                  'vs',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  '${game['teamName2']}',
+                  '${closestGame['title']}',
                   style: const TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
@@ -153,7 +246,7 @@ class _HomePageState extends State<HomePage> {
             ),
             const SizedBox(height: 5),
             Text(
-              '${game['gameTime']}',
+              '${closestGame['startTime']}',
               style: const TextStyle(
                 color: Colors.black,
               ),
@@ -165,7 +258,7 @@ class _HomePageState extends State<HomePage> {
                 const Icon(Icons.location_on, color: Colors.black),
                 const SizedBox(width: 5),
                 Text(
-                  '${game['location']}',
+                  '${closestGame['location']}',
                   style: const TextStyle(
                     color: Colors.black,
                   ),
@@ -173,14 +266,17 @@ class _HomePageState extends State<HomePage> {
                 const Spacer(),
                 const Icon(Icons.access_time, color: Colors.black),
                 const SizedBox(width: 5),
-                const Text(
-                  '5 min before',
-                  style: TextStyle(
+                Text(
+                  '$differenceInMinutes till',
+                  style: const TextStyle(
                     color: Colors.black,
                   ),
                 ),
               ],
             ),
+            const SizedBox(height: 20),
+            // SliderButton for Check In
+            sliderWidget ?? Container(),
           ],
         ),
       );
@@ -199,6 +295,7 @@ class _HomePageState extends State<HomePage> {
             fontWeight: FontWeight.bold,
             fontSize: 18,
           ),
+          textAlign: TextAlign.center,
         ),
       );
     } else {
@@ -208,13 +305,15 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            const SizedBox(height: 10),
             const Text(
-              'Upcoming Games',
+              'Your Games',
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
-                fontSize: 20,
+                fontSize: 23,
               ),
+              textAlign: TextAlign.center, // Centered text
             ),
             const SizedBox(height: 10),
             ListView.builder(
@@ -234,32 +333,18 @@ class _HomePageState extends State<HomePage> {
                     ),
                     padding: const EdgeInsets.all(12),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Expanded(
                           child: Text(
-                            '${game['teamName1']} vs ${game['teamName2']} ${game['gameTime']}',
+                            '${game['title']} ${game['startTime']}',
                             style: const TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
+                              fontSize: 16, // Increased font size
                             ),
                             overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        ElevatedButton(
-                          onPressed: () {
-                            // Handle reminder functionality
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                const Color(0xFF88F37F), // Light green color
-                          ),
-                          child: const Text(
-                            'Remind Me',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            textAlign: TextAlign.start, // Left-aligned text
                           ),
                         ),
                       ],
@@ -274,37 +359,3 @@ class _HomePageState extends State<HomePage> {
     }
   }
 }
-
-// mock_data.dart
-
-/// Mock data for active games
-List<Map<String, dynamic>> mockActiveGames = [
-  {
-    'gameTime': '7:30 PM',
-    'location': 'Central Park',
-    'teamName1': 'Team A',
-    'teamName2': 'Team B',
-  },
-  {
-    'gameTime': '8:45 PM',
-    'location': 'Prospect Park',
-    'teamName1': 'Team X',
-    'teamName2': 'Team Y',
-  },
-];
-
-/// Mock data for upcoming games
-List<Map<String, dynamic>> mockUpcomingGames = [
-  {
-    'gameTime': '6:00 PM',
-    'location': 'Flushing Meadows Park',
-    'teamName1': 'Team C',
-    'teamName2': 'Team D',
-  },
-  {
-    'gameTime': '9:15 PM',
-    'location': 'Bryant Park',
-    'teamName1': 'Team Z',
-    'teamName2': 'Team W',
-  },
-];

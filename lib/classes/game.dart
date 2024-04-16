@@ -22,7 +22,7 @@ Map<String, dynamic> emptyMap = {};
 
 
 class Game {
-  String name;
+  String title;
   String sport;
   String description;
   int numOfPlayers = 0;
@@ -37,12 +37,12 @@ class Game {
   final String _gameID = generateRandomHex();
 
   // Constructor
-  Game(this.name, this.sport, this.description,
-      this._maxNumOfPlayers, this.startTime);
+  Game(this.title, this.sport, this.description, this._maxNumOfPlayers,
+      this.startTime);
 
   Future<Map<String, dynamic>> toMap() async {
     return {
-      'name': name,
+      'title': title,
       'organizer': await User.getUserID(),
       'gameID': _gameID,
       'sport': sport,
@@ -51,15 +51,17 @@ class Game {
       'location': location,
       'numOfPlayers': numOfPlayers,
       'maxNumOfPlayers': _maxNumOfPlayers,
-      'timeCreated': _timeCreated.toIso8601String(),
+      'timeCreated': DateTime.now(),
       'startTime': startTime.toIso8601String(),
+      'checkedIn': {},
+      'chat': [],
     };
   }
 
   // Accessors (Getters)
   String get gameID => _gameID;
   int get maxNumOfPlayers => _maxNumOfPlayers;
-  DateTime get timeCreated => _timeCreated;
+  Map<String, dynamic> get location => _location;
 
   Future<void> updateGame() async {
     //Before any action is taken the values must be updated
@@ -75,11 +77,14 @@ class Game {
 
     final globablTargetGame =
         FirebaseFirestore.instance.collection("ActiveGames").doc(_gameID);
+
     final usersTargetGame = usersActiveGames.doc(_gameID);
 
     DocumentSnapshot globablTargetGameSS = await globablTargetGame.get();
 
-    if ((await usersActiveGames.get()).docs.length >= 5) return;
+    if ((await usersActiveGames.get()).docs.length >= 5) {
+      throw 'You have reached the limit of games you can make';
+    }
 
     if (globablTargetGameSS.exists) {
       //Prompt User to delete Games or become an official organizer
@@ -89,7 +94,7 @@ class Game {
       await globablTargetGame.set(await toMap());
       await usersTargetGame.set(emptyMap);
     }
-    print(2);
+
     await Game.join(_gameID);
   }
 
@@ -107,7 +112,7 @@ class Game {
 
   // Read
   static Future<Object?> fetch([String target = '']) async {
-    print("Fetching $target");
+    //print("Fetching $target");
     CollectionReference activeGamesColl =
         FirebaseFirestore.instance.collection("ActiveGames");
 
@@ -135,22 +140,19 @@ class Game {
   static Future<void> edit(String target, Map<String, dynamic> doc) async {
     print("Editing $target");
 
-    try {
-      final DocumentReference targetGameDoc =
-          FirebaseFirestore.instance.collection("ActiveGames").doc(target);
+    final DocumentReference targetGameDoc =
+        FirebaseFirestore.instance.collection("ActiveGames").doc(target);
 
-      final targetGame = await targetGameDoc.get();
+    final targetGame = await targetGameDoc.get();
 
-      if (!targetGame.exists) throw "$target doesn't exist.";
+    if (!targetGame.exists) throw "$target doesn't exist.";
 
-      if ((targetGame.data() as Map<String, dynamic>)["organizer"] !=
-          await User.getUserID()) {
-        throw "You're not $target's owner!";
-      }
-      await targetGameDoc.set(doc);
-    } catch (e) {
-      print(e);
+    if ((targetGame.data() as Map<String, dynamic>)["organizer"] !=
+        await User.getUserID()) {
+      throw "You're not $target's owner!";
     }
+
+    await targetGameDoc.set(doc);
   }
 
   // Destroy
@@ -206,10 +208,9 @@ class Game {
           id: 0,
           title: 'Your $targetGameSport Game is Starting in 15 minutes!',
           body: "Ready to Check In? ",
-          payload: "payload",
-          scheduledTime: tz.TZDateTime.parse(
-                  Location.getTimeZone(), targetGame["startTime"])
-              .subtract(const Duration(minutes: 15)));
+          payload: "payload", //just the homepage so they can checkin
+          scheduledTime: tz.TZDateTime.now(Location.getTimeZone())
+              .add(const Duration(seconds: 5)));
     } catch (e) {
       print(e);
     }
@@ -250,6 +251,62 @@ class Game {
     }
   }
 
+  static Future<void> checkIn(String target) async {
+    print('Checking In ${User.getUserID()}');
+
+    Map<String, dynamic> game =
+        await Game.fetch(target) as Map<String, dynamic>;
+    game["checkedIn"].add(User.getUserID());
+
+    await Game.edit(target, game);
+  }
+
+  static Future<void> message(String target, String msg) async {
+    Map<String, dynamic> doc = await Game.fetch(target) as Map<String, dynamic>;
+
+    Map<String, dynamic> package = {
+      "message": msg,
+      "user": await User.getUserID(),
+      "time": DateTime.now().toIso8601String()
+    };
+
+    (doc["chat"] as List<dynamic>).add(package);
+
+    await edit(target, doc);
+  }
+
+  static Future<List<Map<String, dynamic>>> search(
+      String target, Map<String, dynamic> attributes) async {
+    //sport, title, startTime, gameID
+
+    List<Object?> games = await Game.fetch(target) as List<Object?>;
+
+    List<Map<String, dynamic>> matches = [];
+
+    for (final object in games) {
+      Map<String, dynamic> game = object as Map<String, dynamic>;
+
+      if (attributes["title"] == game["title"]) {
+        matches.add(game);
+      } else if (attributes["sport"] == game["sport"]) {
+        matches.add(game);
+      } else if (attributes["gameID"] == game["gameID"]) {
+        matches.add(game);
+      }
+    }
+
+    return matches;
+  }
+
+  static Future<List<Map<String, dynamic>>> sort(
+      String target, String sort) async {
+    List<Object?> games = await Game.fetch(target) as List<Object?>;
+
+    List<Map<String, dynamic>> matches = [];
+
+    return matches;
+  }
+
   // Firestore Document => Game
   static Future<Game?> firestoreToGame(String target) async {
     print("Converting $target to a Game object.");
@@ -258,7 +315,7 @@ class Game {
           (await fetch(target)) as Map<String, dynamic>;
 
       return Game(
-          jsonData["name"],
+          jsonData["title"],
           jsonData["sport"],
           jsonData["description"],
           jsonData["maxNumOfPlayers"],
@@ -273,6 +330,6 @@ class Game {
 
 String generateRandomHex() {
   var random = Random.secure();
-  var values = List<int>.generate(6, (i) => random.nextInt(256));
+  var values = List<int>.generate(9, (i) => random.nextInt(256));
   return values.map((e) => e.toRadixString(25).padLeft(2, '0')).join();
 }

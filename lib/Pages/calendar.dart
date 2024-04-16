@@ -7,8 +7,8 @@ import 'package:timezone/timezone.dart' as tz;
 
 //Choose Date -> Choose Time
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class Calendar extends StatelessWidget {
+  const Calendar({super.key});
 
   // This widget is the root of your application.
   @override
@@ -40,9 +40,13 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
+DateTime _currentDate = DateTime.now();
+final DateTime _currentDate2 = DateTime.now();
+int selectedHour = DateTime.now().hour;
+int selectedMinute = DateTime.now().minute;
+bool _isSelectedPM = false;
+
 class _MyHomePageState extends State<MyHomePage> {
-  DateTime _currentDate = DateTime.now();
-  final DateTime _currentDate2 = DateTime.now();
   //List<DateTime> _markedDate = [DateTime(2018, 9, 20), DateTime(2018, 10, 11)];
 
   @override
@@ -84,8 +88,8 @@ class _MyHomePageState extends State<MyHomePage> {
       todayBorderColor: Colors.grey,
       markedDateMoreShowTotal:
           true, // null for not showing hidden events indicator
-//          markedDateIconMargin: 9,
-//          markedDateIconOffset: 3,
+      //markedDateIconMargin: 9,
+      //markedDateIconOffset: 3,
     );
 
     return Scaffold(
@@ -111,7 +115,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   right: 16.0,
                 ),
               ),
-              const HourMinuteDropdowns(), //
+              const HourMinuteDropdowns(),
+              const AmpmButton(),
             ],
           ),
         ));
@@ -126,9 +131,7 @@ class HourMinuteDropdowns extends StatefulWidget {
 }
 
 class _HourMinuteDropdownsState extends State<HourMinuteDropdowns> {
-  int selectedHour = DateTime.now().hour;
-  int selectedMinute = DateTime.now().minute;
-
+  //sportsGames[selectedSport]!.instantiate();
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -137,17 +140,16 @@ class _HourMinuteDropdownsState extends State<HourMinuteDropdowns> {
         children: [
           DropdownButton<int>(
             value: selectedHour % 12,
-            iconSize: 0,
+            iconSize: 10,
             onChanged: (int? newValue) {
               setState(() {
                 selectedHour = newValue!;
-                print(selectedHour);
+                _currentDate = _currentDate.copyWith(hour: selectedHour);
               });
             },
             items: List.generate(12, (hour) {
-              print(selectedHour);
               return DropdownMenuItem<int>(
-                value: hour,
+                value: (hour + 1) % 12,
                 child: Text('${hour + 1}'),
               );
             }),
@@ -155,10 +157,11 @@ class _HourMinuteDropdownsState extends State<HourMinuteDropdowns> {
           const SizedBox(height: 10),
           DropdownButton<int>(
             value: selectedMinute,
-            iconSize: 0,
+            iconSize: 10,
             onChanged: (int? newValue) {
               setState(() {
                 selectedMinute = newValue!;
+                _currentDate = _currentDate.copyWith(minute: selectedMinute);
               });
             },
             items: List.generate(60, (minute) {
@@ -168,8 +171,86 @@ class _HourMinuteDropdownsState extends State<HourMinuteDropdowns> {
               );
             }),
           ),
+          ElevatedButton(
+            onPressed: () async {
+              Location.step();
+              print(Location.get());
+              //Navigator.pushNamed(context, '/login/home/create/calendar/location');
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color.fromARGB(255, 94, 160, 96),
+            ),
+            child: const Text(
+              'Choose Location',
+              style: TextStyle(color: Colors.white, fontSize: 18),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              print(tz.TZDateTime.parse(
+                      Location.getTimeZone(), _currentDate.toIso8601String())
+                  .add(Duration(hours: _isSelectedPM ? 12 : 0)));
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color.fromARGB(255, 94, 160, 96),
+            ),
+            child: const Text(
+              'Go To Maps',
+              style: TextStyle(color: Colors.white, fontSize: 18),
+            ),
+          ),
         ],
       ),
+    );
+  }
+}
+
+class AmpmButton extends StatefulWidget {
+  const AmpmButton({super.key});
+
+  @override
+  _AmpmButtonState createState() => _AmpmButtonState();
+}
+
+class _AmpmButtonState extends State<AmpmButton> {
+  @override
+  void initState() {
+    super.initState();
+    final now = TimeOfDay.now();
+    _isSelectedPM = (now.period == DayPeriod.am ? 'AM' : 'PM') == 'PM';
+  }
+
+  void _toggleSelection() {
+    setState(() {
+      _isSelectedPM = !_isSelectedPM;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        TextButton(
+          onPressed: _toggleSelection,
+          style: TextButton.styleFrom(
+            foregroundColor: _isSelectedPM
+                ? Colors.blue
+                : Colors.grey, // Change color based on selection
+          ),
+          child: const Text('PM'),
+        ),
+        const SizedBox(width: 10), // Add spacing between buttons
+        TextButton(
+          onPressed: _toggleSelection,
+          style: TextButton.styleFrom(
+            foregroundColor: !_isSelectedPM
+                ? Colors.blue
+                : Colors.grey, // Change color based on selection
+          ),
+          child: const Text('AM'),
+        ),
+      ],
     );
   }
 }

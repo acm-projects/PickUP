@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pickup/components/createGameButton.dart';
 import 'package:pickup/components/gameTextFields.dart';
-import 'package:pickup/classes/gameTemplates.dart';
 
 class CreateGame extends StatefulWidget {
   const CreateGame({super.key});
@@ -16,7 +15,6 @@ class CreateGameState extends State<CreateGame> {
   var numPlayers = TextEditingController();
   var gameDescription = TextEditingController();
   var name = TextEditingController();
-  var startTime = TextEditingController();
   String selectedSport = 'Basketball'; // Store the selected sport
 
   final List<String> sports = [
@@ -74,12 +72,6 @@ class CreateGameState extends State<CreateGame> {
             hintTxt: 'Game details',
             obscureTxt: false,
           ),
-          const SizedBox(height: 15),
-          GameTextFields(
-            controller: startTime,
-            hintTxt: 'Time',
-            obscureTxt: false,
-          ),
 
           //This should be a mostly linear process,
           //One Game Attribute at a time
@@ -88,12 +80,7 @@ class CreateGameState extends State<CreateGame> {
             //Send them to select time page then to ->
             //Send Them To Location Selection Page
             onTap: () async {
-              // gameDetails()
-              try {
-                //sportsGames[selectedSport]!.instantiate();
-              } catch (e) {
-                print("error: $e");
-              }
+              Navigator.pushNamed(context, '/login/home/create/calendar');
             },
           )
         ],

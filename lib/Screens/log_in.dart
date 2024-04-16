@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:pickup/classes/user.dart' as local_user;
 
 // Ensure this import is correct and necessary
 
@@ -12,11 +14,37 @@ class Login extends StatefulWidget {
 
 class _LoginScreenState extends State<Login> {
   // Consider uncommenting these if you need to use them
-  // final TextEditingController _usernameController = TextEditingController();
-  // final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  String _errorMessage = '';
 
-  void _login() {
-    // Implement your login logic
+  Future<String?> _login(BuildContext context) async {
+    try {
+      print(_usernameController.text);
+      print(_passwordController.text);
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _usernameController.text,
+        password: _passwordController.text,
+      );
+
+      Navigator.pushNamed(context, '/Login/HomePage');
+
+      await local_user.User.createUser(
+          _usernameController.text, _passwordController.text, "", "");
+
+      setState(() {
+        _errorMessage = ''; // Clear any previous error message
+      });
+      return null;
+    } catch (e) {
+      print(e);
+      setState(() {
+        _errorMessage =
+            'Incorrect username or password'; // Set the error message
+      });
+
+      return e.toString(); // Return error message if unsuccessful
+    }
   }
 
   @override
@@ -47,14 +75,24 @@ class _LoginScreenState extends State<Login> {
             const SizedBox(height: 1),
             // Password field
             buildTextFormField(label: 'Password', isPassword: true),
+            if (_errorMessage
+                .isNotEmpty) // Display the error message if not empty
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Text(
+                  _errorMessage,
+                  style: const TextStyle(color: Colors.red, fontSize: 14.0),
+                  textAlign: TextAlign.center,
+                ),
+              ),
             const SizedBox(height: 20),
-            // Forgot password button
+
             const Align(
               alignment: Alignment.center,
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 15),
             // Login button with gradient
-            buildGradientButton(context, 'Login', _login),
+            buildGradientButton(context, 'Login'),
             const SizedBox(height: 20),
             // Sign up button
             Align(
@@ -116,15 +154,14 @@ class _LoginScreenState extends State<Login> {
       ),
       style: const TextStyle(color: Colors.white, fontFamily: 'LeagueSpartan'),
       obscureText: isPassword,
-      //controller: isPassword ? _passwordController : _usernameController,
+      controller: isPassword ? _passwordController : _usernameController,
     );
   }
 
-  Widget buildGradientButton(
-      BuildContext context, String text, VoidCallback onPressed) {
+  Widget buildGradientButton(BuildContext context, String text) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(30.0),
+        borderRadius: BorderRadius.circular(50.0),
         gradient: const LinearGradient(
           colors: [
             Color(0xFF80E046), // Green color #80E046
@@ -135,11 +172,13 @@ class _LoginScreenState extends State<Login> {
         ),
       ),
       child: ElevatedButton(
-        onPressed: onPressed,
+        onPressed: () {
+          _login(context);
+        },
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.transparent,
           shadowColor: Colors.transparent,
-          padding: const EdgeInsets.symmetric(vertical: 16.0),
+          padding: const EdgeInsets.symmetric(vertical: 26.0, horizontal: 100),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
         ),
@@ -147,7 +186,7 @@ class _LoginScreenState extends State<Login> {
           text,
           style: const TextStyle(
               color: Colors.black,
-              fontSize: 38.0,
+              fontSize: 28.0,
               fontFamily: 'Mada',
               fontWeight: FontWeight.w900),
         ),

@@ -23,6 +23,8 @@ const LatLng _AngelsChickenCoordinates = const LatLng(32.9773, -96.8688);
 const LatLng _k1Coor = const LatLng(32.985268524958364, -96.743522617005110);
 
 class LiveMap extends StatefulWidget {
+  const LiveMap({super.key});
+
   @override
   _LiveMapState createState() => _LiveMapState();
 }
@@ -58,7 +60,7 @@ class _LiveMapState extends State<LiveMap> {
 
   @override
   Widget build(BuildContext context) {
-    CameraPosition initialCameraPosition = CameraPosition(
+    CameraPosition initialCameraPosition = const CameraPosition(
       zoom: CameraZoom,
       tilt: CameraTilt,
       bearing: CameraBearing,
@@ -67,7 +69,7 @@ class _LiveMapState extends State<LiveMap> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Live Map'),
+        title: const Text('Live Map'),
       ),
       body: currentPosition == null
       ? const Center(
@@ -206,7 +208,7 @@ class _LiveMapState extends State<LiveMap> {
   }*/
 
   Marker CreateGameMarker(String sportType, LatLng gamePosition) {
-    Marker mk = new Marker(
+    Marker mk = Marker(
       markerId: MarkerId(sportType),
       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
       position: gamePosition,

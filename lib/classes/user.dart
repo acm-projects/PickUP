@@ -18,16 +18,21 @@ class User {
   User(this.firstName, this.lastName, this.email, this.birthday);
 
   //Go into User Database, and add a game
-  static Future<void> createUser(String name, String password) async {
-    final docUser = FirebaseFirestore.instance.collection('Users').doc(name);
+  static Future<void> createUser(
+      String email, String password, String firstName, String lastName) async {
+    final docUser = FirebaseFirestore.instance.collection('Users').doc(email);
 
     print("Creating User");
 
-    final user = {'name': name, 'age': 21, 'birthday:': DateTime(2001, 7, 28)};
+    final user = {'firstName': firstName, 'lastName': lastName, 'user': email};
 
-    await SECURE_STORAGE.write(key: "user", value: name);
+    await SECURE_STORAGE.write(key: "user", value: email);
 
     await SECURE_STORAGE.write(key: "password", value: password);
+
+    await SECURE_STORAGE.write(key: "firstName", value: firstName);
+
+    await SECURE_STORAGE.write(key: "lastName", value: lastName);
 
     await docUser.set(user);
   }
@@ -43,6 +48,11 @@ class User {
     final pass = await SECURE_STORAGE.read(key: 'password');
 
     return pass!;
+  }
+
+  static Future<void> logOut() async {
+    await SECURE_STORAGE.delete(key: "user");
+    await SECURE_STORAGE.delete(key: "password");
   }
 
   //delete from SS: await secureStorage.delete(key: 'token');

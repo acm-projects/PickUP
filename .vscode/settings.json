@@ -1,3 +1,4 @@
 {
-    "cmake.sourceDirectory": "C:/Users/raois/PickUp/PickUP/linux/flutter"
+    "cmake.sourceDirectory": "C:/Users/raois/PickUp/PickUP/linux/flutter",
+    "java.configuration.updateBuildConfiguration": "automatic"
 }

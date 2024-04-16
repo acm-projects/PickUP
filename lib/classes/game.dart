@@ -19,6 +19,8 @@ import 'dart:math';
 
 Map<String, dynamic> emptyMap = {};
 
+
+
 class Game {
   String title;
   String sport;
@@ -27,12 +29,14 @@ class Game {
   int numOfPlayers = 0;
   tz.TZDateTime startTime;
   List<String> players = []; // User IDs
-  static Game currentGame =
-      Game("", "", "", 0, tz.TZDateTime.now(Location.getTimeZone()));
+  Map<String, dynamic> location = Location.get(); //assume at the current pos
+
+  static Game currentGame = Game("", "", "", 0, tz.TZDateTime.now(Location.getTimeZone()));
 
   final int _maxNumOfPlayers;
-  final Map<String, dynamic> coordinates =
+  final Map<String, dynamic> _location =
       Location.get(); //assume at the current pos
+  final DateTime _timeCreated = DateTime.now();
   final String _gameID = generateRandomHex();
 
   // Constructor
@@ -71,7 +75,7 @@ class Game {
     print("Instantiating $_gameID");
     CollectionReference usersActiveGames = FirebaseFirestore.instance
         .collection("Users")
-        .doc(await User.getUserID())
+        .doc("ios@utdallas.edu")
         .collection("ActiveGames");
 
     final globablTargetGame =
@@ -97,6 +101,18 @@ class Game {
     await Game.join(_gameID);
   }
 
+  static Future<Object?> getGameLocation(String target) async {
+    CollectionReference activeGamesColl =
+        FirebaseFirestore.instance.collection("ActiveGames");
+
+    final DocumentReference targetGameDoc = activeGamesColl.doc(target);
+
+    final targetGame = await targetGameDoc.get();
+
+    print((targetGame as Map<String, dynamic>)['location']);
+    return null;
+  }
+
   // Read
   static Future<Object?> fetch([String target = '']) async {
     //print("Fetching $target");
@@ -117,7 +133,8 @@ class Game {
 
     final QuerySnapshot activeGames = await activeGamesColl.get();
 
-    final activeGamesData = activeGames.docs.map((e) => e.data()).toList();
+    final activeGamesData =
+        activeGames.docs.map((e) => e.data() as Map<String, dynamic>).toList();
 
     return activeGamesData;
   }

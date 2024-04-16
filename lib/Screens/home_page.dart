@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'choose_gametype.dart';
+import 'package:pickup/classes/user.dart';
 import 'package:slider_button/slider_button.dart';
 import 'package:pickup/classes/game.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:pickup/classes/location.dart';
+import 'package:timezone/timezone.dart' as tz;
 import 'dart:async';
 
 class HomePage extends StatefulWidget {
@@ -13,6 +17,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   List<Map<String, dynamic>> _activeGames = [];
   List<Map<String, dynamic>> _upcomingGames = [];
+
+  Widget? sliderWidget;
+
   @override
   void initState() {
     super.initState();
@@ -26,28 +33,79 @@ class _HomePageState extends State<HomePage> {
       }
     ];
     // Mock data for upcoming games
-    _upcomingGames = [
-      {
-        'teamName1': 'Arsenal',
-        'teamName2': 'Liverpool',
-        'gameTime': '3:00 PM',
-      },
-      {
-        'teamName1': 'Barcelona',
-        'teamName2': 'Real Madrid',
-        'gameTime': '5:00 PM',
-      },
-    ];
-    Timer.periodic(Duration(milliseconds: 3000), (_) async {
-      //List<dynamic> gameChat = (await Game.fetch('858g98137a5i') as Map<String, dynamic>)["chat"];
+    _upcomingGames = [];
 
-      setState(() {
-        _upcomingGames.add({
-          'teamName1': 'Chelsea',
-          'teamName2': 'Man UTD',
-          'gameTime': '7:30 PM',
+    Future<void> getActiveGames() async {
+      setState(() {});
+      CollectionReference usersJoinedGames = FirebaseFirestore.instance
+          .collection("Users")
+          .doc(await User.getUserID())
+          .collection("JoinedGames");
+
+      List<String> games =
+          (await usersJoinedGames.get()).docs.map((doc) => doc.id).toList();
+
+      for (final game in games) {
+        if (game == 'bedrock') continue;
+        Map<String, dynamic> gameInfo =
+            await Game.fetch(game) as Map<String, dynamic>;
+        tz.TZDateTime date =
+            tz.TZDateTime.parse(Location.getTimeZone(), gameInfo["startTime"]);
+
+        String morningOrNight = date.hour - 12 >= 0 ? "PM" : "AM";
+
+        final Map<int, String> monthsInYear = {
+          1: 'January',
+          2: 'February',
+          3: 'March',
+          4: 'April',
+          5: 'May',
+          6: 'June',
+          7: 'July',
+          8: 'August',
+          9: 'September',
+          10: 'October',
+          11: 'November',
+          12: 'December',
+        };
+
+        String startTime =
+            "${monthsInYear[date.month]} ${date.day} ${date.hour - 12 > 0 ? date.hour - 12: date.hour}:${date.minute.toString().padLeft(2, '0')} ${morningOrNight}";
+
+        bool doesContain = false;
+
+        for (final ugame in _upcomingGames) {
+          if (ugame["id"] == game) doesContain = true;
+        }
+
+        if (tz.TZDateTime.now(Location.getTimeZone()).isAfter(date)) {
+          for (int index = 0; index < _upcomingGames.length; index++) {
+            if (_upcomingGames[index]["id"] == game) {
+              _upcomingGames.remove(_upcomingGames[index]);
+            }
+          }
+          sliderWidget = null;
+          await Game.leave(game);
+          continue;
+        }
+
+        if (doesContain) continue;
+
+        setState(() {
+          _upcomingGames.add({
+            'title': gameInfo["title"],
+            'startTime': startTime,
+            'id': game,
+            'date': date,
+            'location': gameInfo["location"],
+          });
         });
-      });
+      }
+    }
+
+    getActiveGames();
+    Timer.periodic(const Duration(milliseconds: 3000), (_) async {
+      await getActiveGames();
     });
     //Cancel timer you navigate away
   }
@@ -75,7 +133,7 @@ class _HomePageState extends State<HomePage> {
           Align(
             alignment: Alignment.bottomCenter,
             child: Padding(
-              padding: const EdgeInsets.only(bottom: 70),
+              padding: const EdgeInsets.only(bottom: 80),
               child: ElevatedButton(
                 onPressed: () {
                   // Navigate to the game creation page
@@ -93,7 +151,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 child: const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 12),
+                  padding: EdgeInsets.symmetric(vertical: 9, horizontal: 120),
                   child: Text(
                     'PickUP',
                     style: TextStyle(
@@ -109,7 +167,7 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
     );
-}
+  }
 
   Widget _buildActiveGamesSection() {
     if (_activeGames.isEmpty) {
@@ -130,7 +188,54 @@ class _HomePageState extends State<HomePage> {
       );
     } else {
       // Display the first active game only
-      final Map<String, dynamic> game = _activeGames.first;
+      Map<String, dynamic> closestGame = {};
+
+      int differenceInMinutes = -1;
+
+      for (final game in _upcomingGames) {
+        if (closestGame.isNotEmpty) {
+          if (closestGame["date"].isBefore(game["date"])) closestGame = game;
+        } else {
+          closestGame = game;
+        }
+        differenceInMinutes = closestGame["date"]
+            .difference(tz.TZDateTime.now(Location.getTimeZone()))
+            .inMinutes;
+
+        if (differenceInMinutes <= 15 && differenceInMinutes >= 0) {
+          sliderWidget = Center(
+            child: SliderButton(
+              action: () async {
+                setState(() async {
+                /// Do something here OnSlideComplete
+                await Game.checkIn(closestGame["id"]);
+
+                print(_upcomingGames.length);
+                for (int index = 0; index < _upcomingGames.length; index++) {
+                  if (_upcomingGames[index]["id"] == game["id"]) {
+                    _upcomingGames.remove(_upcomingGames[index]);
+                      sliderWidget = null;
+                      await Game.leave(closestGame["id"]);
+                      break;
+                  }
+                }
+                });
+              },
+              backgroundColor: const Color.fromARGB(255, 19, 189, 7),
+              label: const Text(
+                "Slide to Check In",
+                style: TextStyle(
+                  color: Color(0xff4a4a4a),
+                  fontWeight: FontWeight.w500,
+                  fontSize: 17,
+                ),
+              ),
+            ),
+          );
+        }
+      }
+      //MAKE LOCATION NAMED
+
       return Container(
         decoration: const BoxDecoration(
           color: Color(0xFF88F37F),
@@ -153,21 +258,7 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Text(
-                  '${game['teamName1']}',
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const Text(
-                  'vs',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  '${game['teamName2']}',
+                  '${closestGame['title'] == null ? "No Active Games" : closestGame['title']}',
                   style: const TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
@@ -177,7 +268,7 @@ class _HomePageState extends State<HomePage> {
             ),
             const SizedBox(height: 5),
             Text(
-              '${game['gameTime']}',
+              '${closestGame['startTime'] == null ? "" : closestGame['startTime']}',
               style: const TextStyle(
                 color: Colors.black,
               ),
@@ -189,7 +280,7 @@ class _HomePageState extends State<HomePage> {
                 const Icon(Icons.location_on, color: Colors.black),
                 const SizedBox(width: 5),
                 Text(
-                  '${game['location']}',
+                  '${closestGame['location'] == null ? "No Location" : closestGame['location']}',
                   style: const TextStyle(
                     color: Colors.black,
                   ),
@@ -197,9 +288,9 @@ class _HomePageState extends State<HomePage> {
                 const Spacer(),
                 const Icon(Icons.access_time, color: Colors.black),
                 const SizedBox(width: 5),
-                const Text(
-                  '5 min before',
-                  style: TextStyle(
+                Text(
+                  '${differenceInMinutes < 0 ? "" : differenceInMinutes.toString() + " min till"}',
+                  style: const TextStyle(
                     color: Colors.black,
                   ),
                 ),
@@ -207,23 +298,7 @@ class _HomePageState extends State<HomePage> {
             ),
             const SizedBox(height: 20),
             // SliderButton for Check In
-            Center(
-              child: SliderButton(
-                action: () async {
-                  /// Do something here OnSlideComplete
-                  print("complete");
-                },
-                backgroundColor: const Color.fromARGB(255, 19, 189, 7),
-                label: const Text(
-                  "Slide to Check In",
-                  style: TextStyle(
-                    color: Color(0xff4a4a4a),
-                    fontWeight: FontWeight.w500,
-                    fontSize: 17,
-                  ),
-                ),
-              ),
-            ),
+            sliderWidget ?? Container(),
           ],
         ),
       );
@@ -284,7 +359,7 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         Expanded(
                           child: Text(
-                            '${game['teamName1']} vs ${game['teamName2']} ${game['gameTime']}',
+                            '${game['title'] == null ? "" : game['title']} ${game['startTime'] == null ? "" : game['startTime']}',
                             style: const TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,

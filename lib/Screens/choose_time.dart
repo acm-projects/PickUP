@@ -14,7 +14,8 @@ class ChooseTime extends StatefulWidget {
 }
 
 class _ChooseTimeState extends State<ChooseTime> {
-  DateTime _currentDate = DateTime.now();
+  DateTime _currentDate =
+      DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
   final TextEditingController _hourController = TextEditingController();
   final TextEditingController _minuteController = TextEditingController();
   bool _isPM = false; // false for AM, true for PM
@@ -185,10 +186,27 @@ class _ChooseTimeState extends State<ChooseTime> {
                       backgroundColor: Colors.transparent,
                     ),
                     onPressed: () {
+                      DateTime date = _currentDate;
+
+                      print(_hourController.text);
+
+                      print(_isPM ? 12 : 0);
+
+                      date = date.add(Duration(
+                          hours: (int.parse(_hourController.text) +
+                              (_isPM ? 12 : 0)),
+                          minutes: int.parse(_minuteController.text)));
+
+                      print(date);
+
                       Game.currentGame.startTime = tz.TZDateTime.parse(
-                          Location.getTimeZone(),
-                          _currentDate.toIso8601String());
-                      Navigator.of(context).pushNamed('/ChooseLocation');
+                          Location.getTimeZone(), date.toIso8601String());
+
+                      if (date.subtract(const Duration(minutes: 15)).isAfter(DateTime.now())) {
+                        Navigator.of(context).pushNamed('/ChooseLocation');
+                      } else {
+                        print("Your Game Time Must Be 15 minutes Atleast After the Current Time");
+                      }
                     },
                     child: Container(
                       decoration: BoxDecoration(

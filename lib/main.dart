@@ -10,6 +10,7 @@ import 'Screens/choose_time.dart';
 import 'Screens/chat_page.dart';
 import 'package:pickup/classes/notification.dart';
 import 'Screens/nav_bar.dart';
+import 'Screens/profile.dart';
 import 'dart:io' show Platform;
 
 void main() async {
@@ -51,7 +52,8 @@ class PickUpApp extends StatelessWidget {
         '/ConfigureGame': (context) => const ConfigureGame(),
         '/ChooseTime': (context) => const ChooseTime(),
         '/ChooseLocation': (context) => const ChooseLocation(),
-        '/chatPage': (context) => const ChatPage(),
+        '/ChatPage': (context) => const ChatPage(),
+        '/Profile': (context) => const ProfilePage(),
       },
     );
   }

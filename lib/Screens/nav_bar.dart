@@ -107,7 +107,8 @@ class _MainPageState extends State<MainPage> {
             List<String> map = [
               '/Login/HomePage',
               '/ChooseLocation',
-              '/ConfigureGame',
+              '/ChooseGameType',
+              '/Profile'
             ];
             Navigator.of(context).pushNamed(map[index]);
           });

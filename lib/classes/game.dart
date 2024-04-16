@@ -23,6 +23,7 @@ class Game {
   String title;
   String sport;
   String description;
+  String location = "";
   int numOfPlayers = 0;
   tz.TZDateTime startTime;
   List<String> players = []; // User IDs
@@ -30,7 +31,7 @@ class Game {
       Game("", "", "", 0, tz.TZDateTime.now(Location.getTimeZone()));
 
   final int _maxNumOfPlayers;
-  final Map<String, dynamic> _location =
+  final Map<String, dynamic> coordinates =
       Location.get(); //assume at the current pos
   final String _gameID = generateRandomHex();
 
@@ -46,7 +47,8 @@ class Game {
       'sport': sport,
       'description': description,
       'players': players,
-      'location': _location,
+      'coordinates': coordinates,
+      'location': location,
       'numOfPlayers': numOfPlayers,
       'maxNumOfPlayers': _maxNumOfPlayers,
       'timeCreated': DateTime.now(),
@@ -59,7 +61,6 @@ class Game {
   // Accessors (Getters)
   String get gameID => _gameID;
   int get maxNumOfPlayers => _maxNumOfPlayers;
-  Map<String, dynamic> get location => _location;
 
   Future<void> updateGame() async {
     //Before any action is taken the values must be updated
@@ -147,6 +148,12 @@ class Game {
       final DocumentReference targetGameDoc =
           FirebaseFirestore.instance.collection("ActiveGames").doc(target);
 
+      final DocumentReference usersActiveGame = FirebaseFirestore.instance
+          .collection("Users")
+          .doc(await User.getUserID())
+          .collection("ActiveGames")
+          .doc(target);
+
       final targetGame = await targetGameDoc.get();
 
       if (!targetGame.exists) throw "$target doesn't exist.";
@@ -156,7 +163,13 @@ class Game {
         throw "You're not $target's owner!";
       }
 
+      for (String user
+          in (targetGame.data() as Map<String, dynamic>)["players"]) {
+        await Game.leave(target, user);
+      }
+      print(targetGameDoc);
       await targetGameDoc.delete();
+      await usersActiveGame.delete();
     } catch (e) {
       print(e);
     }
@@ -189,20 +202,22 @@ class Game {
 
       String targetGameSport = targetGame["sport"];
 
+      print("Adding Notification");
+
       LocalNotification.scheduleNotification(
           id: 0,
           title: 'Your $targetGameSport Game is Starting in 15 minutes!',
           body: "Ready to Check In? ",
           payload: "payload", //just the homepage so they can checkin
-          scheduledTime: tz.TZDateTime.now(Location.getTimeZone())
-              .add(const Duration(seconds: 5)));
+          scheduledTime: tz.TZDateTime.parse(Location.getTimeZone(), targetGame["startTime"])
+              .subtract(const Duration(minutes: 15)));
     } catch (e) {
       print(e);
     }
   }
 
   // Game Access - Leave
-  static Future<void> leave(String target) async {
+  static Future<void> leave(String target, [String? user]) async {
     print('Leaving $target');
     // Check if owner and if amount of players is greate than half then don't delete otherwise delete game
     CollectionReference usersJoinedGames = FirebaseFirestore.instance
@@ -224,12 +239,11 @@ class Game {
       targetGame["numOfPlayers"] = targetGame["players"].length;
 
       // Handle Game Ownership if Organizer leaves
+      await Game.edit(target, targetGame);
 
       if (targetGame["numOfPlayers"] == 0) {
         // Prompt the User that leaving will delete the game
         await Game.delete(target);
-      } else {
-        await Game.edit(target, targetGame);
       }
     } catch (e) {
       print(e);

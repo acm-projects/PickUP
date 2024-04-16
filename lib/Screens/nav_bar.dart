@@ -104,7 +104,12 @@ class _MainPageState extends State<MainPage> {
             const Duration(milliseconds: 300), // Animation duration
         onDestinationSelected: (index) {
           setState(() {
-            this.index = index;
+            List<String> map = [
+              '/Login/HomePage',
+              '/ChooseLocation',
+              '/ConfigureGame',
+            ];
+            Navigator.of(context).pushNamed(map[index]);
           });
         },
         destinations: [

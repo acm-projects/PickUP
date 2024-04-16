@@ -36,6 +36,7 @@ class _HomePageState extends State<HomePage> {
     _upcomingGames = [];
 
     Future<void> getActiveGames() async {
+      setState(() {});
       CollectionReference usersJoinedGames = FirebaseFirestore.instance
           .collection("Users")
           .doc(await User.getUserID())
@@ -76,6 +77,17 @@ class _HomePageState extends State<HomePage> {
           if (ugame["id"] == game) doesContain = true;
         }
 
+        if (tz.TZDateTime.now(Location.getTimeZone()).isAfter(date)) {
+          for (int index = 0; index < _upcomingGames.length; index++) {
+            if (_upcomingGames[index]["id"] == game) {
+              _upcomingGames.remove(_upcomingGames[index]);
+            }
+          }
+          sliderWidget = null;
+          await Game.leave(game);
+          continue;
+        }
+
         if (doesContain) continue;
 
         setState(() {
@@ -84,6 +96,7 @@ class _HomePageState extends State<HomePage> {
             'startTime': startTime,
             'id': game,
             'date': date,
+            'location': gameInfo["location"],
           });
         });
       }
@@ -176,40 +189,46 @@ class _HomePageState extends State<HomePage> {
       // Display the first active game only
       Map<String, dynamic> closestGame = {};
 
-      int differenceInMinutes = 0;
+      int differenceInMinutes = -1;
 
       for (final game in _upcomingGames) {
         if (closestGame.isNotEmpty) {
           if (closestGame["date"].isBefore(game["date"])) closestGame = game;
-          print(closestGame["date"]);
-          differenceInMinutes = tz.TZDateTime.now(Location.getTimeZone())
-              .difference(closestGame["date"])
-              .inMinutes;
-
-          print(differenceInMinutes);
-
-          if (differenceInMinutes <= 15) {
-            sliderWidget = Center(
-              child: SliderButton(
-                action: () async {
-                  /// Do something here OnSlideComplete
-                  print("complete");
-                  sliderWidget = null;
-                },
-                backgroundColor: const Color.fromARGB(255, 19, 189, 7),
-                label: const Text(
-                  "Slide to Check In",
-                  style: TextStyle(
-                    color: Color(0xff4a4a4a),
-                    fontWeight: FontWeight.w500,
-                    fontSize: 17,
-                  ),
-                ),
-              ),
-            );
-          }
         } else {
           closestGame = game;
+        }
+        differenceInMinutes = closestGame["date"]
+            .difference(tz.TZDateTime.now(Location.getTimeZone()))
+            .inMinutes;
+
+        print(differenceInMinutes);
+
+        if (differenceInMinutes <= 15 && differenceInMinutes >= 0) {
+          sliderWidget = Center(
+            child: SliderButton(
+              action: () async {
+                /// Do something here OnSlideComplete
+                await Game.checkIn(closestGame["id"]);
+                for (int index = 0; index < _upcomingGames.length; index++) {
+                  if (_upcomingGames[index]["id"] == game) {
+                    _upcomingGames.remove(_upcomingGames[index]);
+                  }
+                }
+                sliderWidget = null;
+                await Game.leave(closestGame["id"]);
+                sliderWidget = null;
+              },
+              backgroundColor: const Color.fromARGB(255, 19, 189, 7),
+              label: const Text(
+                "Slide to Check In",
+                style: TextStyle(
+                  color: Color(0xff4a4a4a),
+                  fontWeight: FontWeight.w500,
+                  fontSize: 17,
+                ),
+              ),
+            ),
+          );
         }
       }
       //MAKE LOCATION NAMED
@@ -236,7 +255,7 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Text(
-                  '${closestGame['title']}',
+                  '${closestGame['title'] == null ? "No Active Games" : closestGame['title']}',
                   style: const TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
@@ -246,7 +265,7 @@ class _HomePageState extends State<HomePage> {
             ),
             const SizedBox(height: 5),
             Text(
-              '${closestGame['startTime']}',
+              '${closestGame['startTime'] == null ? "" : closestGame['startTime']}',
               style: const TextStyle(
                 color: Colors.black,
               ),
@@ -258,7 +277,7 @@ class _HomePageState extends State<HomePage> {
                 const Icon(Icons.location_on, color: Colors.black),
                 const SizedBox(width: 5),
                 Text(
-                  '${closestGame['location']}',
+                  '${closestGame['location'] == null ? "No Location" : closestGame['location']}',
                   style: const TextStyle(
                     color: Colors.black,
                   ),
@@ -267,7 +286,7 @@ class _HomePageState extends State<HomePage> {
                 const Icon(Icons.access_time, color: Colors.black),
                 const SizedBox(width: 5),
                 Text(
-                  '$differenceInMinutes till',
+                  '${differenceInMinutes < 0 ? "" : differenceInMinutes.toString() + " min till"}',
                   style: const TextStyle(
                     color: Colors.black,
                   ),
@@ -337,7 +356,7 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         Expanded(
                           child: Text(
-                            '${game['title']} ${game['startTime']}',
+                            '${game['title'] == null ? "" : game['title']} ${game['startTime'] == null ? "" : game['startTime']}',
                             style: const TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,

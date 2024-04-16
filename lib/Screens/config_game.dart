@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pickup/classes/game.dart';
+import 'package:timezone/timezone.dart' as tz;
+import 'package:pickup/classes/location.dart';
 
 class ConfigureGame extends StatelessWidget {
   const ConfigureGame({super.key});
@@ -10,6 +12,7 @@ class ConfigureGame extends StatelessWidget {
 
     TextEditingController titleController = TextEditingController();
     TextEditingController descriptionController = TextEditingController();
+    TextEditingController locationController = TextEditingController();
 
     return MaterialApp(
         home: Scaffold(
@@ -74,6 +77,25 @@ class ConfigureGame extends StatelessWidget {
             const SizedBox(height: 16.0),
             TextFormField(
               decoration: const InputDecoration(
+                labelText: 'Name of Location',
+                labelStyle: TextStyle(
+                  color: Colors.white,
+                  fontFamily: 'LeagueSpartan',
+                  fontSize: 22.0,
+                  fontWeight: FontWeight.w900,
+                ),
+                hintText: 'Name the Location or Describe it',
+                hintStyle: TextStyle(color: Colors.grey),
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.green),
+                ),
+              ),
+              controller: locationController,
+              style: const TextStyle(color: Colors.white),
+            ),
+            const SizedBox(height: 16.0),
+            TextFormField(
+              decoration: const InputDecoration(
                 labelText: 'Description',
                 labelStyle: TextStyle(
                   color: Colors.white,
@@ -107,8 +129,11 @@ class ConfigureGame extends StatelessWidget {
                     // The background is transparent to maintain the gradient effect from the container
                   ),
                   onPressed: () {
+                    Game.currentGame = Game("", "", "", 0,
+                        tz.TZDateTime.now(Location.getTimeZone()));
                     Game.currentGame.title = titleController.text;
                     Game.currentGame.description = descriptionController.text;
+                    Game.currentGame.location = locationController.text;
                     Navigator.of(context).pushNamed('/ChooseTime');
                   },
                   child: Container(

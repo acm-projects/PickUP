@@ -98,7 +98,7 @@ class Game {
 
   // Read
   static Future<Object?> fetch([String target = '']) async {
-    print("Fetching $target");
+    //print("Fetching $target");
     CollectionReference activeGamesColl =
         FirebaseFirestore.instance.collection("ActiveGames");
 

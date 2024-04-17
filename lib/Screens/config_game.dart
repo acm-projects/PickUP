@@ -13,8 +13,6 @@ class ConfigureGame extends StatelessWidget {
     TextEditingController descriptionController = TextEditingController();
     TextEditingController locationController = TextEditingController();
 
-    User.getFirstName();
-
     titleController.text = "${User.firstName}'s $sport game";
 
     return MaterialApp(

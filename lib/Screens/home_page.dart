@@ -23,6 +23,11 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+
+    User.getFirstName();
+    User.getLastName();
+    User.getUserID();
+
     // Mock data for active game
     _activeGames = [
       {
@@ -108,7 +113,8 @@ class _HomePageState extends State<HomePage> {
     }
 
     getActiveGames();
-    HomePage.timer = Timer.periodic(const Duration(milliseconds: 3000), (_) async {
+    HomePage.timer =
+        Timer.periodic(const Duration(milliseconds: 3000), (_) async {
       await getActiveGames();
     });
     //Cancel timer you navigate away

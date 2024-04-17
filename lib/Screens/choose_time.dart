@@ -21,6 +21,19 @@ class _ChooseTimeState extends State<ChooseTime> {
   bool _isPM = false; // false for AM, true for PM
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+      int hour = DateTime.now().hour % 12;
+      if (hour == 0) {
+        hour = 12; // 0 and 12 should map to 12 in 12-hour format
+      }
+     _hourController.text = hour.toString();
+     _minuteController.text = DateTime.now().minute.toString();
+     _isPM = DateTime.now().hour - 12 >= 0;
+  }
+
+  @override
   Widget build(BuildContext context) {
     final calendarCarousel = CalendarCarousel<Event>(
       onDayPressed: (date, events) {
@@ -58,7 +71,7 @@ class _ChooseTimeState extends State<ChooseTime> {
       thisMonthDayBorderColor: Colors.grey, // Adjust as needed
       weekFormat: false,
       showOnlyCurrentMonthDate: true,
-      minSelectedDate: _currentDate.subtract(const Duration(days: 1)),
+      minSelectedDate: _currentDate,
       maxSelectedDate: _currentDate.add(const Duration(days: 62)),
       height: 420.0,
       selectedDateTime: _currentDate,
@@ -188,16 +201,10 @@ class _ChooseTimeState extends State<ChooseTime> {
                     onPressed: () {
                       DateTime date = _currentDate;
 
-                      print(_hourController.text);
-
-                      print(_isPM ? 12 : 0);
-
                       date = date.add(Duration(
                           hours: (int.parse(_hourController.text) +
                               (_isPM ? 12 : 0)),
                           minutes: int.parse(_minuteController.text)));
-
-                      print(date);
 
                       Game.currentGame.startTime = tz.TZDateTime.parse(
                           Location.getTimeZone(), date.toIso8601String());

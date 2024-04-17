@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pickup/classes/user.dart' as local_user;
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:pickup/classes/game.dart';
-import 'dart:async';
 
 class StartScreen extends StatefulWidget {
   const StartScreen({super.key});
@@ -53,7 +51,7 @@ class _StartScreenState extends State<StartScreen> {
     */
   }
 
-   @override
+  @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
@@ -64,7 +62,7 @@ class _StartScreenState extends State<StartScreen> {
           height: double.infinity,
         ),
         // Background pattern widget
-        BackgroundPattern(),
+        const BackgroundPattern(),
         Scaffold(
           backgroundColor:
               Colors.transparent, // Make scaffold background transparent
@@ -85,16 +83,14 @@ class _StartScreenState extends State<StartScreen> {
                     MainAxisAlignment.center, // Center horizontally
                 children: [
                   ElevatedButton(
-                    
-                     onPressed: () {
-                    
+                    onPressed: () {
                       Navigator.of(context).pushNamed('/Signup');
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor:
                           Colors.green.shade300, // Light green color
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: 32, vertical: 15),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 32, vertical: 15),
                       shape: RoundedRectangleBorder(
                         borderRadius:
                             BorderRadius.circular(30), // Rounded corners
@@ -120,14 +116,13 @@ class _StartScreenState extends State<StartScreen> {
                   ),
                   const SizedBox(width: 24),
                   ElevatedButton(
-                   onPressed: () {
-                      
+                    onPressed: () {
                       Navigator.of(context).pushNamed('/Login');
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green.shade300,
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: 32, vertical: 15),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 32, vertical: 15),
                       shape: RoundedRectangleBorder(
                         borderRadius:
                             BorderRadius.circular(30), // Rounded corners
@@ -152,7 +147,10 @@ class _StartScreenState extends State<StartScreen> {
     );
   }
 }
+
 class BackgroundPattern extends StatelessWidget {
+  const BackgroundPattern({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Positioned.fill(

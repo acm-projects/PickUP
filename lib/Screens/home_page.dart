@@ -70,7 +70,7 @@ class _HomePageState extends State<HomePage> {
         };
 
         String startTime =
-            "${monthsInYear[date.month]} ${date.day} ${date.hour - 12 > 0 ? date.hour - 12 : date.hour}:${date.minute.toString().padLeft(2, '0')} ${morningOrNight}";
+            "${monthsInYear[date.month]} ${date.day} ${date.hour - 12 > 0 ? date.hour - 12 : date.hour}:${date.minute.toString().padLeft(2, '0')} $morningOrNight";
 
         bool doesContain = false;
 
@@ -151,7 +151,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 child: const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 9, horizontal: 120),
+                  padding: EdgeInsets.symmetric(vertical: 13, horizontal: 10),
                   child: Text(
                     'PickUP',
                     style: TextStyle(
@@ -166,22 +166,18 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      floatingActionButton: 
-      Padding( 
+      floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 120),
-      child: FloatingActionButton(
-        onPressed: () {
-         
-          Navigator.of(context).pushNamed('/chatPage');
-        },
-        backgroundColor: const Color(0xFF88F37F), // Light green color
-        child: const Icon(Icons.message, color: Colors.black), // Message icon
-      ),
+        child: FloatingActionButton(
+          onPressed: () {
+            Navigator.of(context).pushNamed('/chatPage');
+          },
+          backgroundColor: const Color(0xFF88F37F), // Light green color
+          child: const Icon(Icons.message, color: Colors.black), // Message icon
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-    
     );
-    
   }
 
   Widget _buildActiveGamesSection() {
@@ -237,6 +233,7 @@ class _HomePageState extends State<HomePage> {
                 });
 
                 setState(() {});
+                return null;
               },
               backgroundColor: const Color.fromARGB(255, 19, 189, 7),
               label: const Text(
@@ -275,7 +272,7 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Text(
-                  '${closestGame['title'] == null ? "No Active Games" : closestGame['title']}',
+                  '${closestGame['title'] ?? "No Active Games"}',
                   style: const TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
@@ -285,7 +282,7 @@ class _HomePageState extends State<HomePage> {
             ),
             const SizedBox(height: 5),
             Text(
-              '${closestGame['startTime'] == null ? "" : closestGame['startTime']}',
+              '${closestGame['startTime'] ?? ""}',
               style: const TextStyle(
                 color: Colors.black,
               ),
@@ -297,7 +294,7 @@ class _HomePageState extends State<HomePage> {
                 const Icon(Icons.location_on, color: Colors.black),
                 const SizedBox(width: 5),
                 Text(
-                  '${closestGame['location'] == null ? "" : closestGame['location']}',
+                  '${closestGame['location'] ?? ""}',
                   style: const TextStyle(
                     color: Colors.black,
                   ),
@@ -306,7 +303,9 @@ class _HomePageState extends State<HomePage> {
                 const Icon(Icons.access_time, color: Colors.black),
                 const SizedBox(width: 5),
                 Text(
-                  '${differenceInMinutes < 0 ? "" : differenceInMinutes.toString() + " min till"}',
+                  differenceInMinutes < 0
+                      ? ""
+                      : "$differenceInMinutes min till",
                   style: const TextStyle(
                     color: Colors.black,
                   ),
@@ -379,7 +378,7 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         Expanded(
                           child: Text(
-                            '${game['title'] == null ? "" : game['title']} ${game['startTime'] == null ? "" : game['startTime']}',
+                            '${game['title'] ?? ""} ${game['startTime'] ?? ""}',
                             style: const TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,

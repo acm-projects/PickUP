@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pickup/classes/game.dart';
-import 'package:timezone/timezone.dart' as tz;
-import 'package:pickup/classes/location.dart';
 
 class ConfigureGame extends StatelessWidget {
   const ConfigureGame({super.key});
@@ -129,8 +127,6 @@ class ConfigureGame extends StatelessWidget {
                     // The background is transparent to maintain the gradient effect from the container
                   ),
                   onPressed: () {
-                    Game.currentGame = Game("", "", "", 0,
-                        tz.TZDateTime.now(Location.getTimeZone()));
                     Game.currentGame.title = titleController.text;
                     Game.currentGame.description = descriptionController.text;
                     Game.currentGame.location = locationController.text;

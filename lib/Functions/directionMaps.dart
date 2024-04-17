@@ -3,43 +3,34 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:pickup/classes/game.dart';
-import 'package:pickup/classes/location.dart' as userl;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_flutter_android/google_maps_flutter_android.dart';
 import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platform_interface.dart';
 //import 'package:geocoding/geocoding.dart';
 import 'package:http/http.dart' as http;
-import 'package:pickup/classes/user.dart';
 import 'dart:convert' as convert;
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:location/location.dart';
-import 'package:geolocator_platform_interface/src/enums/location_accuracy.dart'
-    as geo;
-import 'package:location_platform_interface/location_platform_interface.dart'
-    hide LocationAccuracy;
-
-import 'package:timezone/timezone.dart' as tz;
-import 'package:pickup/Functions/liveMaps.dart';
 
 const double CameraZoom = 16;
 const double CameraTilt = 80;
 const double CameraBearing = 30;
-const LatLng _utdCoordinates =
-    const LatLng(32.9864, -96.7497); // UTD coordinates
-const LatLng _AngelsChickenCoordinates = const LatLng(32.9773, -96.8688);
-const LatLng _k1Coor = const LatLng(32.985268524958364, -96.743522617005110);
+const LatLng _utdCoordinates = LatLng(32.9864, -96.7497); // UTD coordinates
+const LatLng _AngelsChickenCoordinates = LatLng(32.9773, -96.8688);
+const LatLng _k1Coor = LatLng(32.985268524958364, -96.743522617005110);
 //const LatLng _testingCenter = const LatLng(32.99501937800667, -96.75300623747732);
-const LatLng _frankFordDriver =
-    const LatLng(32.99803688995854, -96.75790995771933);
+const LatLng _frankFordDriver = LatLng(32.99803688995854, -96.75790995771933);
 
 class DirectionsMap extends StatefulWidget {
+  const DirectionsMap({super.key});
+
   @override
   _DirectionsMapState createState() => _DirectionsMapState();
 }
 
 class _DirectionsMapState extends State<DirectionsMap> {
-  Completer<GoogleMapController> _controller = Completer();
-  Set<Marker> _markers = Set<Marker>();
+  final Completer<GoogleMapController> _controller = Completer();
+  final Set<Marker> _markers = <Marker>{};
   //late BitmapDescriptor customIcon;
   List<LatLng> polylineCoordinates = [];
   Set<Polyline> polylines = {};
@@ -54,7 +45,7 @@ class _DirectionsMapState extends State<DirectionsMap> {
   String searchValue = '';
   TextEditingController searchController = TextEditingController();
   //iveMap liveMaps = LiveMap();
-  LatLng? currentPosition = null;
+  LatLng? currentPosition;
 
   /*LatLng? fetchLocation(){
     LatLng currentLocation;
@@ -91,19 +82,19 @@ class _DirectionsMapState extends State<DirectionsMap> {
     //start = LatLng(0, 0); //_utdCoordinates;
     //end = LatLng(0, 0); //_AngelsChickenCoordinates;
     _markers.add(Marker(
-      markerId: MarkerId('Current Location'),
+      markerId: const MarkerId('Current Location'),
       position: start,
       icon: markerIcon,
-      infoWindow: InfoWindow(title: 'Start'),
+      infoWindow: const InfoWindow(title: 'Start'),
     ));
     _markers.add(Marker(
-      markerId: MarkerId('End'),
+      markerId: const MarkerId('End'),
       position: end,
       icon: BitmapDescriptor.defaultMarker,
-      infoWindow: InfoWindow(title: 'End'),
+      infoWindow: const InfoWindow(title: 'End'),
     ));
 
-    _markers.add(Marker(
+    _markers.add(const Marker(
       markerId: MarkerId('K1'),
       position: _k1Coor,
       icon: BitmapDescriptor.defaultMarker,
@@ -115,19 +106,19 @@ class _DirectionsMapState extends State<DirectionsMap> {
     icon: BitmapDescriptor.defaultMarker,
     infoWindow: InfoWindow(title: 'UT Dallas Testing Center'),
   ));*/
-    _markers.add(Marker(
+    _markers.add(const Marker(
       markerId: MarkerId('Frankford Drive'),
       position: _frankFordDriver,
       icon: BitmapDescriptor.defaultMarker,
       infoWindow: InfoWindow(title: 'FrankFord Drive'),
     ));
-    _markers.add(Marker(
+    _markers.add(const Marker(
       markerId: MarkerId('Home'),
       position: _utdCoordinates,
       icon: BitmapDescriptor.defaultMarker,
       infoWindow: InfoWindow(title: 'Home'),
     ));
-    displayRoute(start!, end!);
+    displayRoute(start, end);
     _monitorUserLocation();
 
     final GoogleMapsFlutterPlatform mapsImplementation =
@@ -155,30 +146,30 @@ class _DirectionsMapState extends State<DirectionsMap> {
 
   Future<void> positionCamera(LatLng pos) async {
     final GoogleMapController controller = await _controller.future;
-    CameraPosition _newCameraPosition = CameraPosition(
+    CameraPosition newCameraPosition = CameraPosition(
       target: pos,
       zoom: 16,
     );
     await controller.animateCamera(
-      CameraUpdate.newCameraPosition(_newCameraPosition),
+      CameraUpdate.newCameraPosition(newCameraPosition),
     );
   }
 
   Future<void> getLocationUpdates() async {
-    bool _serviceEnabled;
-    PermissionStatus _permissionGranted;
+    bool serviceEnabled;
+    PermissionStatus permissionGranted;
 
-    _serviceEnabled = await locationController.serviceEnabled();
-    if (_serviceEnabled) {
-      _serviceEnabled = await locationController.requestService();
+    serviceEnabled = await locationController.serviceEnabled();
+    if (serviceEnabled) {
+      serviceEnabled = await locationController.requestService();
     } else {
       return;
     }
 
-    _permissionGranted = await locationController.hasPermission();
-    if (_permissionGranted == PermissionStatus.denied) {
-      _permissionGranted = await locationController.requestPermission();
-      if (_permissionGranted != PermissionStatus.granted) {
+    permissionGranted = await locationController.hasPermission();
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await locationController.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) {
         return;
       }
     }
@@ -211,26 +202,22 @@ class _DirectionsMapState extends State<DirectionsMap> {
   }
 
   void findGame() {
-    if (start != null && end != null) {
-      MarkerId markerId = MarkerId(searchValue);
-      Marker? foundMarker;
-      for (Marker marker in _markers) {
-        if (marker.markerId.value == searchValue) {
-          foundMarker = marker;
-          break;
-        }
+    MarkerId markerId = MarkerId(searchValue);
+    Marker? foundMarker;
+    for (Marker marker in _markers) {
+      if (marker.markerId.value == searchValue) {
+        foundMarker = marker;
+        break;
       }
-      if (foundMarker != null) {
-        print('Found Marker: ${foundMarker.markerId}');
-        LatLng markerPosition = foundMarker.position;
-        print('Marker Position: $markerPosition');
-        displayRoute(currentPosition!, markerPosition);
-        //_controller.animateCamera(CameraUpdate.newLatLng(markerPosition));
-      } else {
-        print('Marker not found');
-      }
+    }
+    if (foundMarker != null) {
+      print('Found Marker: ${foundMarker.markerId}');
+      LatLng markerPosition = foundMarker.position;
+      print('Marker Position: $markerPosition');
+      displayRoute(currentPosition!, markerPosition);
+      //_controller.animateCamera(CameraUpdate.newLatLng(markerPosition));
     } else {
-      print('Null.... try again');
+      print('Marker not found');
     }
     setState(() {});
   }
@@ -248,15 +235,15 @@ class _DirectionsMapState extends State<DirectionsMap> {
     print("--------------------------------");
     print(responseData);
 
-    steps.forEach((step) {
+    for (var step in steps) {
       print(step);
       directions.add(step['html_instructions']);
-    });
+    }
 
     print('Directions:');
-    directions.forEach((direction) {
+    for (var direction in directions) {
       print(direction);
-    });
+    }
     print('________________________________________________________________');
     directions = directions.map((direction) {
       // Remove HTML tags using RegExp
@@ -267,9 +254,9 @@ class _DirectionsMapState extends State<DirectionsMap> {
     }).toList();
 
     print('Directions:');
-    directions.forEach((direction) {
+    for (var direction in directions) {
       print(direction);
-    });
+    }
   }
 
   void filterTurnData() {
@@ -278,9 +265,9 @@ class _DirectionsMapState extends State<DirectionsMap> {
             direction.contains("<b>") && direction.contains("</b>"))
         .toList();
 
-    relevantDirections.forEach((direction) {
+    for (var direction in relevantDirections) {
       print("flutter: $direction");
-    });
+    }
   }
 
   /*void displayLiveGame() {
@@ -302,9 +289,9 @@ class _DirectionsMapState extends State<DirectionsMap> {
     );
 
     if (result.points.isNotEmpty) {
-      result.points.forEach((PointLatLng point) {
+      for (var point in result.points) {
         polylineCoords.add(LatLng(point.latitude, point.longitude));
-      });
+      }
     }
     print("route displayed successfully");
     turnByTurn(origin, destination);
@@ -315,8 +302,8 @@ class _DirectionsMapState extends State<DirectionsMap> {
   }
 
   Marker CreateGameMarker(String sportType, LatLng gamePosition) {
-    print('Sport type: ' + sportType);
-    print('Game position: ' + gamePosition.toString());
+    print('Sport type: $sportType');
+    print('Game position: $gamePosition');
     return Marker(
       markerId: MarkerId(sportType),
       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet),
@@ -381,7 +368,7 @@ class _DirectionsMapState extends State<DirectionsMap> {
             (marker) => marker.markerId.value == 'CurrentLocation');
         _markers.add(
           Marker(
-            markerId: MarkerId('CurrentLocation'),
+            markerId: const MarkerId('CurrentLocation'),
             position: polylineCoords[TurnIndex],
             icon: markerIcon,
           ),
@@ -432,7 +419,7 @@ class _DirectionsMapState extends State<DirectionsMap> {
 
   @override
   Widget build(BuildContext context) {
-    CameraPosition initialCameraPosition = CameraPosition(
+    CameraPosition initialCameraPosition = const CameraPosition(
       zoom: CameraZoom,
       tilt: CameraTilt,
       bearing: CameraBearing,
@@ -441,7 +428,7 @@ class _DirectionsMapState extends State<DirectionsMap> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Live Map'),
+        title: const Text('Live Map'),
       ),
       body: currentPosition == null
           ? const Center(
@@ -456,7 +443,7 @@ class _DirectionsMapState extends State<DirectionsMap> {
                   markers: _markers,
                   polylines: {
                     Polyline(
-                      polylineId: PolylineId("route"),
+                      polylineId: const PolylineId("route"),
                       points: polylineCoords,
                       width: 6,
                     )
@@ -480,9 +467,10 @@ class _DirectionsMapState extends State<DirectionsMap> {
                       });
                     },
                     onSubmitted: (value) {
+                      //Add join game feature here
                       findGame(); // Call findGame when user submits the search query
                     },
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       hintText: 'Search By Game ID',
                     ),
                   ),

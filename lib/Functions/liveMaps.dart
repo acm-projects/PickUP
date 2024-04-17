@@ -7,20 +7,16 @@ import 'package:google_maps_flutter_android/google_maps_flutter_android.dart';
 import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platform_interface.dart';
 //import 'package:geocoding/geocoding.dart';
 import 'package:http/http.dart' as http;
-import 'package:pickup/classes/user.dart';
 import 'dart:convert' as convert;
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:location/location.dart';
 
-import 'package:timezone/timezone.dart' as tz;
-
 const double CameraZoom = 17;
 const double CameraTilt = 80;
 const double CameraBearing = 30;
-const LatLng _utdCoordinates =
-    const LatLng(32.9864, -96.7497); // UTD coordinates
-const LatLng _AngelsChickenCoordinates = const LatLng(32.9773, -96.8688);
-const LatLng _k1Coor = const LatLng(32.985268524958364, -96.743522617005110);
+const LatLng _utdCoordinates = LatLng(32.9864, -96.7497); // UTD coordinates
+const LatLng _AngelsChickenCoordinates = LatLng(32.9773, -96.8688);
+const LatLng _k1Coor = LatLng(32.985268524958364, -96.743522617005110);
 
 class LiveMap extends StatefulWidget {
   const LiveMap({super.key});
@@ -30,17 +26,17 @@ class LiveMap extends StatefulWidget {
 }
 
 class _LiveMapState extends State<LiveMap> {
-  Completer<GoogleMapController> _controller = Completer();
-  Set<Marker> _markers = Set<Marker>();
+  final Completer<GoogleMapController> _controller = Completer();
+  final Set<Marker> _markers = <Marker>{};
   //late BitmapDescriptor customIcon;
   List<LatLng> polylineCoordinates = [];
   Set<Polyline> polylines = {};
   final apiKey2 =
       'AIzaSyBPp3mPocXX-1j7jOuxHg_us96LyClD-H8'; // Replace with your actual API key
   Location locationController = Location();
-  LatLng? currentPosition = null;
-  LatLng? start = null;
-  LatLng? end = null;
+  LatLng? currentPosition;
+  LatLng? start;
+  LatLng? end;
 
   @override
   void initState() {
@@ -85,7 +81,7 @@ class _LiveMapState extends State<LiveMap> {
                     markers: _markers,
                     polylines: {
                       Polyline(
-                        polylineId: PolylineId("route"),
+                        polylineId: const PolylineId("route"),
                         points: polylineCoords,
                         width: 6,
                       )
@@ -112,7 +108,7 @@ class _LiveMapState extends State<LiveMap> {
     );
   }
 
-  static final Polyline drawPoly = Polyline(
+  static const Polyline drawPoly = Polyline(
     polylineId: PolylineId("Directions"),
     points: [_utdCoordinates, _k1Coor],
   );
@@ -274,9 +270,9 @@ class _LiveMapState extends State<LiveMap> {
     );
 
     if (result.points.isNotEmpty) {
-      result.points.forEach((PointLatLng point) {
+      for (var point in result.points) {
         polylineCoords.add(LatLng(point.latitude, point.longitude));
-      });
+      }
     }
     setState(() {});
   }
@@ -285,7 +281,7 @@ class _LiveMapState extends State<LiveMap> {
     setState(() {
       polylines.add(
         Polyline(
-          polylineId: PolylineId('polyLine'),
+          polylineId: const PolylineId('polyLine'),
           color: Colors.blue,
           points: [from, to],
           width: 3, // Adjust polyline width as needed
@@ -306,30 +302,30 @@ class _LiveMapState extends State<LiveMap> {
 
   Future<void> positionCamera(LatLng pos) async {
     final GoogleMapController controller = await _controller.future;
-    CameraPosition _newCameraPosition = CameraPosition(
+    CameraPosition newCameraPosition = CameraPosition(
       target: pos,
       zoom: CameraZoom,
     );
     await controller.animateCamera(
-      CameraUpdate.newCameraPosition(_newCameraPosition),
+      CameraUpdate.newCameraPosition(newCameraPosition),
     );
   }
 
   Future<void> getLocationUpdates() async {
-    bool _serviceEnabled;
-    PermissionStatus _permissionGranted;
+    bool serviceEnabled;
+    PermissionStatus permissionGranted;
 
-    _serviceEnabled = await locationController.serviceEnabled();
-    if (_serviceEnabled) {
-      _serviceEnabled = await locationController.requestService();
+    serviceEnabled = await locationController.serviceEnabled();
+    if (serviceEnabled) {
+      serviceEnabled = await locationController.requestService();
     } else {
       return;
     }
 
-    _permissionGranted = await locationController.hasPermission();
-    if (_permissionGranted == PermissionStatus.denied) {
-      _permissionGranted = await locationController.requestPermission();
-      if (_permissionGranted != PermissionStatus.granted) {
+    permissionGranted = await locationController.hasPermission();
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await locationController.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) {
         return;
       }
     }
@@ -343,10 +339,10 @@ class _LiveMapState extends State<LiveMap> {
           positionCamera(currentPosition!);
           _markers.removeWhere((marker) => marker.markerId.value == 'Home');
           _markers.add(Marker(
-            markerId: MarkerId('Home'),
+            markerId: const MarkerId('Home'),
             position: currentPosition!,
             icon: BitmapDescriptor.defaultMarker,
-            infoWindow: InfoWindow(title: 'Home'),
+            infoWindow: const InfoWindow(title: 'Home'),
           ));
         });
       }

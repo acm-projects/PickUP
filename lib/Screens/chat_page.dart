@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ChatPage extends StatefulWidget {
-  const ChatPage({Key? key}) : super(key: key);
+  const ChatPage({super.key});
 
   @override
   _ChatPageState createState() => _ChatPageState();
@@ -58,7 +58,6 @@ class _ChatPageState extends State<ChatPage> {
             _buildMessageInputRow(),
           ],
         ),
-       
       ),
     );
   }
@@ -75,7 +74,8 @@ class _ChatPageState extends State<ChatPage> {
 
   Widget _buildMessageRow(BuildContext context, int index, bool isSender) {
     return Row(
-      mainAxisAlignment: isSender ? MainAxisAlignment.end : MainAxisAlignment.start,
+      mainAxisAlignment:
+          isSender ? MainAxisAlignment.end : MainAxisAlignment.start,
       children: [
         if (!isSender) // Tail for the receiver on the left
           Transform.rotate(
@@ -104,13 +104,14 @@ class _ChatPageState extends State<ChatPage> {
         ),
         if (isSender) // Tail for the sender on the right
           CustomPaint(
-  painter: BubbleTailPainter(
-    isSender: true,
-    color: Colors.lightGreen[400] ?? Colors.lightGreen, // Fallback to default light green if 400 shade is null
-  ),
-  size: const Size(10, 20),
-),
-
+            painter: BubbleTailPainter(
+              isSender: true,
+              color: Colors.lightGreen[400] ??
+                  Colors
+                      .lightGreen, // Fallback to default light green if 400 shade is null
+            ),
+            size: const Size(10, 20),
+          ),
       ],
     );
   }
@@ -142,8 +143,6 @@ class _ChatPageState extends State<ChatPage> {
       ),
     );
   }
-
-  
 }
 
 class BubbleTailPainter extends CustomPainter {

@@ -110,15 +110,15 @@ class _LoginScreenState extends State<Login> {
             ),
             const SizedBox(height: 20),
 
-             Align(
+            Align(
               alignment: Alignment.center,
               child: ColorFiltered(
                 colorFilter: const ColorFilter.mode(
                   Colors.white,
                   BlendMode.srcATop,
                 ),
-               child: Image.asset(
-              'assets/beachsoccer.png',
+                child: Image.asset(
+                  'assets/beachsoccer.png',
                   width: 1000,
                   height: 100,
                 ),

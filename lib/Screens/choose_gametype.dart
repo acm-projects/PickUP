@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pickup/classes/game.dart';
+import 'package:timezone/timezone.dart' as tz;
+import 'package:pickup/classes/location.dart';
 
 class GameCreation extends StatelessWidget {
   const GameCreation({super.key});
@@ -87,6 +89,8 @@ class GameCreation extends StatelessWidget {
       ),
       child: InkWell(
         onTap: () {
+          Game.currentGame =
+              Game("", "", "", 0, tz.TZDateTime.now(Location.getTimeZone()));
           Game.currentGame.sport = text;
           Navigator.of(context).pushNamed('/ConfigureGame', arguments: text);
         },

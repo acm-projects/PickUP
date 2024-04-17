@@ -71,7 +71,7 @@ class Game {
     print("Instantiating $_gameID");
     CollectionReference usersActiveGames = FirebaseFirestore.instance
         .collection("Users")
-        .doc("ios@utdallas.edu")
+        .doc(await User.getUserID())
         .collection("ActiveGames");
 
     final globablTargetGame =
@@ -136,7 +136,8 @@ class Game {
   }
 
   // Update
-  static Future<void> edit(String target, Map<String, dynamic> doc, [bool override = false]) async {
+  static Future<void> edit(String target, Map<String, dynamic> doc,
+      [bool override = false]) async {
     print("Editing $target");
 
     final DocumentReference targetGameDoc =
@@ -147,7 +148,8 @@ class Game {
     if (!targetGame.exists) throw "$target doesn't exist.";
 
     if ((targetGame.data() as Map<String, dynamic>)["organizer"] !=
-        await User.getUserID() && !override) {
+            await User.getUserID() &&
+        !override) {
       throw "You're not $target's owner!";
     }
 

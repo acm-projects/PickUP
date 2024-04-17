@@ -39,7 +39,7 @@ class _NavigationBarState extends State<NavigationBar> {
       duration: widget.animationDuration,
       height: 64, // Increased height
       decoration: const BoxDecoration(
-        color: Color(0xFF72CD52), // Navigation bar color
+        color: Color(0xFF88F37F), // Navigation bar color
         borderRadius:
             BorderRadius.vertical(top: Radius.circular(20)), // Rounded corners
       ),
@@ -94,7 +94,7 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor:
-          const Color(0xFF72CD52), // Background color of the scaffold
+          const Color(0xFF88F37F), // Background color of the scaffold
       extendBody: true,
       body: screens[index],
       bottomNavigationBar: NavigationBar(

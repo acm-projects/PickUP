@@ -10,12 +10,9 @@ const SECURE_STORAGE = FlutterSecureStorage();
 //and give them read/write access
 
 class User {
-  String firstName;
-  String lastName;
-  String email;
-  DateTime birthday;
-
-  User(this.firstName, this.lastName, this.email, this.birthday);
+  static String firstName = "";
+  static String lastName = "";
+  static String userID = "";
 
   //Go into User Database, and add a game
   static Future<void> createUser(
@@ -37,11 +34,28 @@ class User {
     await docUser.set(user);
   }
 
-  //do not merge this
+  static Future<String?> getFirstName() async {
+    final firstName = await SECURE_STORAGE.read(key: 'firstName');
+
+    User.firstName = firstName!;
+
+    return firstName;
+  }
+
+  static Future<String?> getLastName() async {
+    final lastName = await SECURE_STORAGE.read(key: 'lastName');
+
+    User.lastName = lastName!;
+
+    return lastName;
+  }
+
   static Future<String?> getUserID() async {
     final userID = await SECURE_STORAGE.read(key: 'user');
 
-    return "ios@utdallas.edu";
+    User.userID = userID!;
+
+    return userID;
   }
 
   static Future<String> getPassword() async {
@@ -49,6 +63,8 @@ class User {
 
     return pass!;
   }
+
+  static Future<void> logIn(String userID, String password) async {}
 
   static Future<void> logOut() async {
     await SECURE_STORAGE.delete(key: "user");

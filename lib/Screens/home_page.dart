@@ -8,6 +8,7 @@ import 'package:timezone/timezone.dart' as tz;
 import 'dart:async';
 
 class HomePage extends StatefulWidget {
+  static late Timer timer;
   const HomePage({super.key});
   @override
   _HomePageState createState() => _HomePageState();
@@ -95,20 +96,19 @@ class _HomePageState extends State<HomePage> {
 
         if (doesContain) continue;
 
-        setState(() {
-          _upcomingGames.add({
-            'title': gameInfo["title"],
-            'startTime': startTime,
-            'id': game,
-            'date': date,
-            'location': gameInfo["location"],
-          });
+        _upcomingGames.add({
+          'title': gameInfo["title"],
+          'startTime': startTime,
+          'id': game,
+          'date': date,
+          'location': gameInfo["location"],
         });
       }
+      setState(() {});
     }
 
     getActiveGames();
-    Timer.periodic(const Duration(milliseconds: 3000), (_) async {
+    HomePage.timer = Timer.periodic(const Duration(milliseconds: 3000), (_) async {
       await getActiveGames();
     });
     //Cancel timer you navigate away

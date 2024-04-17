@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pickup/classes/game.dart';
+import 'package:pickup/classes/user.dart';
 
 class ConfigureGame extends StatelessWidget {
   const ConfigureGame({super.key});
@@ -11,6 +12,10 @@ class ConfigureGame extends StatelessWidget {
     TextEditingController titleController = TextEditingController();
     TextEditingController descriptionController = TextEditingController();
     TextEditingController locationController = TextEditingController();
+
+    User.getFirstName();
+
+    titleController.text = "${User.firstName}'s $sport game";
 
     return MaterialApp(
         home: Scaffold(
@@ -127,7 +132,7 @@ class ConfigureGame extends StatelessWidget {
                     // The background is transparent to maintain the gradient effect from the container
                   ),
                   onPressed: () {
-                    // NAMES CAN'T BE EMPTY if (titleController.text == "") 
+                    // NAMES CAN'T BE EMPTY if (titleController.text == "")
                     Game.currentGame.title = titleController.text;
                     Game.currentGame.description = descriptionController.text;
                     Game.currentGame.location = locationController.text;

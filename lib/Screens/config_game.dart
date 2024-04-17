@@ -127,6 +127,7 @@ class ConfigureGame extends StatelessWidget {
                     // The background is transparent to maintain the gradient effect from the container
                   ),
                   onPressed: () {
+                    // NAMES CAN'T BE EMPTY if (titleController.text == "") 
                     Game.currentGame.title = titleController.text;
                     Game.currentGame.description = descriptionController.text;
                     Game.currentGame.location = locationController.text;

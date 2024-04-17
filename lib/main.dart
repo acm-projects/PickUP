@@ -11,6 +11,7 @@ import 'Screens/chat_page.dart';
 import 'package:pickup/classes/notification.dart';
 import 'Screens/nav_bar.dart';
 import 'Screens/profile.dart';
+import 'Screens/live_map.dart';
 import 'dart:io' show Platform;
 
 void main() async {
@@ -54,6 +55,7 @@ class PickUpApp extends StatelessWidget {
         '/ChooseLocation': (context) => const ChooseLocation(),
         '/chatPage': (context) => const ChatPage(),
         '/Profile': (context) => const ProfilePage(),
+        '/LiveMap': (context) => const LiveMap(),
       },
     );
   }

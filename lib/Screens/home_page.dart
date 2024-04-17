@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'choose_gametype.dart';
 import 'package:pickup/classes/user.dart';
 import 'package:slider_button/slider_button.dart';
 import 'package:pickup/classes/game.dart';
@@ -69,8 +68,13 @@ class _HomePageState extends State<HomePage> {
           12: 'December',
         };
 
+        int hour = date.hour % 12;
+        if (hour == 0) {
+          hour = 12; // 0 and 12 should map to 12 in 12-hour format
+        }
+
         String startTime =
-            "${monthsInYear[date.month]} ${date.day} ${date.hour - 12 > 0 ? date.hour - 12 : date.hour}:${date.minute.toString().padLeft(2, '0')} $morningOrNight";
+            "${monthsInYear[date.month]} ${date.day} $hour:${date.minute.toString().padLeft(2, '0')} $morningOrNight";
 
         bool doesContain = false;
 
@@ -137,12 +141,7 @@ class _HomePageState extends State<HomePage> {
               child: ElevatedButton(
                 onPressed: () {
                   // Navigate to the game creation page
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const GameCreation(),
-                    ),
-                  );
+                  Navigator.of(context).pushNamed('/LiveMap');
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF88F37F), // Light green color

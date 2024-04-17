@@ -110,6 +110,9 @@ class _MainPageState extends State<MainPage> {
               '/ChooseGameType',
               '/Profile'
             ];
+
+            //!IF INDEX IS = 3 then make sure they don't have max, if they do they must delete games
+
             Navigator.of(context).pushNamed(map[index]);
           });
         },

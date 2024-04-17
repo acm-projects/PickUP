@@ -202,10 +202,13 @@ class _ChooseTimeState extends State<ChooseTime> {
                       Game.currentGame.startTime = tz.TZDateTime.parse(
                           Location.getTimeZone(), date.toIso8601String());
 
-                      if (date.subtract(const Duration(minutes: 15)).isAfter(DateTime.now())) {
+                      if (date
+                          .subtract(const Duration(minutes: 15))
+                          .isAfter(DateTime.now())) {
                         Navigator.of(context).pushNamed('/ChooseLocation');
                       } else {
-                        print("Your Game Time Must Be 15 minutes Atleast After the Current Time");
+                        print(
+                            "Your Game Time Must Be 15 minutes Atleast After the Current Time");
                       }
                     },
                     child: Container(

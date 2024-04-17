@@ -70,7 +70,7 @@ class _HomePageState extends State<HomePage> {
         };
 
         String startTime =
-            "${monthsInYear[date.month]} ${date.day} ${date.hour - 12 > 0 ? date.hour - 12: date.hour}:${date.minute.toString().padLeft(2, '0')} ${morningOrNight}";
+            "${monthsInYear[date.month]} ${date.day} ${date.hour - 12 > 0 ? date.hour - 12 : date.hour}:${date.minute.toString().padLeft(2, '0')} ${morningOrNight}";
 
         bool doesContain = false;
 
@@ -194,7 +194,7 @@ class _HomePageState extends State<HomePage> {
 
       for (final game in _upcomingGames) {
         if (closestGame.isNotEmpty) {
-          if (closestGame["date"].isBefore(game["date"])) closestGame = game;
+          if (game["date"].isBefore(closestGame["date"])) closestGame = game;
         } else {
           closestGame = game;
         }
@@ -207,19 +207,21 @@ class _HomePageState extends State<HomePage> {
             child: SliderButton(
               action: () async {
                 setState(() async {
-                /// Do something here OnSlideComplete
-                await Game.checkIn(closestGame["id"]);
+                  /// Do something here OnSlideComplete
+                  await Game.checkIn(closestGame["id"]);
 
-                print(_upcomingGames.length);
-                for (int index = 0; index < _upcomingGames.length; index++) {
-                  if (_upcomingGames[index]["id"] == game["id"]) {
-                    _upcomingGames.remove(_upcomingGames[index]);
+                  print(_upcomingGames.length);
+                  for (int index = 0; index < _upcomingGames.length; index++) {
+                    if (_upcomingGames[index]["id"] == game["id"]) {
+                      _upcomingGames.remove(_upcomingGames[index]);
                       sliderWidget = null;
                       await Game.leave(closestGame["id"]);
                       break;
+                    }
                   }
-                }
                 });
+
+                setState(() {});
               },
               backgroundColor: const Color.fromARGB(255, 19, 189, 7),
               label: const Text(
@@ -280,7 +282,7 @@ class _HomePageState extends State<HomePage> {
                 const Icon(Icons.location_on, color: Colors.black),
                 const SizedBox(width: 5),
                 Text(
-                  '${closestGame['location'] == null ? "No Location" : closestGame['location']}',
+                  '${closestGame['location'] == null ? "" : closestGame['location']}',
                   style: const TextStyle(
                     color: Colors.black,
                   ),
@@ -327,17 +329,20 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const SizedBox(height: 10),
-            const Text(
-              'Your Games',
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 23,
+            const SizedBox(height: 0),
+            const Padding(
+              padding: EdgeInsets.only(top: 10),
+              child: Text(
+                'Your Games',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 23,
+                ),
+                textAlign: TextAlign.center, // Centered text
               ),
-              textAlign: TextAlign.center, // Centered text
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 0),
             ListView.builder(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
@@ -345,7 +350,7 @@ class _HomePageState extends State<HomePage> {
               itemBuilder: (context, index) {
                 final game = _upcomingGames[index];
                 return Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
+                  padding: const EdgeInsets.only(bottom: 0),
                   child: Container(
                     decoration: BoxDecoration(
                       color: index % 2 == 0

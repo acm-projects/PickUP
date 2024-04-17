@@ -19,8 +19,6 @@ import 'dart:math';
 
 Map<String, dynamic> emptyMap = {};
 
-
-
 class Game {
   String title;
   String sport;
@@ -29,10 +27,10 @@ class Game {
   int numOfPlayers = 0;
   tz.TZDateTime startTime;
   List<String> players = []; // User IDs
-  Map<String, dynamic> coordinates =
-    Location.get(); //assume at the current pos
+  Map<String, dynamic> coordinates = Location.get(); //assume at the current pos
 
-  static Game currentGame = Game("", "", "", 0, tz.TZDateTime.now(Location.getTimeZone()));
+  static Game currentGame =
+      Game("", "", "", 0, tz.TZDateTime.now(Location.getTimeZone()));
 
   final int _maxNumOfPlayers;
   final String _gameID = generateRandomHex();
@@ -224,7 +222,8 @@ class Game {
           title: 'Your $targetGameSport Game is Starting in 15 minutes!',
           body: "Ready to Check In? ",
           payload: "payload", //just the homepage so they can checkin
-          scheduledTime: tz.TZDateTime.parse(Location.getTimeZone(), targetGame["startTime"])
+          scheduledTime: tz.TZDateTime.parse(
+                  Location.getTimeZone(), targetGame["startTime"])
               .subtract(const Duration(minutes: 15)));
     } catch (e) {
       print(e);
@@ -269,10 +268,10 @@ class Game {
     print('Checking In ${await User.getUserID()}');
 
     Map<String, dynamic> game =
-      await Game.fetch(target) as Map<String, dynamic>;
+        await Game.fetch(target) as Map<String, dynamic>;
 
     print(game);
-    
+
     game["checkedIn"].add((await User.getUserID())!);
     print(target);
 

@@ -72,43 +72,43 @@ class _LiveMapState extends State<LiveMap> {
         title: const Text('Live Map'),
       ),
       body: currentPosition == null
-      ? const Center(
+          ? const Center(
               child: Text("Loading..."),
-            ):
-          Container(
-        child: Stack(
-          children: [
-            GoogleMap(
-              myLocationButtonEnabled: true,
-              compassEnabled: false,
-              tiltGesturesEnabled: false,
-              markers: _markers,
-              polylines: {
-                Polyline(
-                  polylineId: PolylineId("route"),
-                  points: polylineCoords,
-                  width: 6,
-                )
-              },
-              mapType: MapType.normal,
-              initialCameraPosition: initialCameraPosition,
-              onMapCreated: (GoogleMapController controller) {
-                _controller.complete(controller);
-                //displayLiveGame(); // Call the function to display markers
-                populate();
-              },
-              onTap: _onMapTapped, // Add onTap handler
-              onLongPress: onMarkerTapped,
-            ),
-            ElevatedButton(
-              child: const Text('Confirm location!'),
-              onPressed: () async {
-                await Game.currentGame.instantiate();
-              },
             )
-          ],
-        ),
-      ),
+          : Container(
+              child: Stack(
+                children: [
+                  GoogleMap(
+                    myLocationButtonEnabled: true,
+                    compassEnabled: false,
+                    tiltGesturesEnabled: false,
+                    markers: _markers,
+                    polylines: {
+                      Polyline(
+                        polylineId: PolylineId("route"),
+                        points: polylineCoords,
+                        width: 6,
+                      )
+                    },
+                    mapType: MapType.normal,
+                    initialCameraPosition: initialCameraPosition,
+                    onMapCreated: (GoogleMapController controller) {
+                      _controller.complete(controller);
+                      //displayLiveGame(); // Call the function to display markers
+                      populate();
+                    },
+                    onTap: _onMapTapped, // Add onTap handler
+                    onLongPress: onMarkerTapped,
+                  ),
+                  ElevatedButton(
+                    child: const Text('Confirm location!'),
+                    onPressed: () async {
+                      await Game.currentGame.instantiate();
+                    },
+                  )
+                ],
+              ),
+            ),
     );
   }
 
@@ -123,7 +123,7 @@ class _LiveMapState extends State<LiveMap> {
         "latitude": tappedPoint.latitude,
         "longitude": tappedPoint.longitude,
       };
-      
+
       _markers.add(
         Marker(
           markerId: MarkerId(Game.currentGame.gameID),
@@ -224,19 +224,21 @@ class _LiveMapState extends State<LiveMap> {
       Map<String, dynamic> uGame = game as Map<String, dynamic>;
 
       if (uGame["gameID"] == "bedrock") continue;
-      
+
       try {
         setState(() {
-          BitmapDescriptor iconColor = uGame["players"].length >= uGame["maxNumOfPlayers"] ? 
-          BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed) :
-          BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet);
-          
+          BitmapDescriptor iconColor = uGame["players"].length >=
+                  uGame["maxNumOfPlayers"]
+              ? BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed)
+              : BitmapDescriptor.defaultMarkerWithHue(
+                  BitmapDescriptor.hueViolet);
+
           _markers.add(
             Marker(
               markerId: MarkerId(game["gameID"]),
               icon: iconColor,
-              position: LatLng(
-                  game["coordinates"]["latitude"], game["coordinates"]["longitude"]),
+              position: LatLng(game["coordinates"]["latitude"],
+                  game["coordinates"]["longitude"]),
             ),
           );
         });
@@ -247,8 +249,6 @@ class _LiveMapState extends State<LiveMap> {
 
     print(_markers);
   }
-
-  
 
   void displayLiveGame() {
     setState(() {
@@ -293,16 +293,16 @@ class _LiveMapState extends State<LiveMap> {
       );
     });
   }
-LocationData? currentLocation;
-void getCurrentLocation() async {
-  Location location = Location();
-  location.getLocation().then(
-    (location){
-      currentLocation = location;
-    },
-  );
-  
-}
+
+  LocationData? currentLocation;
+  void getCurrentLocation() async {
+    Location location = Location();
+    location.getLocation().then(
+      (location) {
+        currentLocation = location;
+      },
+    );
+  }
 
   Future<void> positionCamera(LatLng pos) async {
     final GoogleMapController controller = await _controller.future;
@@ -341,15 +341,15 @@ void getCurrentLocation() async {
           currentPosition =
               LatLng(currentLocation.latitude!, currentLocation.longitude!);
           positionCamera(currentPosition!);
-        _markers.removeWhere((marker) => marker.markerId.value == 'Home');
-        _markers.add(Marker(
-          markerId: MarkerId('Home'),
-          position: currentPosition!,
-          icon: BitmapDescriptor.defaultMarker,
-          infoWindow: InfoWindow(title: 'Home'),
-        ));
-      });
-    }
-  });
-}
+          _markers.removeWhere((marker) => marker.markerId.value == 'Home');
+          _markers.add(Marker(
+            markerId: MarkerId('Home'),
+            position: currentPosition!,
+            icon: BitmapDescriptor.defaultMarker,
+            infoWindow: InfoWindow(title: 'Home'),
+          ));
+        });
+      }
+    });
+  }
 }

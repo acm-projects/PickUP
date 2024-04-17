@@ -47,12 +47,14 @@ class _DirectionsMapState extends State<DirectionsMap> {
       'AIzaSyBPp3mPocXX-1j7jOuxHg_us96LyClD-H8'; // Replace with your actual API key
   Location locationController = Location();
   //LatLng? currentPosition = null;
-  LatLng start =  _utdCoordinates; //LatLng(33.20959810732121, -97.15278204603084);
-  LatLng end = _utdCoordinates;//LatLng(33.229468522867876, -97.12743770268979);
+  LatLng start =
+      _utdCoordinates; //LatLng(33.20959810732121, -97.15278204603084);
+  LatLng end =
+      _utdCoordinates; //LatLng(33.229468522867876, -97.12743770268979);
   String searchValue = '';
   TextEditingController searchController = TextEditingController();
   //iveMap liveMaps = LiveMap();
-   LatLng? currentPosition = null;
+  LatLng? currentPosition = null;
 
   /*LatLng? fetchLocation(){
     LatLng currentLocation;
@@ -76,14 +78,12 @@ class _DirectionsMapState extends State<DirectionsMap> {
       });
   }*/
 
-  
-
   @override
   void initState() {
     super.initState();
     custommMarker();
     getLocationUpdates();
-    
+
     //populate();
     //getCurrentLocation();
     //_startLocationUpdates();
@@ -103,7 +103,6 @@ class _DirectionsMapState extends State<DirectionsMap> {
       infoWindow: InfoWindow(title: 'End'),
     ));
 
-    
     _markers.add(Marker(
       markerId: MarkerId('K1'),
       position: _k1Coor,
@@ -137,22 +136,22 @@ class _DirectionsMapState extends State<DirectionsMap> {
       mapsImplementation.useAndroidViewSurface = true;
     }
   }
+
   @override
-  void dispose(){
+  void dispose() {
     super.dispose();
     displayRoute(start, end);
   }
 
-LocationData? currentLocation;
-void getCurrentLocation() async {
-  Location location = Location();
-  location.getLocation().then(
-    (location){
-      currentLocation = location;
-    },
-  );
-  
-}
+  LocationData? currentLocation;
+  void getCurrentLocation() async {
+    Location location = Location();
+    location.getLocation().then(
+      (location) {
+        currentLocation = location;
+      },
+    );
+  }
 
   Future<void> positionCamera(LatLng pos) async {
     final GoogleMapController controller = await _controller.future;
@@ -195,18 +194,22 @@ void getCurrentLocation() async {
       }
     });
   }
-BitmapDescriptor markerIcon = BitmapDescriptor.defaultMarker;
-void custommMarker() async{
-  BitmapDescriptor.fromAssetImage(
-    const ImageConfiguration(), "assets/basketball_pin.png").then((icon){
-      setState(() {
-        print("yo");
-        markerIcon = icon;
-      });
-    },
+
+  BitmapDescriptor markerIcon = BitmapDescriptor.defaultMarker;
+  void custommMarker() async {
+    BitmapDescriptor.fromAssetImage(
+            const ImageConfiguration(), "assets/basketball_pin.png")
+        .then(
+      (icon) {
+        setState(() {
+          print("yo");
+          markerIcon = icon;
+        });
+      },
     );
     print('Added custom Marker');
-}
+  }
+
   void findGame() {
     if (start != null && end != null) {
       MarkerId markerId = MarkerId(searchValue);
@@ -231,52 +234,54 @@ void custommMarker() async{
     }
     setState(() {});
   }
- List<String> directions = [];
- List<dynamic> steps = [];
+
+  List<String> directions = [];
+  List<dynamic> steps = [];
   Future<void> turnByTurn(LatLng start, LatLng end) async {
-  final apiKey = apiKey2;
-  final url =
-      'https://maps.googleapis.com/maps/api/directions/json?origin=${start.latitude},${start.longitude}&destination=${end.latitude},${end.longitude}&key=$apiKey';
-  final response = await http.get(Uri.parse(url));
-  final Map<String, dynamic> responseData = json.decode(response.body);
-  steps = responseData['routes'][0]['legs'][0]['steps'];
+    final apiKey = apiKey2;
+    final url =
+        'https://maps.googleapis.com/maps/api/directions/json?origin=${start.latitude},${start.longitude}&destination=${end.latitude},${end.longitude}&key=$apiKey';
+    final response = await http.get(Uri.parse(url));
+    final Map<String, dynamic> responseData = json.decode(response.body);
+    steps = responseData['routes'][0]['legs'][0]['steps'];
 
-  print("--------------------------------");
-  print(responseData);
+    print("--------------------------------");
+    print(responseData);
 
-  steps.forEach((step) {
-    print(step);
-    directions.add(step['html_instructions']);
-  });
-  
-  print('Directions:');
-  directions.forEach((direction) {
-    print(direction);
-  });
-  print ('________________________________________________________________');
-  directions = directions.map((direction) {
-    // Remove HTML tags using RegExp
-    direction = direction.replaceAll(RegExp(r'<[^>]*>'), '');
-    // Remove extra spaces
-    direction = direction.trim();
-    return direction;
-  }).toList();
+    steps.forEach((step) {
+      print(step);
+      directions.add(step['html_instructions']);
+    });
 
-  print('Directions:');
-  directions.forEach((direction) {
-    print(direction);
-  });
+    print('Directions:');
+    directions.forEach((direction) {
+      print(direction);
+    });
+    print('________________________________________________________________');
+    directions = directions.map((direction) {
+      // Remove HTML tags using RegExp
+      direction = direction.replaceAll(RegExp(r'<[^>]*>'), '');
+      // Remove extra spaces
+      direction = direction.trim();
+      return direction;
+    }).toList();
 
-}
-void filterTurnData(){
-   List<String> relevantDirections = directions
-      .where((direction) => direction.contains("<b>") && direction.contains("</b>"))
-      .toList();
+    print('Directions:');
+    directions.forEach((direction) {
+      print(direction);
+    });
+  }
 
-  relevantDirections.forEach((direction) {
-    print("flutter: $direction");
-  });
-}
+  void filterTurnData() {
+    List<String> relevantDirections = directions
+        .where((direction) =>
+            direction.contains("<b>") && direction.contains("</b>"))
+        .toList();
+
+    relevantDirections.forEach((direction) {
+      print("flutter: $direction");
+    });
+  }
 
   /*void displayLiveGame() {
     setState(() {
@@ -336,82 +341,86 @@ void filterTurnData(){
     return null;
   }
 
- 
 // Below are functions to try and use location upates to update directions.
-void _monitorUserLocation() {
-  if (isApproachingNextTurn()) {
-    displayNextDirection();
-    moveMarker();
+  void _monitorUserLocation() {
+    if (isApproachingNextTurn()) {
+      displayNextDirection();
+      moveMarker();
+    }
   }
-}
-int TurnIndex = 0;
-bool isApproachingNextTurn() {
-  print("In bool functions");
-  if (polylineCoords.isEmpty || nextTurnIndex >= polylineCoords.length) {
-    return false;
-  }
-  double nextTurn = calculateDistance(
-    currentPosition!.latitude,
-    currentPosition!.longitude,
-    polylineCoords[TurnIndex].latitude,
-    polylineCoords[TurnIndex].longitude,
-  );
-  double turnThreshold = 50; // 50 meters
-  print("threshold: $turnThreshold");
-  return nextTurn <= turnThreshold;
-}
-int nextTurnIndex = 1;
-void displayNextDirection() {
-  String nextDirection = directions[nextTurnIndex];
-  // Print or display next direction
-  print('Next Direction: $nextDirection');
-  nextTurnIndex++;
-}
 
-void moveMarker() {
-  if (nextTurnIndex < polylineCoords.length) {
-    setState(() {
-      _markers.removeWhere((marker) => marker.markerId.value == 'CurrentLocation');
-      _markers.add(
-        Marker(
-          markerId: MarkerId('CurrentLocation'),
-          position: polylineCoords[TurnIndex],
-          icon: markerIcon,
-        ),
-      );
-    });
-    TurnIndex ++;
-    nextTurnIndex ++;
+  int TurnIndex = 0;
+  bool isApproachingNextTurn() {
+    print("In bool functions");
+    if (polylineCoords.isEmpty || nextTurnIndex >= polylineCoords.length) {
+      return false;
+    }
+    double nextTurn = calculateDistance(
+      currentPosition!.latitude,
+      currentPosition!.longitude,
+      polylineCoords[TurnIndex].latitude,
+      polylineCoords[TurnIndex].longitude,
+    );
+    double turnThreshold = 50; // 50 meters
+    print("threshold: $turnThreshold");
+    return nextTurn <= turnThreshold;
   }
-}
 
+  int nextTurnIndex = 1;
+  void displayNextDirection() {
+    String nextDirection = directions[nextTurnIndex];
+    // Print or display next direction
+    print('Next Direction: $nextDirection');
+    nextTurnIndex++;
+  }
+
+  void moveMarker() {
+    if (nextTurnIndex < polylineCoords.length) {
+      setState(() {
+        _markers.removeWhere(
+            (marker) => marker.markerId.value == 'CurrentLocation');
+        _markers.add(
+          Marker(
+            markerId: MarkerId('CurrentLocation'),
+            position: polylineCoords[TurnIndex],
+            icon: markerIcon,
+          ),
+        );
+      });
+      TurnIndex++;
+      nextTurnIndex++;
+    }
+  }
 
   double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
-  double distanceInMeters = Geolocator.distanceBetween(lat1, lon1, lat2, lon2);
-  print("distanceInMeters: $distanceInMeters");
-  return distanceInMeters / 1000; // Convert meters to kilometers
-}
+    double distanceInMeters =
+        Geolocator.distanceBetween(lat1, lon1, lat2, lon2);
+    print("distanceInMeters: $distanceInMeters");
+    return distanceInMeters / 1000; // Convert meters to kilometers
+  }
 
-void populate() async {
+  void populate() async {
     List<Object?> activeGames = await Game.fetch() as List<Object?>;
 
     for (final game in activeGames) {
       Map<String, dynamic> uGame = game as Map<String, dynamic>;
 
       if (uGame["gameID"] == "bedrock") continue;
-      
+
       try {
         setState(() {
-          BitmapDescriptor iconColor = uGame["players"].length >= uGame["maxNumOfPlayers"] ? 
-          BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed) :
-          BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet);
-          
+          BitmapDescriptor iconColor = uGame["players"].length >=
+                  uGame["maxNumOfPlayers"]
+              ? BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed)
+              : BitmapDescriptor.defaultMarkerWithHue(
+                  BitmapDescriptor.hueViolet);
+
           _markers.add(
             Marker(
               markerId: MarkerId(game["gameID"]),
               icon: iconColor,
-              position: LatLng(
-                  game["coordinates"]["latitude"], game["coordinates"]["longitude"]),
+              position: LatLng(game["coordinates"]["latitude"],
+                  game["coordinates"]["longitude"]),
             ),
           );
         });
@@ -419,70 +428,67 @@ void populate() async {
         print(e);
       }
     }
-}
-
-
-
+  }
 
   @override
   Widget build(BuildContext context) {
-   CameraPosition initialCameraPosition = CameraPosition(
-    zoom: CameraZoom,
-    tilt: CameraTilt,
-    bearing: CameraBearing,
-    target: _utdCoordinates,
-  );
+    CameraPosition initialCameraPosition = CameraPosition(
+      zoom: CameraZoom,
+      tilt: CameraTilt,
+      bearing: CameraBearing,
+      target: _utdCoordinates,
+    );
 
-  return Scaffold(
-    appBar: AppBar(
-      title: Text('Live Map'),
-    ),
-    body: currentPosition == null
-        ? const Center(
-            child: Text("Loading..."),
-          )
-        :Stack(
-            children: [
-              GoogleMap(
-                myLocationButtonEnabled: true,
-                compassEnabled: false,
-                tiltGesturesEnabled: false,
-                markers: _markers,
-                polylines: {
-                  Polyline(
-                    polylineId: PolylineId("route"),
-                    points: polylineCoords,
-                    width: 6,
-                  )
-                },
-                mapType: MapType.normal,
-                initialCameraPosition: initialCameraPosition,
-                onMapCreated: (GoogleMapController controller) {
-                  _controller.complete(controller);
-                  populate();
-                },
-              ),
-              Positioned(
-                top: 8.0,
-                left: 8.0,
-                right: 8.0,
-                child: TextField(
-                  controller: searchController,
-                  onChanged: (value) {
-                    setState(() {
-                      searchValue = value;
-                    });
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Live Map'),
+      ),
+      body: currentPosition == null
+          ? const Center(
+              child: Text("Loading..."),
+            )
+          : Stack(
+              children: [
+                GoogleMap(
+                  myLocationButtonEnabled: true,
+                  compassEnabled: false,
+                  tiltGesturesEnabled: false,
+                  markers: _markers,
+                  polylines: {
+                    Polyline(
+                      polylineId: PolylineId("route"),
+                      points: polylineCoords,
+                      width: 6,
+                    )
                   },
-                  onSubmitted: (value) {
-                    findGame(); // Call findGame when user submits the search query
+                  mapType: MapType.normal,
+                  initialCameraPosition: initialCameraPosition,
+                  onMapCreated: (GoogleMapController controller) {
+                    _controller.complete(controller);
+                    populate();
                   },
-                  decoration: InputDecoration(
-                    hintText: 'Search By Game ID',
+                ),
+                Positioned(
+                  top: 8.0,
+                  left: 8.0,
+                  right: 8.0,
+                  child: TextField(
+                    controller: searchController,
+                    onChanged: (value) {
+                      setState(() {
+                        searchValue = value;
+                      });
+                    },
+                    onSubmitted: (value) {
+                      findGame(); // Call findGame when user submits the search query
+                    },
+                    decoration: InputDecoration(
+                      hintText: 'Search By Game ID',
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-  );
-}
+              ],
+            ),
+    );
+  }
 }

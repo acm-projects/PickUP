@@ -26,7 +26,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 bottomRight: Radius.circular(20),
               ),
             ),
-            padding: const EdgeInsets.symmetric(vertical: 10),
+            padding: const EdgeInsets.symmetric(vertical: 20),
             child: const Center(
               // Center the row
               child: Row(

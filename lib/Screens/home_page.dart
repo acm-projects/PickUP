@@ -113,7 +113,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1A3E2F),
+      backgroundColor: const Color(0xFF0C2219),
       body: Column(
         children: [
           _buildActiveGamesSection(),
@@ -166,7 +166,22 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
+      floatingActionButton: 
+      Padding( 
+        padding: const EdgeInsets.only(bottom: 120),
+      child: FloatingActionButton(
+        onPressed: () {
+         
+          Navigator.of(context).pushNamed('/chatPage');
+        },
+        backgroundColor: const Color(0xFF88F37F), // Light green color
+        child: const Icon(Icons.message, color: Colors.black), // Message icon
+      ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+    
     );
+    
   }
 
   Widget _buildActiveGamesSection() {

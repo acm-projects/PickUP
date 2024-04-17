@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ChatPage extends StatefulWidget {
-  const ChatPage({super.key});
+  const ChatPage({Key? key}) : super(key: key);
 
   @override
   _ChatPageState createState() => _ChatPageState();
@@ -28,10 +28,7 @@ class _ChatPageState extends State<ChatPage> {
         appBar: AppBar(
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.of(context)
-                  .pop(); // Navigates back to the previous screen
-            },
+            onPressed: () => Navigator.of(context).pop(),
           ),
           title: const Text('Chat'),
           titleTextStyle: const TextStyle(
@@ -40,18 +37,14 @@ class _ChatPageState extends State<ChatPage> {
             fontWeight: FontWeight.bold,
             fontSize: 24,
           ),
-          backgroundColor:
-              Colors.transparent, // Make AppBar background transparent
-          elevation: 0, // Removes shadow
+          backgroundColor: Colors.transparent,
+          elevation: 0,
           flexibleSpace: Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
+                colors: [Color(0xFF88F37F), Color(0xFF88F37F)],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [
-                  Color(0xFF88F37F),
-                  Color(0xFF88F37F),
-                ],
               ),
               borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
             ),
@@ -60,65 +53,124 @@ class _ChatPageState extends State<ChatPage> {
         body: Column(
           children: [
             Expanded(
-              child: ListView.builder(
-                itemCount: _messages.length,
-                itemBuilder: (context, index) => ListTile(
-                  title: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.lightGreen[400],
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(_messages[index]),
-                  ),
+              child: _buildMessageListView(),
+            ),
+            _buildMessageInputRow(),
+          ],
+        ),
+       
+      ),
+    );
+  }
+
+  Widget _buildMessageListView() {
+    return ListView.builder(
+      itemCount: _messages.length,
+      itemBuilder: (context, index) {
+        final bool isSender = index % 2 == 0;
+        return _buildMessageRow(context, index, isSender);
+      },
+    );
+  }
+
+  Widget _buildMessageRow(BuildContext context, int index, bool isSender) {
+    return Row(
+      mainAxisAlignment: isSender ? MainAxisAlignment.end : MainAxisAlignment.start,
+      children: [
+        if (!isSender) // Tail for the receiver on the left
+          Transform.rotate(
+            angle: 3.14159, // π radians to flip the tail
+            child: CustomPaint(
+              painter: BubbleTailPainter(isSender: false, color: Colors.white),
+              size: const Size(10, 20),
+            ),
+          ),
+        Container(
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+          margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+          decoration: BoxDecoration(
+            color: isSender ? Colors.lightGreen[400] : Colors.white,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Text(
+            _messages[index],
+            style: const TextStyle(
+              color: Colors.black,
+              fontSize: 24,
+              fontFamily: 'LeagueSpartan',
+              fontWeight: FontWeight.w900,
+            ),
+          ),
+        ),
+        if (isSender) // Tail for the sender on the right
+          CustomPaint(
+  painter: BubbleTailPainter(
+    isSender: true,
+    color: Colors.lightGreen[400] ?? Colors.lightGreen, // Fallback to default light green if 400 shade is null
+  ),
+  size: const Size(10, 20),
+),
+
+      ],
+    );
+  }
+
+  Widget _buildMessageInputRow() {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              controller: _controller,
+              decoration: const InputDecoration(
+                hintText: "Type a message",
+                fillColor: Colors.white,
+                filled: true,
+                border: OutlineInputBorder(
+                  borderSide: BorderSide.none,
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: _controller,
-                      decoration: const InputDecoration(
-                        hintText: "Type a message",
-                        fillColor: Colors.white,
-                        filled: true,
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                        ),
-                      ),
-                    ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.send, color: Colors.green),
-                    onPressed: _sendMessage,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: Colors.green[900],
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home, color: Colors.white),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.search, color: Colors.white),
-              label: 'Search',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person, color: Colors.white),
-              label: 'Profile',
-            ),
-          ],
-        ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.send, color: Colors.green),
+            onPressed: _sendMessage,
+          ),
+        ],
       ),
     );
+  }
+
+  
+}
+
+class BubbleTailPainter extends CustomPainter {
+  final bool isSender;
+  final Color color;
+
+  BubbleTailPainter({required this.isSender, required this.color});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    var paint = Paint()..color = color;
+    var path = Path();
+    if (isSender) {
+      path.moveTo(size.width, size.height * 0.5);
+      path.lineTo(size.width - 10, size.height * 0.3);
+      path.lineTo(size.width - 10, size.height * 0.7);
+    } else {
+      path.moveTo(0, size.height * 0.5);
+      path.lineTo(10, size.height * 0.3);
+      path.lineTo(10, size.height * 0.7);
+    }
+    path.close();
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
   }
 }

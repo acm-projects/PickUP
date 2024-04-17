@@ -110,15 +110,15 @@ class _LoginScreenState extends State<Login> {
             ),
             const SizedBox(height: 20),
 
-            Align(
+             Align(
               alignment: Alignment.center,
               child: ColorFiltered(
                 colorFilter: const ColorFilter.mode(
                   Colors.white,
                   BlendMode.srcATop,
                 ),
-                child: Image.network(
-                  'https://img.icons8.com/ios11/2x/beach-soccer.png',
+               child: Image.asset(
+              'assets/beachsoccer.png',
                   width: 1000,
                   height: 100,
                 ),
@@ -178,7 +178,7 @@ class _LoginScreenState extends State<Login> {
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.transparent,
           shadowColor: Colors.transparent,
-          padding: const EdgeInsets.symmetric(vertical: 26.0, horizontal: 100),
+          padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 100),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
         ),

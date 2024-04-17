@@ -64,51 +64,116 @@ class _LiveMapState extends State<ChooseLocation> {
     );
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Live Map'),
-      ),
-      body: currentPosition == null
-          ? const Center(
-              child: Text("Loading..."),
-            )
-          : Container(
-              child: Stack(
-                children: [
-                  GoogleMap(
-                    myLocationButtonEnabled: true,
-                    compassEnabled: false,
-                    tiltGesturesEnabled: false,
-                    markers: _markers,
-                    polylines: {
-                      Polyline(
-                        polylineId: const PolylineId("route"),
-                        points: polylineCoords,
-                        width: 6,
-                      )
-                    },
-                    mapType: MapType.normal,
-                    initialCameraPosition: initialCameraPosition,
-                    onMapCreated: (GoogleMapController controller) {
-                      _controller.complete(controller);
-                      //displayLiveGame(); // Call the function to display markers
-                      populate();
-                    },
-                    onTap: _onMapTapped, // Add onTap handler
-                    onLongPress: onMarkerTapped,
-                  ),
-                  ElevatedButton(
-                    child: const Text('Confirm location!'),
-                    onPressed: () async {
-                      await Game.currentGame.instantiate();
-                      for (int i = 0; i < 4; i++) {
-                        Navigator.of(context).pop();
-                      }
-                    },
-                  )
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.of(context)
+                  .pop(); // Navigates back to the previous screen
+            },
+          ),
+          backgroundColor: Colors.transparent,
+          title: const Text('Choose a Location'),
+          titleTextStyle: const TextStyle(
+            color: Colors.black,
+            fontFamily: 'Mada',
+            fontWeight: FontWeight.bold,
+            fontSize: 24,
+          ), // Make AppBar background transparent
+          elevation: 0, // Removes shadow
+          flexibleSpace: Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Color(0xFF88F37F),
+                  Color(0xFF88F37F),
                 ],
               ),
+              borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
+              // borderRadius: BorderRadius.circular(30), // Rounded corners
             ),
-    );
+          ),
+        ),
+        body: currentPosition == null
+            ? const Center(
+                child: Text("Loading..."),
+              )
+            : Container(
+                child: Stack(
+                  children: [
+                    GoogleMap(
+                      myLocationButtonEnabled: true,
+                      compassEnabled: false,
+                      tiltGesturesEnabled: false,
+                      markers: _markers,
+                      polylines: {
+                        Polyline(
+                          polylineId: const PolylineId("route"),
+                          points: polylineCoords,
+                          width: 6,
+                        )
+                      },
+                      mapType: MapType.normal,
+                      initialCameraPosition: initialCameraPosition,
+                      onMapCreated: (GoogleMapController controller) {
+                        _controller.complete(controller);
+                        //displayLiveGame(); // Call the function to display markers
+                        populate();
+                      },
+                      onTap: _onMapTapped, // Add onTap handler
+                      onLongPress: onMarkerTapped,
+                    ),
+                    Align(
+                      alignment: Alignment
+                          .bottomCenter, // Aligns the button to the bottom center
+                      child: Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: TextButton(
+                          style: TextButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18.0),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 25.0, horizontal: 30),
+                            backgroundColor: Colors.transparent,
+                          ),
+                          onPressed: () async {
+                            await Game.currentGame.instantiate();
+                            //UI pops up that confirms that it was created
+                            for (int i = 0; i < 4; i++) {
+                              Navigator.of(context).pop();
+                            }
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              gradient: const LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: [
+                                  Color(0xFF80E046),
+                                  Color(0xFF88F37F),
+                                ],
+                              ),
+                              borderRadius: BorderRadius.circular(18.0),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 12.0, horizontal: 50),
+                            child: const Text(
+                              'Create Game',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ));
   }
 
   static const Polyline drawPoly = Polyline(

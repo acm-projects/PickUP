@@ -72,20 +72,21 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
-  Widget _buildMessageRow(BuildContext context, int index, bool isSender) {
-    return Row(
-      mainAxisAlignment:
-          isSender ? MainAxisAlignment.end : MainAxisAlignment.start,
-      children: [
-        if (!isSender) // Tail for the receiver on the left
-          Transform.rotate(
-            angle: 3.14159, // π radians to flip the tail
-            child: CustomPaint(
-              painter: BubbleTailPainter(isSender: false, color: Colors.white),
-              size: const Size(10, 20),
-            ),
+ Widget _buildMessageRow(BuildContext context, int index, bool isSender) {
+  return Row(
+    mainAxisAlignment:
+        isSender ? MainAxisAlignment.end : MainAxisAlignment.start,
+    children: [
+      if (!isSender) // Tail for the receiver on the left
+        Transform.rotate(
+          angle: 3.14159, // π radians to flip the tail
+          child: CustomPaint(
+            painter: BubbleTailPainter(isSender: false, color: Colors.white),
+            size: const Size(10, 20),
           ),
-        Container(
+        ),
+      Flexible( // Wrapped Container with Flexible to fit content
+        child: Container(
           padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
           margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
           decoration: BoxDecoration(
@@ -96,25 +97,27 @@ class _ChatPageState extends State<ChatPage> {
             _messages[index],
             style: const TextStyle(
               color: Colors.black,
-              fontSize: 24,
+              fontSize: 16, // Consider reducing the font size for better fitting
               fontFamily: 'LeagueSpartan',
               fontWeight: FontWeight.w900,
             ),
+            softWrap: true, // Enable text wrapping
+            overflow: TextOverflow.visible, // Avoid clipping longer texts
           ),
         ),
-        if (isSender) // Tail for the sender on the right
-          CustomPaint(
-            painter: BubbleTailPainter(
-              isSender: true,
-              color: Colors.lightGreen[400] ??
-                  Colors
-                      .lightGreen, // Fallback to default light green if 400 shade is null
-            ),
-            size: const Size(10, 20),
+      ),
+      if (isSender) // Tail for the sender on the right
+        CustomPaint(
+          painter: BubbleTailPainter(
+            isSender: true,
+            color: Colors.lightGreen[400] ??
+                Colors.lightGreen, // Fallback to default light green if 400 shade is null
           ),
-      ],
-    );
-  }
+          size: const Size(10, 20),
+        ),
+    ],
+  );
+}
 
   Widget _buildMessageInputRow() {
     return Padding(

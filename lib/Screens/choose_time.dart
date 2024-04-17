@@ -24,13 +24,13 @@ class _ChooseTimeState extends State<ChooseTime> {
   void initState() {
     // TODO: implement initState
     super.initState();
-      int hour = DateTime.now().hour % 12;
-      if (hour == 0) {
-        hour = 12; // 0 and 12 should map to 12 in 12-hour format
-      }
-     _hourController.text = hour.toString();
-     _minuteController.text = DateTime.now().minute.toString();
-     _isPM = DateTime.now().hour - 12 >= 0;
+    int hour = DateTime.now().hour % 12;
+    if (hour == 0) {
+      hour = 12; // 0 and 12 should map to 12 in 12-hour format
+    }
+    _hourController.text = hour.toString();
+    _minuteController.text = DateTime.now().minute.toString();
+    _isPM = DateTime.now().hour - 12 >= 0;
   }
 
   @override

@@ -113,7 +113,7 @@ class _DirectionsMapState extends State<DirectionsMap> {
     markerId: MarkerId('UTD Testing Center'),
     position: _testingCenter,
     icon: BitmapDescriptor.defaultMarker,
-    infoWindow: InfoWindow(title: 'UT Dallas Testing Center'),
+    infoWindow: InfoWindow(title: 'UT Dallas Testing Center'),,
   ));*/
     _markers.add(Marker(
       markerId: MarkerId('Frankford Drive'),

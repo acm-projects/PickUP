@@ -112,7 +112,9 @@ class _MainPageState extends State<MainPage> {
             ];
 
             //!IF INDEX IS = 3 then make sure they don't have max, if they do they must delete games
-
+            if (index != 0) {
+              HomePage.timer.cancel();
+            }
             Navigator.of(context).pushNamed(map[index]);
           });
         },

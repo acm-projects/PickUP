@@ -136,7 +136,7 @@ class Game {
   }
 
   // Update
-  static Future<void> edit(String target, Map<String, dynamic> doc) async {
+  static Future<void> edit(String target, Map<String, dynamic> doc, [bool override = false]) async {
     print("Editing $target");
 
     final DocumentReference targetGameDoc =
@@ -147,7 +147,7 @@ class Game {
     if (!targetGame.exists) throw "$target doesn't exist.";
 
     if ((targetGame.data() as Map<String, dynamic>)["organizer"] !=
-        await User.getUserID()) {
+        await User.getUserID() && !override) {
       throw "You're not $target's owner!";
     }
 
@@ -282,14 +282,14 @@ class Game {
     Map<String, dynamic> doc = await Game.fetch(target) as Map<String, dynamic>;
 
     Map<String, dynamic> package = {
-      "message": msg,
+      "message": " [${await User.getFirstName()}]: $msg",
       "user": await User.getUserID(),
       "time": DateTime.now().toIso8601String()
     };
 
     (doc["chat"] as List<dynamic>).add(package);
 
-    await edit(target, doc);
+    await edit(target, doc, true);
   }
 
   static Future<List<Map<String, dynamic>>> search(

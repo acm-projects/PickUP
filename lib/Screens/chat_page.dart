@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:pickup/classes/game.dart';
+import 'package:pickup/classes/user.dart';
+import 'dart:async';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
@@ -8,13 +11,27 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
-  final List<String> _messages = [];
+  List<dynamic> _messages = [];
   final TextEditingController _controller = TextEditingController();
+  late Timer timer;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    timer = Timer.periodic(const Duration(milliseconds: 1000), (_) async {
+      Map<String, dynamic> gameInfo =
+          await Game.fetch("9a533l215e3o739335") as Map<String, dynamic>;
+      _messages = gameInfo["chat"];
+      setState(() {});
+    });
+  }
 
   void _sendMessage() {
     if (_controller.text.isNotEmpty) {
+      Game.message("9a533l215e3o739335", _controller.text);
       setState(() {
-        _messages.add(_controller.text);
         _controller.clear();
       });
     }
@@ -28,7 +45,10 @@ class _ChatPageState extends State<ChatPage> {
         appBar: AppBar(
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () {
+              Navigator.of(context).pop();
+              timer.cancel();
+            },
           ),
           title: const Text('Chat'),
           titleTextStyle: const TextStyle(
@@ -66,27 +86,54 @@ class _ChatPageState extends State<ChatPage> {
     return ListView.builder(
       itemCount: _messages.length,
       itemBuilder: (context, index) {
-        final bool isSender = index % 2 == 0;
-        return _buildMessageRow(context, index, isSender);
+        return _buildMessageRow(context, index);
       },
     );
   }
 
- Widget _buildMessageRow(BuildContext context, int index, bool isSender) {
-  return Row(
-    mainAxisAlignment:
-        isSender ? MainAxisAlignment.end : MainAxisAlignment.start,
-    children: [
-      if (!isSender) // Tail for the receiver on the left
-        Transform.rotate(
-          angle: 3.14159, // π radians to flip the tail
-          child: CustomPaint(
-            painter: BubbleTailPainter(isSender: false, color: Colors.white),
-            size: const Size(10, 20),
+  String wrapTextByCharacterLimit(String inputText, int characterLimit) {
+    if (inputText == null || inputText.isEmpty) {
+      return ''; // Return an empty string for null or empty input
+    }
+
+    final List<String> words = inputText.split(' ');
+    final StringBuffer result = StringBuffer();
+    String currentLine = '';
+
+    for (final String word in words) {
+      if ((currentLine + word).length <= characterLimit) {
+        // Add the word to the current line
+        currentLine += '$word ';
+      } else {
+        // Start a new line with the word
+        result.writeln(currentLine.trim());
+        currentLine = '$word ';
+      }
+    }
+
+    // Add any remaining content to the result
+    result.write(currentLine.trim());
+
+    return result.toString();
+  }
+
+  Widget _buildMessageRow(BuildContext context, int index) {
+    User.getUserID();
+    bool isSender = _messages[index]["user"] == User.userID;
+
+    return Row(
+      mainAxisAlignment:
+          isSender ? MainAxisAlignment.end : MainAxisAlignment.start,
+      children: [
+        if (!isSender) // Tail for the receiver on the left
+          Transform.rotate(
+            angle: 3.14159, // π radians to flip the tail
+            child: CustomPaint(
+              painter: BubbleTailPainter(isSender: false, color: Colors.white),
+              size: const Size(10, 20),
+            ),
           ),
-        ),
-      Flexible( // Wrapped Container with Flexible to fit content
-        child: Container(
+        Container(
           padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
           margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
           decoration: BoxDecoration(
@@ -94,30 +141,28 @@ class _ChatPageState extends State<ChatPage> {
             borderRadius: BorderRadius.circular(20),
           ),
           child: Text(
-            _messages[index],
+            wrapTextByCharacterLimit(_messages[index]["message"], 30),
             style: const TextStyle(
               color: Colors.black,
-              fontSize: 16, // Consider reducing the font size for better fitting
+              fontSize: 20,
               fontFamily: 'LeagueSpartan',
               fontWeight: FontWeight.w900,
             ),
-            softWrap: true, // Enable text wrapping
-            overflow: TextOverflow.visible, // Avoid clipping longer texts
           ),
         ),
-      ),
-      if (isSender) // Tail for the sender on the right
-        CustomPaint(
-          painter: BubbleTailPainter(
-            isSender: true,
-            color: Colors.lightGreen[400] ??
-                Colors.lightGreen, // Fallback to default light green if 400 shade is null
+        if (isSender) // Tail for the sender on the right
+          CustomPaint(
+            painter: BubbleTailPainter(
+              isSender: true,
+              color: Colors.lightGreen[400] ??
+                  Colors
+                      .lightGreen, // Fallback to default light green if 400 shade is null
+            ),
+            size: const Size(10, 20),
           ),
-          size: const Size(10, 20),
-        ),
-    ],
-  );
-}
+      ],
+    );
+  }
 
   Widget _buildMessageInputRow() {
     return Padding(

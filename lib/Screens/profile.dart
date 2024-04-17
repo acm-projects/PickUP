@@ -124,11 +124,7 @@ class _ProfilePageState extends State<ProfilePage> {
               print("reset pw");
             } else if (title == 'Log Out') {
               await User.logOut();
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => const StartScreen()),
-                (route) => false,
-              );
+              Navigator.pushNamedAndRemoveUntil(context, "/", (route) => false);
             } else {
               _showEditProfileDialog(context);
             }

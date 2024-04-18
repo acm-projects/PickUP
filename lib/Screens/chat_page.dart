@@ -20,6 +20,8 @@ class _ChatPageState extends State<ChatPage> {
     // TODO: implement initState
     super.initState();
 
+    print("hello");
+
     timer = Timer.periodic(const Duration(milliseconds: 1000), (_) async {
       Map<String, dynamic> gameInfo =
           await Game.fetch("9a533l215e3o739335") as Map<String, dynamic>;
@@ -166,7 +168,7 @@ class _ChatPageState extends State<ChatPage> {
 
   Widget _buildMessageInputRow() {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(30.0),
       child: Row(
         children: [
           Expanded(

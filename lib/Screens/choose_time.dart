@@ -86,7 +86,7 @@ class _ChooseTimeState extends State<ChooseTime> {
 
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: const Color(0xFF0C2219),
+        backgroundColor: const Color(0xFF1A3E2F),
         appBar: AppBar(
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
@@ -105,19 +105,21 @@ class _ChooseTimeState extends State<ChooseTime> {
           backgroundColor:
               Colors.transparent, // Make AppBar background transparent
           elevation: 0, // Removes shadow
-          flexibleSpace: Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Color(0xFF88F37F),
-                  Color(0xFF88F37F),
-                ],
-              ),
-              borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
-              // borderRadius: BorderRadius.circular(30), // Rounded corners
-            ),
+          flexibleSpace: Ink(
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          colors: [
+                            Color(0xFF80F37F),
+                            Color(0xFF80E046)
+                          ], // Gradient colors
+                          begin: Alignment
+                              .topCenter, // Start point of the gradient
+                          end: Alignment
+                              .bottomCenter, // End point of the gradient
+                        ),
+                        borderRadius:
+                            BorderRadius.circular(30), // Rounded corners
+                      ),
           ),
         ),
         body: SingleChildScrollView(

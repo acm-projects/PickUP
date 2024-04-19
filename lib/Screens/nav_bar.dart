@@ -107,14 +107,6 @@ class _MainPageState extends State<MainPage> {
         onDestinationSelected: (index) {
           setState(() {
             this.index = index;
-            List<String> map = [
-              '/Login/HomePage',
-              '/ChooseLocation',
-              '/ChooseGameType',
-              '/Profile'
-            ];
-
-            Navigator.of(context).pushNamed(map[index]);
           });
         },
         destinations: [

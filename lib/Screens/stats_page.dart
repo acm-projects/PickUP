@@ -71,51 +71,45 @@ class _StatsPageState extends State<StatsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF1A3E2F),
+                  appBar: AppBar(
+        title: Text('Stats'),
+        titleTextStyle: const TextStyle(
+          color: Colors.black,
+          fontFamily: 'Mada',
+          fontWeight: FontWeight.bold,
+          fontSize: 28,
+        ),
+                leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context)
+                .pop(); // Navigates back to the previous screen
+          },
+        ),
+        backgroundColor:
+            Colors.transparent, // Make AppBar background transparent
+        elevation: 0, // Removes shadow
+        flexibleSpace: Ink(
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          colors: [
+                            Color(0xFF80F37F),
+                            Color(0xFF80E046)
+                          ], // Gradient colors
+                          begin: Alignment
+                              .topCenter, // Start point of the gradient
+                          end: Alignment
+                              .bottomCenter, // End point of the gradient
+                        ),
+                        borderRadius:
+                            BorderRadius.circular(30), // Rounded corners
+                      ),
+          ),
+      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Color(0xFF80F37F),
-                  Color(0xFF80E046)
-                ], // Gradient colors
-                begin: Alignment.topCenter, // Start point of the gradient
-                end: Alignment.bottomCenter, // End point of the gradient
-              ),
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(20),
-                bottomRight: Radius.circular(20),
-              ),
-            ),
-            padding: EdgeInsets.symmetric(vertical: 15),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(
-                  icon: Icon(Icons.arrow_back),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-                Expanded(
-                  child: Center(
-                    child: Text(
-                      'Stats',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(width: 40), // Adjust spacing as needed
-              ],
-            ),
-          ),
-          SizedBox(height: 20),
+          SizedBox(height: 40),
           // Dropdown button for selecting the sport
           Center(
             child: Container(

@@ -81,19 +81,21 @@ class _LiveMapState extends State<ChooseLocation> {
             fontSize: 24,
           ), // Make AppBar background transparent
           elevation: 0, // Removes shadow
-          flexibleSpace: Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Color(0xFF88F37F),
-                  Color(0xFF88F37F),
-                ],
-              ),
-              borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
-              // borderRadius: BorderRadius.circular(30), // Rounded corners
-            ),
+          flexibleSpace: Ink(
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          colors: [
+                            Color(0xFF80F37F),
+                            Color(0xFF80E046)
+                          ], // Gradient colors
+                          begin: Alignment
+                              .topCenter, // Start point of the gradient
+                          end: Alignment
+                              .bottomCenter, // End point of the gradient
+                        ),
+                        borderRadius:
+                            BorderRadius.circular(30), // Rounded corners
+                      ),
           ),
         ),
         body: Container(
@@ -138,9 +140,7 @@ class _LiveMapState extends State<ChooseLocation> {
                     onPressed: () async {
                       await Game.currentGame.instantiate();
                       //UI pops up that confirms that it was created
-                      for (int i = 0; i < 4; i++) {
-                        Navigator.of(context).pop();
-                      }
+                        Navigator.pushNamed(context, '/Login/HomePage');
                     },
                     child: Container(
                       decoration: BoxDecoration(

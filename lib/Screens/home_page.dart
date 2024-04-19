@@ -8,8 +8,8 @@ import 'package:timezone/timezone.dart' as tz;
 import 'dart:async';
 
 class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
   static late Timer timer;
-  const HomePage({super.key});
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -129,10 +129,10 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0C2219),
+      backgroundColor: const Color(0xFF1A3E2F),
       body: Column(
-        children: [
-          _buildActiveGamesSection(),
+          children: [
+            _buildActiveGamesSection(),
           Expanded(
             child: SingleChildScrollView(
               child: Column(
@@ -145,24 +145,41 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-          // Bottom "PickUP" Button
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 80),
-              child: ElevatedButton(
-                onPressed: () {
-                  // Navigate to the game creation page
-                  Navigator.of(context).pushNamed('/LiveMap');
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF88F37F), // Light green color
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30), // Rounded corners
-                  ),
-                ),
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 13, horizontal: 10),
+            // Bottom "PickUP" Button
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 80),
+                child: ElevatedButton(
+                  onPressed: () {
+                    // Navigate to the game creation page
+                    Navigator.of(context).pushNamed('/LiveMap');
+                  },
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.circular(30), // Rounded corners
+                    ),
+                    backgroundColor: Colors.transparent,
+                    padding: EdgeInsets.zero,
+                    elevation: 5, // Set primary color to transparent
+                  ),child: Ink(
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          colors: [
+                            Color(0xFF80F37F),
+                            Color(0xFF80E046)
+                          ], // Gradient colors
+                          begin: Alignment
+                              .topCenter, // Start point of the gradient
+                          end: Alignment
+                              .bottomCenter, // End point of the gradient
+                        ),
+                        borderRadius:
+                            BorderRadius.circular(30), // Rounded corners
+                      ),
+                      child: const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 13, horizontal: 67),
                   child: Text(
                     'PickUP',
                     style: TextStyle(
@@ -172,10 +189,12 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
+                  ),
+                ),
               ),
             ),
-          ),
-        ],
+            const SizedBox(height: 20),
+          ],
       ),
     );
   }
@@ -248,11 +267,14 @@ class _HomePageState extends State<HomePage> {
           );
         }
       }
-      //MAKE LOCATION NAMED
 
       return Container(
         decoration: const BoxDecoration(
-          color: Color(0xFF88F37F),
+          gradient: LinearGradient(
+            colors: [Color(0xFF80F37F), Color(0xFF80E046)], // Gradient colors
+            begin: Alignment.topCenter, // Start point of the gradient
+            end: Alignment.bottomCenter, // End point of the gradient
+          ),
           borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
         ),
         padding: const EdgeInsets.all(16),
@@ -306,7 +328,7 @@ class _HomePageState extends State<HomePage> {
                   differenceInMinutes < 0
                       ? ""
                       : "$differenceInMinutes min till",
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: Colors.black,
                   ),
                 ),
@@ -324,8 +346,8 @@ class _HomePageState extends State<HomePage> {
   Widget _buildUpcomingGamesSection() {
     if (_upcomingGames.isEmpty) {
       // Display message if there are no upcoming games
-      return const Padding(
-        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
         child: Text(
           'No Upcoming Games',
           style: TextStyle(
@@ -343,20 +365,17 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const SizedBox(height: 0),
-            const Padding(
-              padding: EdgeInsets.only(top: 10),
-              child: Text(
-                'Your Games',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 23,
-                ),
-                textAlign: TextAlign.center, // Centered text
+            const SizedBox(height: 10),
+            Text(
+              'Your Games',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 23,
               ),
+              textAlign: TextAlign.center, // Centered text
             ),
-            const SizedBox(height: 0),
+            const SizedBox(height: 10),
             ListView.builder(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
@@ -364,7 +383,7 @@ class _HomePageState extends State<HomePage> {
               itemBuilder: (context, index) {
                 final game = _upcomingGames[index];
                 return Padding(
-                  padding: const EdgeInsets.only(bottom: 0),
+                  padding: const EdgeInsets.only(bottom: 8),
                   child: InkWell(
                     onTap: () {
                       // Add your action here when the button is tapped

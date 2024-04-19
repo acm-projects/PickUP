@@ -34,21 +34,6 @@ class _StartScreenState extends State<StartScreen> {
     initLogin(context);
 
     int messageCount = 0;
-    /*
-    Timer? timer;
-
-    timer = Timer.periodic(Duration(milliseconds: 3000), (_) async {
-      List<dynamic> gameChat = (await Game.fetch('858g98137a5i') as Map<String, dynamic>)["chat"];
-
-      for (int i = messageCount; i < gameChat.length; i++) {
-        print(gameChat[i]);
-      }
-
-      messageCount = gameChat.length;
-
-      timer?.cancel();
-    });
-    */
   }
 
   @override

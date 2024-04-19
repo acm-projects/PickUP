@@ -10,15 +10,8 @@ class GameCreation extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: const Color(0xFF0C2219),
+        backgroundColor: const Color(0xFF1A3E2F),
         appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.of(context)
-                  .pop(); // Navigates back to the previous screen
-            },
-          ),
           title: const Text('Choose a Game Type'),
           titleTextStyle: const TextStyle(
             color: Colors.black,
@@ -29,19 +22,21 @@ class GameCreation extends StatelessWidget {
           backgroundColor:
               Colors.transparent, // Make AppBar background transparent
           elevation: 0, // Removes shadow
-          flexibleSpace: Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Color(0xFF88F37F), // Same green color for a consistent look
-                  Color(0xFF88F37F),
-                ],
-              ),
-              borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
-              // borderRadius: BorderRadius.circular(30), // Rounded corners
-            ),
+          flexibleSpace: Ink(
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          colors: [
+                            Color(0xFF80F37F),
+                            Color(0xFF80E046)
+                          ], // Gradient colors
+                          begin: Alignment
+                              .topCenter, // Start point of the gradient
+                          end: Alignment
+                              .bottomCenter, // End point of the gradient
+                        ),
+                        borderRadius:
+                            BorderRadius.circular(30), // Rounded corners
+                      ),
           ),
         ),
         body: Center(
@@ -81,8 +76,8 @@ class GameCreation extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            Color.fromARGB(255, 142, 202, 135),
-            Color(0xFF88F37F),
+            const Color(0xFF255035),
+            const Color(0xFF255035)
           ],
         ),
         borderRadius: BorderRadius.circular(28),
@@ -97,12 +92,12 @@ class GameCreation extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Icon(icon, color: Colors.black, size: 80), // Icon
+            Icon(icon, color: Colors.white, size: 80), // Icon
             const SizedBox(height: 10), // Space between icon and text
             Text(
               text,
               style: const TextStyle(
-                  color: Colors.black,
+                  color: Colors.white,
                   fontFamily: 'Mada',
                   fontWeight: FontWeight.w500,
                   fontSize: 20),

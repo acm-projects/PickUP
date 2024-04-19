@@ -29,8 +29,8 @@ class _LoginScreenState extends State<Login> {
 
       Navigator.pushNamed(context, '/Login/HomePage');
 
-      await local_user.User.createUser(
-          _usernameController.text, _passwordController.text, "", "");
+      await local_user.User.logIn(
+          _usernameController.text, _passwordController.text);
 
       setState(() {
         _errorMessage = ''; // Clear any previous error message

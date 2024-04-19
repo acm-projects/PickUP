@@ -50,6 +50,12 @@ class _HomePageState extends State<HomePage> {
       List<String> games =
           (await usersJoinedGames.get()).docs.map((doc) => doc.id).toList();
 
+      for (int index = 0; index < _upcomingGames.length; index++) {
+        if (!games.contains(_upcomingGames[index]["id"])) {
+          _upcomingGames.removeAt(index);
+        }
+      }
+
       for (final game in games) {
         if (game == 'bedrock') continue;
         Map<String, dynamic> gameInfo =
@@ -88,15 +94,14 @@ class _HomePageState extends State<HomePage> {
           if (ugame["id"] == game) doesContain = true;
         }
 
-        if (tz.TZDateTime.now(Location.getTimeZone()).isAfter(date)) {
-          for (int index = 0; index < _upcomingGames.length; index++) {
-            if (_upcomingGames[index]["id"] == game) {
-              _upcomingGames.remove(_upcomingGames[index]);
-            }
+        for (int index = 0; index < _upcomingGames.length; index++) {
+          if (_upcomingGames[index]["id"] == game &&
+              tz.TZDateTime.now(Location.getTimeZone()).isAfter(date)) {
+            _upcomingGames.remove(_upcomingGames[index]);
+            sliderWidget = null;
+            await Game.leave(game);
+            continue;
           }
-          sliderWidget = null;
-          await Game.leave(game);
-          continue;
         }
 
         if (doesContain) continue;
@@ -109,12 +114,13 @@ class _HomePageState extends State<HomePage> {
           'location': gameInfo["location"],
         });
       }
+
       setState(() {});
     }
 
     getActiveGames();
     HomePage.timer =
-        Timer.periodic(const Duration(milliseconds: 3000), (_) async {
+        Timer.periodic(const Duration(milliseconds: 1000), (_) async {
       await getActiveGames();
     });
     //Cancel timer you navigate away
@@ -171,17 +177,6 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 120),
-        child: FloatingActionButton(
-          onPressed: () {
-            Navigator.of(context).pushNamed('/chatPage');
-          },
-          backgroundColor: const Color(0xFF88F37F), // Light green color
-          child: const Icon(Icons.message, color: Colors.black), // Message icon
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 
@@ -218,7 +213,9 @@ class _HomePageState extends State<HomePage> {
             .difference(tz.TZDateTime.now(Location.getTimeZone()))
             .inMinutes;
 
-        if (differenceInMinutes <= 15 && differenceInMinutes >= 0) {
+        if (differenceInMinutes <= 15 &&
+            differenceInMinutes >= 0 &&
+            sliderWidget == null) {
           sliderWidget = Center(
             child: SliderButton(
               action: () async {
@@ -229,16 +226,14 @@ class _HomePageState extends State<HomePage> {
                   print(_upcomingGames.length);
                   for (int index = 0; index < _upcomingGames.length; index++) {
                     if (_upcomingGames[index]["id"] == game["id"]) {
-                      _upcomingGames.remove(_upcomingGames[index]);
+                      _upcomingGames.removeAt(index);
                       sliderWidget = null;
                       await Game.leave(closestGame["id"]);
                       break;
                     }
                   }
                 });
-
                 setState(() {});
-                return null;
               },
               backgroundColor: const Color.fromARGB(255, 19, 189, 7),
               label: const Text(
@@ -370,30 +365,38 @@ class _HomePageState extends State<HomePage> {
                 final game = _upcomingGames[index];
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: index % 2 == 0
-                          ? const Color(0xFF255035)
-                          : Colors.transparent,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    padding: const EdgeInsets.all(12),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            '${game['title'] ?? ""} ${game['startTime'] ?? ""}',
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16, // Increased font size
+                  child: InkWell(
+                    onTap: () {
+                      // Add your action here when the button is tapped
+                      // For example, navigate to a game details page
+                      print('Game Tapped: ${game['title']}');
+                      // You can use Navigator.push to navigate to a new screen
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: index % 2 == 0
+                            ? const Color(0xFF255035)
+                            : Colors.transparent,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      padding: const EdgeInsets.all(12),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              '${game['title'] ?? ""} ${game['startTime'] ?? ""}',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16, // Increased font size
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.start, // Left-aligned text
                             ),
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.start, // Left-aligned text
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 );

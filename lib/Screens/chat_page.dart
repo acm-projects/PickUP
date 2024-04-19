@@ -24,7 +24,7 @@ class _ChatPageState extends State<ChatPage> {
 
     timer = Timer.periodic(const Duration(milliseconds: 1000), (_) async {
       Map<String, dynamic> gameInfo =
-          await Game.fetch("9a533l215e3o739335") as Map<String, dynamic>;
+          await Game.fetch("4ea1448b0m733h1o18") as Map<String, dynamic>;
       _messages = gameInfo["chat"];
       setState(() {});
     });
@@ -32,7 +32,7 @@ class _ChatPageState extends State<ChatPage> {
 
   void _sendMessage() {
     if (_controller.text.isNotEmpty) {
-      Game.message("9a533l215e3o739335", _controller.text);
+      Game.message("4ea1448b0m733h1o18", _controller.text);
       setState(() {
         _controller.clear();
       });

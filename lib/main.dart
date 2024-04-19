@@ -1,3 +1,4 @@
+import 'package:pickup/classes/notification.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'Screens/log_in.dart';
@@ -8,7 +9,7 @@ import 'Screens/config_game.dart';
 import 'Screens/choose_location.dart';
 import 'Screens/choose_time.dart';
 import 'Screens/chat_page.dart';
-import 'package:pickup/classes/notification.dart';
+import 'Screens/stats_page.dart';
 import 'Screens/nav_bar.dart';
 import 'Screens/profile.dart';
 import 'Screens/live_map.dart';
@@ -56,6 +57,7 @@ class PickUpApp extends StatelessWidget {
         '/chatPage': (context) => const ChatPage(),
         '/Profile': (context) => const ProfilePage(),
         '/LiveMap': (context) => const LiveMap(),
+        '/Stats': (context) => StatsPage(),
       },
     );
   }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'start_screen.dart';
 import 'dart:io';
 import '../classes/user.dart';
 
@@ -125,6 +124,8 @@ class _ProfilePageState extends State<ProfilePage> {
             } else if (title == 'Log Out') {
               await User.logOut();
               Navigator.pushNamedAndRemoveUntil(context, "/", (route) => false);
+            } else if (title == 'Stats') {
+              Navigator.pushNamed(context, '/Stats');
             } else {
               _showEditProfileDialog(context);
             }

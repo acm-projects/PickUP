@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pickup/classes/user.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'home_page.dart';
 import 'choose_gametype.dart';
 import 'profile.dart';
@@ -39,7 +41,7 @@ class _NavigationBarState extends State<NavigationBar> {
       duration: widget.animationDuration,
       height: 64, // Increased height
       decoration: const BoxDecoration(
-        color: Color(0xFF88F37F), // Navigation bar color
+        color: Color(0xFF72CD52), // Navigation bar color
         borderRadius:
             BorderRadius.vertical(top: Radius.circular(20)), // Rounded corners
       ),
@@ -94,7 +96,7 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor:
-          const Color(0xFF88F37F), // Background color of the scaffold
+          const Color(0xFF72CD52), // Background color of the scaffold
       extendBody: true,
       body: screens[index],
       bottomNavigationBar: NavigationBar(
@@ -104,6 +106,7 @@ class _MainPageState extends State<MainPage> {
             const Duration(milliseconds: 300), // Animation duration
         onDestinationSelected: (index) {
           setState(() {
+            this.index = index;
             List<String> map = [
               '/Login/HomePage',
               '/ChooseLocation',
@@ -111,10 +114,6 @@ class _MainPageState extends State<MainPage> {
               '/Profile'
             ];
 
-            //!IF INDEX IS = 3 then make sure they don't have max, if they do they must delete games
-            if (index != 0) {
-              //!HomePage.timer.cancel();
-            }
             Navigator.of(context).pushNamed(map[index]);
           });
         },

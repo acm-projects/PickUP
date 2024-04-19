@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 const SECURE_STORAGE = FlutterSecureStorage();
 
@@ -64,7 +65,22 @@ class User {
     return pass!;
   }
 
-  static Future<void> logIn(String userID, String password) async {}
+  static Future<void> logIn(String userID, String password) async {
+    final docUser = FirebaseFirestore.instance.collection('Users').doc(userID);
+
+    await SECURE_STORAGE.write(key: "user", value: userID);
+
+    await SECURE_STORAGE.write(key: "password", value: password);
+
+    Map<String, dynamic> userInfo =
+        (await docUser.get()).data() as Map<String, dynamic>;
+
+    print(userInfo);
+
+    await SECURE_STORAGE.write(key: "firstName", value: userInfo["firstName"]);
+
+    await SECURE_STORAGE.write(key: "lastName", value: userInfo["lastName"]);
+  }
 
   static Future<void> logOut() async {
     await SECURE_STORAGE.delete(key: "user");

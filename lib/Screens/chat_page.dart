@@ -45,33 +45,35 @@ class _ChatPageState extends State<ChatPage> {
       home: Scaffold(
         backgroundColor: const Color(0xFF0C2219),
         appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.of(context).pop();
-              timer.cancel();
-            },
-          ),
-          title: const Text('Chat'),
-          titleTextStyle: const TextStyle(
-            color: Colors.black,
-            fontFamily: 'Mada',
-            fontWeight: FontWeight.bold,
-            fontSize: 24,
-          ),
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          flexibleSpace: Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Color(0xFF88F37F), Color(0xFF88F37F)],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-              borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pop();
+            timer.cancel();  // Make sure to handle timer appropriately if it's part of your logic
+          },
+        ),
+        title: const Text('Chat'),
+        centerTitle: true,  // Centers the title in the AppBar
+        titleTextStyle: const TextStyle(
+          color: Colors.black,
+          fontFamily: 'Mada',
+          fontWeight: FontWeight.bold,
+          fontSize: 28,
+        ),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [ Color(0xFF80F37F),
+        Color(0xFF80E046)],  // Adjusted to show a consistent color gradient
+             begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
             ),
+            borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),  // Rounded corners at the bottom
           ),
         ),
+      ),
         body: Column(
           children: [
             Expanded(

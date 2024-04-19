@@ -86,7 +86,7 @@ class _ChooseTimeState extends State<ChooseTime> {
 
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: const Color(0xFF1A3E2F),
+        backgroundColor: const Color(0xFF0C2219),
         appBar: AppBar(
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
@@ -96,11 +96,12 @@ class _ChooseTimeState extends State<ChooseTime> {
             },
           ),
           title: const Text('Choose a Date & Time'),
+           centerTitle: true,
           titleTextStyle: const TextStyle(
             color: Colors.black,
             fontFamily: 'Mada',
             fontWeight: FontWeight.bold,
-            fontSize: 24,
+            fontSize: 28,
           ),
           backgroundColor:
               Colors.transparent, // Make AppBar background transparent

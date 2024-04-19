@@ -70,14 +70,15 @@ class _StatsPageState extends State<StatsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1A3E2F),
+      backgroundColor: const Color(0xFF0C2219),
                   appBar: AppBar(
         title: Text('Stats'),
+        centerTitle: true,
         titleTextStyle: const TextStyle(
           color: Colors.black,
           fontFamily: 'Mada',
           fontWeight: FontWeight.bold,
-          fontSize: 28,
+          fontSize: 30,
         ),
                 leading: IconButton(
           icon: const Icon(Icons.arrow_back),

@@ -66,7 +66,27 @@ class _LiveMapState extends State<LiveMap> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Live Map'),
+          title: const Text('Live Map'),
+           centerTitle: true,
+         titleTextStyle: const TextStyle(
+            color: Colors.black,
+            fontFamily: 'Mada',
+            fontWeight: FontWeight.bold,
+            fontSize: 28,
+          ),
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Color(0xFF80F37F),
+                  Color(0xFF80E046)
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+              borderRadius: BorderRadius.vertical(bottom: Radius.circular(30)),
+            ),
+          )
       ),
       body: currentPosition == null
           ? const Center(

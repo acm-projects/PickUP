@@ -74,11 +74,12 @@ class _LiveMapState extends State<ChooseLocation> {
           ),
           backgroundColor: Colors.transparent,
           title: const Text('Choose a Location'),
+           centerTitle: true,
           titleTextStyle: const TextStyle(
             color: Colors.black,
             fontFamily: 'Mada',
             fontWeight: FontWeight.bold,
-            fontSize: 24,
+            fontSize: 28,
           ), // Make AppBar background transparent
           elevation: 0, // Removes shadow
           flexibleSpace: Ink(

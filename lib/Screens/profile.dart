@@ -14,14 +14,15 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1A3E2F), // Background color
+      backgroundColor: const Color(0xFF0C2219), // Background color
             appBar: AppBar(
         title: Text('Profile'),
+        centerTitle: true,
         titleTextStyle: const TextStyle(
           color: Colors.black,
           fontFamily: 'Mada',
           fontWeight: FontWeight.bold,
-          fontSize: 24,
+          fontSize: 28,
         ),
         backgroundColor:
             Colors.transparent, // Make AppBar background transparent

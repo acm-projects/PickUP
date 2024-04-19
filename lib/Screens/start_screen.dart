@@ -8,7 +8,6 @@ class StartScreen extends StatefulWidget {
   @override
   _StartScreenState createState() => _StartScreenState();
 }
-
 void initLogin(BuildContext context) async {
   try {
     final String? userID = await local_user.User.getUserID();
@@ -26,71 +25,41 @@ void initLogin(BuildContext context) async {
 }
 
 class _StartScreenState extends State<StartScreen> {
-  // Now you can define initState() here
   @override
-  //Automatic Login else Send to login/signup
   void initState() {
     super.initState();
     initLogin(context);
-
-    int messageCount = 0;
   }
 
   @override
   Widget build(BuildContext context) {
+    // Reduce the initial space to center content more effectively
+    double topPadding = MediaQuery.of(context).size.height * 0.35; // Reduced from 0.1 to 0.05
+
     return Stack(
       children: [
-        // Background color
         Container(
-          color: const Color(0xFF1A3E2F), // Your desired background color
+          color: const Color(0xFF0C2219), // Background color
           width: double.infinity,
           height: double.infinity,
         ),
-        // Background pattern widget
         const BackgroundPattern(),
         Scaffold(
-          backgroundColor:
-              Colors.transparent, // Make scaffold background transparent
+          backgroundColor: Colors.transparent,
           body: Column(
-            mainAxisAlignment: MainAxisAlignment.center, // Center vertically
+            mainAxisAlignment: MainAxisAlignment.start, // Aligns children to the start of the column
             children: [
-              const Text(
-                'PickUP',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 48,
-                ),
+              SizedBox(height: topPadding), // Adjust top padding dynamically
+              Image.asset(
+                'assets/PickUP-Logo.png',
+                width: 400,
+                height: 200,
               ),
-              const SizedBox(height: 50),
+              //SizedBox(height: MediaQuery.of(context).size.height * 0.001), // Adjust space after the logo
               Row(
-                mainAxisAlignment:
-                    MainAxisAlignment.center, // Center horizontally
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).pushNamed('/Signup');
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          Colors.green.shade300, // Light green color
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 32, vertical: 15),
-                      shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(30), // Rounded corners
-                      ),
-                      elevation: 4, // Add a slight elevation
-                    ),
-                    child: const Text(
-                      'Sign Up',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold, // Make the text bold
-                      ),
-                    ),
-                  ),
+                  gradientButton('Sign Up', '/Signup', context),
                   const SizedBox(width: 24),
                   const Text(
                     'or',
@@ -100,35 +69,44 @@ class _StartScreenState extends State<StartScreen> {
                     ),
                   ),
                   const SizedBox(width: 24),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).pushNamed('/Login');
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green.shade300,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 32, vertical: 15),
-                      shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(30), // Rounded corners
-                      ),
-                      elevation: 4, // Add a slight elevation
-                    ),
-                    child: const Text(
-                      'Login',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold, // Make the text bold
-                      ),
-                    ),
-                  ),
+                  gradientButton('Login', '/Login', context),
                 ],
               ),
             ],
           ),
         ),
       ],
+    );
+  }
+
+  Widget gradientButton(String text, String route, BuildContext context) {
+    return Container(
+      width: 150,
+      height: 50,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(30),
+        gradient: const LinearGradient(
+          colors: [Color(0xFF80F37F), Color(0xFF80E046)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () => Navigator.of(context).pushNamed(route),
+          child: Center(
+            child: Text(
+              text,
+              style: const TextStyle(
+                color: Colors.black,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -141,7 +119,6 @@ class BackgroundPattern extends StatelessWidget {
     return Positioned.fill(
       child: Stack(
         children: [
-          // Add transparent images of sports balls positioned as desired
           Positioned(
             top: 100,
             left: 50,
@@ -149,7 +126,7 @@ class BackgroundPattern extends StatelessWidget {
               'assets/basketball-hoop.png',
               width: 100,
               height: 100,
-              color: Colors.white.withOpacity(0.3), // Adjust opacity as needed
+              color: Colors.white.withOpacity(0.3),
             ),
           ),
           Positioned(
@@ -159,7 +136,7 @@ class BackgroundPattern extends StatelessWidget {
               'assets/volleyball.png',
               width: 120,
               height: 120,
-              color: Colors.white.withOpacity(0.3), // Adjust opacity as needed
+              color: Colors.white.withOpacity(0.3),
             ),
           ),
           Positioned(
@@ -169,10 +146,9 @@ class BackgroundPattern extends StatelessWidget {
               'assets/soccer-ball.png',
               width: 90,
               height: 90,
-              color: Colors.white.withOpacity(0.3), // Adjust opacity as needed
+              color: Colors.white.withOpacity(0.3),
             ),
           ),
-          // Add more images as needed
         ],
       ),
     );

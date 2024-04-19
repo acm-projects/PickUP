@@ -128,8 +128,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+   
     return Scaffold(
-      backgroundColor: const Color(0xFF1A3E2F),
+      backgroundColor: const Color(0xFF0C2219),
       body: Column(
           children: [
             _buildActiveGamesSection(),
@@ -283,10 +284,11 @@ class _HomePageState extends State<HomePage> {
           children: [
             const Text(
               'Active Game',
+             
               style: TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
-                fontSize: 20,
+                fontSize: 28,
               ),
             ),
             const SizedBox(height: 10),
@@ -343,87 +345,105 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  Widget _buildUpcomingGamesSection() {
-    if (_upcomingGames.isEmpty) {
-      // Display message if there are no upcoming games
-      return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-        child: Text(
-          'No Upcoming Games',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
-          ),
-          textAlign: TextAlign.center,
+ Widget _buildUpcomingGamesSection() {
+  const Color darkGreen = Color(0xFF0C2219);  // Dark green
+  const Color lightGreen = Color(0xFF72CD52); // Light green
+  const double borderRadiusValue = 20.0;  // Value for the border radius
+
+  if (_upcomingGames.isEmpty) {
+    // Display message if there are no upcoming games
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+      child: Text(
+        'No Upcoming Games',
+        style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+          fontSize: 18,
         ),
-      );
-    } else {
-      // Display each upcoming game
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const SizedBox(height: 10),
-            Text(
+        textAlign: TextAlign.center,
+      ),
+    );
+  } else {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const SizedBox(height: 10),
+          const Padding(
+            padding: EdgeInsets.only(top: 10),
+            child: Text(
               'Your Games',
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontSize: 23,
               ),
-              textAlign: TextAlign.center, // Centered text
+              textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 10),
-            ListView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: _upcomingGames.length,
-              itemBuilder: (context, index) {
-                final game = _upcomingGames[index];
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: InkWell(
-                    onTap: () {
-                      // Add your action here when the button is tapped
-                      // For example, navigate to a game details page
-                      print('Game Tapped: ${game['title']}');
-                      // You can use Navigator.push to navigate to a new screen
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: index % 2 == 0
-                            ? const Color(0xFF255035)
-                            : Colors.transparent,
-                        borderRadius: BorderRadius.circular(8),
+          ),
+          const SizedBox(height: 10),
+          ListView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: _upcomingGames.length,
+            itemBuilder: (context, index) {
+              final game = _upcomingGames[index];
+              bool isDarkBackground = index % 2 == 0;
+              return Container(
+                margin: const EdgeInsets.symmetric(vertical: 5),
+                decoration: BoxDecoration(
+                  color: isDarkBackground ? darkGreen : lightGreen,
+                  borderRadius: BorderRadius.circular(borderRadiusValue),
+                  border: isDarkBackground ? Border.all(color: Colors.white24, width: 1) : null,
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(borderRadiusValue),
+                  child: ExpansionTile(
+                    title: Text(
+                      '${game['title'] ?? ""} ${game['startTime'] ?? ""}',
+                      style: TextStyle(
+                        color: isDarkBackground ? Colors.white : Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
                       ),
-                      padding: const EdgeInsets.all(12),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              '${game['title'] ?? ""} ${game['startTime'] ?? ""}',
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16, // Increased font size
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.start, // Left-aligned text
-                            ),
-                          ),
-                        ],
-                      ),
+                      overflow: TextOverflow.ellipsis,
                     ),
+                    children: <Widget>[
+                      ListTile(
+                        title: Text('View Information', style: TextStyle(color: isDarkBackground ? Colors.white : Colors.black)),
+                        trailing: Icon(Icons.arrow_forward_ios, color: isDarkBackground ? Colors.white : Colors.black, size: 16), // Small right arrow
+                        onTap: () {
+                          // Action for viewing game information
+                        },
+                      ),
+                      ListTile(
+                        title: Text('Game Chat', style: TextStyle(color: isDarkBackground ? Colors.white : Colors.black)),
+                        trailing: Icon(Icons.arrow_forward_ios, color: isDarkBackground ? Colors.white : Colors.black, size: 16), // Small right arrow
+                        onTap: () {
+                          Navigator.of(context).pushNamed('/chatPage');
+                        },
+                      ),
+                      ListTile(
+                        title: Text('Leave Game', style: TextStyle(color: isDarkBackground ? Colors.white : Colors.black)),
+                        trailing: Icon(Icons.arrow_forward_ios, color: isDarkBackground ? Colors.white : Colors.black, size: 16), // Small right arrow
+                        onTap: () {
+                          // Action for leaving the game
+                        },
+                      ),
+                    ],
                   ),
-                );
-              },
-            ),
-          ],
-        ),
-      );
-    }
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
   }
+}
+
+
+
 }

@@ -17,41 +17,37 @@ class ConfigureGame extends StatelessWidget {
 
     return MaterialApp(
         home: Scaffold(
-      backgroundColor: const Color(0xFF1A3E2F),
+      backgroundColor: const Color(0xFF0C2219),
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.of(context)
-                .pop(); // Navigates back to the previous screen
+            Navigator.of(context).pop(); // Navigates back to the previous screen
           },
         ),
-        title: Text('Create a $sport Game'),
+        title: Text('Create a $sport Game'), // Dynamic title based on the sport
+           centerTitle: true, 
         titleTextStyle: const TextStyle(
           color: Colors.black,
           fontFamily: 'Mada',
           fontWeight: FontWeight.bold,
-          fontSize: 24,
+          fontSize: 28,
         ),
-        backgroundColor:
-            Colors.transparent, // Make AppBar background transparent
+        backgroundColor: Colors.transparent, // Make AppBar background transparent
         elevation: 0, // Removes shadow
         flexibleSpace: Ink(
-                      decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                          colors: [
-                            Color(0xFF80F37F),
-                            Color(0xFF80E046)
-                          ], // Gradient colors
-                          begin: Alignment
-                              .topCenter, // Start point of the gradient
-                          end: Alignment
-                              .bottomCenter, // End point of the gradient
-                        ),
-                        borderRadius:
-                            BorderRadius.circular(30), // Rounded corners
-                      ),
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              colors: [
+                Color(0xFF80F37F),
+                Color(0xFF80E046)
+              ], // Gradient colors
+              begin: Alignment.topCenter, // Start point of the gradient
+              end: Alignment.bottomCenter, // End point of the gradient
+            ),
+            borderRadius: BorderRadius.circular(30), // Rounded corners
           ),
+        ),
       ),
       body: Container(
         padding: const EdgeInsets.all(16.0),

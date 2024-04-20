@@ -338,26 +338,117 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  Widget _buildUpcomingGamesSection() {
+
+ Widget _buildUpcomingGamesSection() {
     const Color darkGreen = Color(0xFF1A3E2F); // Dark green
     const Color lightGreen = Color(0xFF255035); // Light green
     const double borderRadiusValue = 20.0; // Value for the border radius
 
     if (_upcomingGames.isEmpty) {
-      // Display message if there are no upcoming games
-      return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
-        child: Text(
-          'No Upcoming Games',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 23,
-          ),
-          textAlign: TextAlign.center,
-        ),
-      );
+        // Display message if there are no upcoming games
+        return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
+            child: Text(
+                'No Upcoming Games',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 23,
+                ),
+                textAlign: TextAlign.center,
+            ),
+        );
     } else {
+        return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                    const Padding(
+                        padding: EdgeInsets.only(top: 40),
+                        child: Text(
+                            'Your Games',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 23,
+                            ),
+                            textAlign: TextAlign.center,
+                        ),
+                    ),
+                    ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: _upcomingGames.length,
+                        itemBuilder: (context, index) {
+                            final game = _upcomingGames[index];
+                            bool isDarkBackground = index % 2 == 0;
+                            return Container(
+                                margin: const EdgeInsets.symmetric(vertical: 5),
+                                decoration: BoxDecoration(
+                                    color: isDarkBackground ? darkGreen : lightGreen,
+                                    borderRadius: BorderRadius.circular(borderRadiusValue),
+                                    border: isDarkBackground
+                                        ? Border.all(color: Colors.white24, width: 1)
+                                        : null,
+                                ),
+                                child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(borderRadiusValue),
+                                    child: ExpansionTile(
+                                        title: Text(
+                                            '${game['title'] ?? ""} ${game['startTime'] ?? ""}',
+                                            style: TextStyle(
+                                                color: isDarkBackground ? Colors.white : Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                        ),
+                                        children: <Widget>[
+                                            ListTile(
+                                                title: Text('View Information',
+                                                    style: TextStyle(
+                                                        color: isDarkBackground ? Colors.white : Colors.white)),
+                                                trailing: Icon(Icons.info_outline, // Icon for View Information
+                                                    color: isDarkBackground ? Colors.white : Colors.white),
+                                                onTap: () {
+                                                    // Action for viewing game information
+                                                },
+                                            ),
+                                            ListTile(
+                                                title: Text('Game Chat',
+                                                    style: TextStyle(
+                                                        color: isDarkBackground ? Colors.white : Colors.white)),
+                                                trailing: Icon(Icons.chat, // Icon for Game Chat
+                                                    color: isDarkBackground ? Colors.white : Colors.white),
+                                                onTap: () {
+                                                    Navigator.of(context).push<void>(
+                                                        MaterialPageRoute<void>(
+                                                            builder: (BuildContext context) =>
+                                                                ChatPage(_upcomingGames[index]["id"]),
+                                                        ),
+                                                    );
+                                                },
+                                            ),
+                                            ListTile(
+                                                title: Text('Leave Game',
+                                                    style: TextStyle(
+                                                        color: isDarkBackground ? Colors.white : Colors.white)),
+                                                trailing: Icon(Icons.exit_to_app, // Icon for Leave Game
+                                                    color: isDarkBackground ? Colors.white : Colors.white),
+                                                onTap: () {
+                                                    Game.leave(_upcomingGames[index]["id"]);
+                                                },
+                                            ),
+                                        ],
+                                    ),
+                                ),
+                            );
+                        },
+                    ),
+                ],
+            ),
+        );
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
@@ -464,5 +555,7 @@ class _HomePageState extends State<HomePage> {
         ),
       );
     }
-  }
+}
+
+
 }

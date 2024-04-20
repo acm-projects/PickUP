@@ -34,7 +34,7 @@ class ConfigureGame extends StatelessWidget {
           },
         ),
         title: Text('Create a $sport Game'), // Dynamic title based on the sport
-        centerTitle: true,
+        //centerTitle: true,
         titleTextStyle: const TextStyle(
           color: Colors.black,
           fontFamily: 'Mada',

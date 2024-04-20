@@ -38,8 +38,11 @@ class GameCreation extends StatelessWidget {
             ),
           ),
         ),
+        
         body: Center(
+          
           child: Column(
+            
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Row(

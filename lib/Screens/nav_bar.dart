@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pickup/Screens/live_map.dart';
-import 'package:pickup/classes/user.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'home_page.dart';
 import 'choose_gametype.dart';
 import 'profile.dart';

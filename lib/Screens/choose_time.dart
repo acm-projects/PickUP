@@ -24,7 +24,7 @@ class _ChooseTimeState extends State<ChooseTime> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    DateTime currentTime = DateTime.now().add(Duration(minutes: 16));
+    DateTime currentTime = DateTime.now().add(const Duration(minutes: 16));
     int hour = currentTime.hour % 12;
 
     if (hour == 0) {

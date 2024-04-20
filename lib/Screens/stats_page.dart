@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class StatsPage extends StatefulWidget {
+  const StatsPage({super.key});
+
   @override
   _StatsPageState createState() => _StatsPageState();
 }
@@ -72,7 +74,7 @@ class _StatsPageState extends State<StatsPage> {
     return Scaffold(
       backgroundColor: const Color(0xFF0C2219),
       appBar: AppBar(
-        title: Text('Stats'),
+        title: const Text('Stats'),
         centerTitle: true,
         titleTextStyle: const TextStyle(
           color: Colors.black,
@@ -104,23 +106,23 @@ class _StatsPageState extends State<StatsPage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          SizedBox(height: 40),
+          const SizedBox(height: 40),
           // Dropdown button for selecting the sport
           Center(
             child: Container(
               width: MediaQuery.of(context).size.width *
                   0.5, // Adjust the width here
-              padding: EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               decoration: BoxDecoration(
                 color: Colors.grey[200], // Light grey background color
                 borderRadius: BorderRadius.circular(30),
               ),
               child: DropdownButton<String>(
                 value: selectedSport,
-                icon: Icon(Icons.arrow_drop_down),
+                icon: const Icon(Icons.arrow_drop_down),
                 iconSize: 24,
                 elevation: 16,
-                style: TextStyle(color: Colors.black, fontSize: 18),
+                style: const TextStyle(color: Colors.black, fontSize: 18),
                 underline: Container(
                   height: 0,
                   color: Colors.transparent,
@@ -148,18 +150,18 @@ class _StatsPageState extends State<StatsPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SizedBox(width: 10), // Add left padding here
+                          const SizedBox(width: 10), // Add left padding here
                           // Display sport icon (you can replace the icons with your own)
                           if (value == 'Basketball')
-                            Icon(Icons.sports_basketball, color: Colors.black),
+                            const Icon(Icons.sports_basketball, color: Colors.black),
                           if (value == 'Volleyball')
-                            Icon(Icons.sports_volleyball, color: Colors.black),
+                            const Icon(Icons.sports_volleyball, color: Colors.black),
                           if (value == 'Soccer')
-                            Icon(Icons.sports_soccer, color: Colors.black),
-                          SizedBox(
+                            const Icon(Icons.sports_soccer, color: Colors.black),
+                          const SizedBox(
                               width: 10), // Add spacing between icon and text
                           Text(value,
-                              style: TextStyle(
+                              style: const TextStyle(
                                   color:
                                       Colors.black)), // Adjust the text color
                         ],
@@ -170,17 +172,17 @@ class _StatsPageState extends State<StatsPage> {
               ),
             ),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           // Wins and Losses Section
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
                   child: Column(
                     children: [
-                      Text(
+                      const Text(
                         'Wins',
                         style: TextStyle(
                           fontSize: 24,
@@ -188,10 +190,10 @@ class _StatsPageState extends State<StatsPage> {
                           color: Colors.white,
                         ),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       Text(
                         '${calculateWins(stats)}', // Calculate wins dynamically
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 80,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
@@ -208,7 +210,7 @@ class _StatsPageState extends State<StatsPage> {
                 Expanded(
                   child: Column(
                     children: [
-                      Text(
+                      const Text(
                         'Losses',
                         style: TextStyle(
                           fontSize: 24,
@@ -216,10 +218,10 @@ class _StatsPageState extends State<StatsPage> {
                           color: Colors.white,
                         ),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       Text(
                         '${calculateLosses(stats)}', // Calculate losses dynamically
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 80,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
@@ -233,11 +235,11 @@ class _StatsPageState extends State<StatsPage> {
           ),
           // Recent Games Section
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Row(
                   children: [
                     Expanded(
@@ -246,8 +248,8 @@ class _StatsPageState extends State<StatsPage> {
                         color: Colors.white.withOpacity(0.29),
                       ),
                     ),
-                    SizedBox(width: 10),
-                    Text(
+                    const SizedBox(width: 10),
+                    const Text(
                       'Recent Games',
                       style: TextStyle(
                         fontSize: 25,
@@ -255,7 +257,7 @@ class _StatsPageState extends State<StatsPage> {
                         color: Colors.white,
                       ),
                     ),
-                    SizedBox(width: 10),
+                    const SizedBox(width: 10),
                     Expanded(
                       child: Container(
                         height: 2,
@@ -267,7 +269,7 @@ class _StatsPageState extends State<StatsPage> {
               ],
             ),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Expanded(
             child: ListView.builder(
               itemCount:
@@ -276,28 +278,28 @@ class _StatsPageState extends State<StatsPage> {
                 // Example game data, replace with actual game data
                 Map<String, dynamic> game = stats[index];
                 return Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   color: index.isEven
-                      ? Color(0xFF255035) // Alternate row color
+                      ? const Color(0xFF255035) // Alternate row color
                       : Colors.transparent,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         '${game['team1']} vs ${game['team2']}',
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 16,
                           color: Colors.white,
                         ),
                       ),
                       Text(
                         '${game['score']}',
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 16,
                           color: Colors.white,
                         ),
                       ),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       Container(
                         width: 60,
                         height: 30,
@@ -310,7 +312,7 @@ class _StatsPageState extends State<StatsPage> {
                         ),
                         child: Text(
                           game['result'],
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,

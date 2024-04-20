@@ -8,7 +8,6 @@ import 'Screens/choose_gametype.dart';
 import 'Screens/config_game.dart';
 import 'Screens/choose_location.dart';
 import 'Screens/choose_time.dart';
-import 'Screens/chat_page.dart';
 import 'Screens/stats_page.dart';
 import 'Screens/nav_bar.dart';
 import 'Screens/profile.dart';
@@ -56,7 +55,7 @@ class PickUpApp extends StatelessWidget {
         '/ChooseLocation': (context) => const ChooseLocation(),
         '/Profile': (context) => const ProfilePage(),
         '/LiveMap': (context) => const LiveMap(),
-        '/Stats': (context) => StatsPage(),
+        '/Stats': (context) => const StatsPage(),
       },
     );
   }

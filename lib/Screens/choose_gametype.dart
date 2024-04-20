@@ -9,7 +9,7 @@ class GameCreation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Gradient used for AppBar and buttons
-    final gradient = const LinearGradient(
+    const gradient = LinearGradient(
       colors: [Color(0xFF80F37F), Color(0xFF80E046)],
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
@@ -80,7 +80,7 @@ class GameCreation extends StatelessWidget {
       child: InkWell(
         onTap: () {
           Game.currentGame =
-              Game("", "", "", 0, tz.TZDateTime.now(Location.getTimeZone()));
+              Game("", "", "", tz.TZDateTime.now(Location.getTimeZone()));
           Game.currentGame.sport = text;
           Navigator.of(context).pushNamed('/ConfigureGame', arguments: text);
         },

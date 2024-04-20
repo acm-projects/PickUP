@@ -100,7 +100,7 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   String wrapTextByCharacterLimit(String inputText, int characterLimit) {
-    if (inputText == null || inputText.isEmpty) {
+    if (inputText.isEmpty) {
       return ''; // Return an empty string for null or empty input
     }
 

@@ -25,18 +25,19 @@ class Game {
   String description;
   String location = "";
   int numOfPlayers = 0;
+  int maxNumOfPlayers = 0;
+
   tz.TZDateTime startTime;
   List<String> players = []; // User IDs
   Map<String, dynamic> coordinates = Location.get(); //assume at the current pos
 
   static Game currentGame =
-      Game("", "", "", 0, tz.TZDateTime.now(Location.getTimeZone()));
+      Game("", "", "", tz.TZDateTime.now(Location.getTimeZone()));
 
-  final int _maxNumOfPlayers;
   final String _gameID = generateRandomHex();
 
   // Constructor
-  Game(this.title, this.sport, this.description, this._maxNumOfPlayers,
+  Game(this.title, this.sport, this.description,
       this.startTime);
 
   Future<Map<String, dynamic>> toMap() async {
@@ -50,7 +51,7 @@ class Game {
       'coordinates': coordinates,
       'location': location,
       'numOfPlayers': numOfPlayers,
-      'maxNumOfPlayers': _maxNumOfPlayers,
+      'maxNumOfPlayers': maxNumOfPlayers,
       'timeCreated': DateTime.now(),
       'startTime': startTime.toIso8601String(),
       'checkedIn': [],
@@ -60,7 +61,6 @@ class Game {
 
   // Accessors (Getters)
   String get gameID => _gameID;
-  int get maxNumOfPlayers => _maxNumOfPlayers;
 
   Future<void> updateGame() async {
     //Before any action is taken the values must be updated
@@ -123,9 +123,9 @@ class Game {
 
         return targetGame.data();
       } catch (e) {
-        print(e);
+        return false;
       }
-    } //Otherwise
+    }
 
     final QuerySnapshot activeGames = await activeGamesColl.get();
 
@@ -337,7 +337,6 @@ class Game {
           jsonData["title"],
           jsonData["sport"],
           jsonData["description"],
-          jsonData["maxNumOfPlayers"],
           tz.TZDateTime.parse(Location.getTimeZone(), jsonData["startTime"]));
     } catch (e) {
       print('Error: $e'); // Typically while fetching, if fetch == false

@@ -15,6 +15,13 @@ class ConfigureGame extends StatelessWidget {
 
     titleController.text = "${User.firstName}'s $sport Game";
 
+    const Map<String, int> maxPlayersPerSport = {
+      'basketball': 12, // 5 players per team (typical)
+      'volleyball': 12, // 6 players per team (typical)
+      'soccer': 22, // 11 players per team (typical)
+      'tennis': 4,  // Singles (2 players) or Doubles (4 players)
+    };
+
     return MaterialApp(
         home: Scaffold(
       backgroundColor: const Color(0xFF0C2219),
@@ -131,6 +138,7 @@ class ConfigureGame extends StatelessWidget {
                     Game.currentGame.title = titleController.text;
                     Game.currentGame.description = descriptionController.text;
                     Game.currentGame.location = locationController.text;
+                    Game.currentGame.maxNumOfPlayers = maxPlayersPerSport[sport]!;
                     Navigator.of(context).pushNamed('/ChooseTime');
                   },
                   child: Container(

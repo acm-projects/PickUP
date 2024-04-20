@@ -10,7 +10,6 @@ import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:location/location.dart';
-import 'dart:async';
 
 const double CameraZoom = 17;
 const double CameraTilt = 80;
@@ -75,7 +74,7 @@ class _LiveMapState extends State<LiveMap> {
             fontSize: 28,
           ),
           flexibleSpace: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               gradient: LinearGradient(
                 colors: [Color(0xFF80F37F), Color(0xFF80E046)],
                 begin: Alignment.topCenter,

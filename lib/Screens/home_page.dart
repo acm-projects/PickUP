@@ -5,11 +5,12 @@ import 'package:pickup/classes/game.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pickup/Screens/chat_page.dart';
 import 'package:pickup/classes/location.dart';
+import 'package:pickup/Screens/join_page.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'dart:async';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
   static late Timer timer;
   @override
   _HomePageState createState() => _HomePageState();
@@ -18,6 +19,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   List<Map<String, dynamic>> _activeGames = [];
   List<Map<String, dynamic>> _upcomingGames = [];
+  Map<String, dynamic> closestGame = {};
 
   Widget? sliderWidget;
 
@@ -157,7 +159,11 @@ class _HomePageState extends State<HomePage> {
               child: ElevatedButton(
                 onPressed: () {
                   // Navigate to the game creation page
-                  Navigator.of(context).pushNamed('/LiveMap');
+                  Navigator.of(context).push<void>(
+                    MaterialPageRoute<void>(
+                      builder: (BuildContext context) => const JoinGamePage(),
+                    ),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
@@ -219,8 +225,6 @@ class _HomePageState extends State<HomePage> {
       );
     } else {
       // Display the first active game only
-      Map<String, dynamic> closestGame = {};
-
       int differenceInMinutes = -1;
 
       for (final game in _upcomingGames) {
@@ -253,6 +257,7 @@ class _HomePageState extends State<HomePage> {
                   }
                 });
                 setState(() {});
+                return null;
               },
               backgroundColor: const Color.fromARGB(255, 19, 189, 7),
               label: const Text(
@@ -268,7 +273,9 @@ class _HomePageState extends State<HomePage> {
         }
       }
 
-      if (differenceInMinutes > 15 || differenceInMinutes <= -1) sliderWidget = null;
+      if (differenceInMinutes > 15 || differenceInMinutes <= -1) {
+        sliderWidget = null;
+      }
 
       return Container(
         decoration: const BoxDecoration(
@@ -322,7 +329,7 @@ class _HomePageState extends State<HomePage> {
                   differenceInMinutes < 0
                       ? ""
                       : "$differenceInMinutes min till",
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.black,
                   ),
                 ),
@@ -344,8 +351,8 @@ class _HomePageState extends State<HomePage> {
 
     if (_upcomingGames.isEmpty) {
       // Display message if there are no upcoming games
-      return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
+      return const Padding(
+        padding: EdgeInsets.symmetric(vertical: 40, horizontal: 20),
         child: Text(
           'No Upcoming Games',
           style: TextStyle(
@@ -380,7 +387,19 @@ class _HomePageState extends State<HomePage> {
               itemCount: _upcomingGames.length,
               itemBuilder: (context, index) {
                 final game = _upcomingGames[index];
-                bool isDarkBackground = index % 2 == 0;
+                Map<String, dynamic> closestGame = {};
+
+                for (final game in _upcomingGames) {
+                  if (closestGame.isNotEmpty) {
+                    if (game["date"].isBefore(closestGame["date"])) {
+                      closestGame = game;
+                    }
+                  } else {
+                    closestGame = game;
+                  }
+                }
+
+                bool isDarkBackground = closestGame["id"]  != game["id"];
                 return Container(
                   margin: const EdgeInsets.symmetric(vertical: 5),
                   decoration: BoxDecoration(

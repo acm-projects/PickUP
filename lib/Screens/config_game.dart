@@ -22,26 +22,25 @@ class ConfigureGame extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.of(context).pop(); // Navigates back to the previous screen
+            Navigator.of(context)
+                .pop(); // Navigates back to the previous screen
           },
         ),
         title: Text('Create a $sport Game'), // Dynamic title based on the sport
-           centerTitle: true, 
+        centerTitle: true,
         titleTextStyle: const TextStyle(
           color: Colors.black,
           fontFamily: 'Mada',
           fontWeight: FontWeight.bold,
           fontSize: 28,
         ),
-        backgroundColor: Colors.transparent, // Make AppBar background transparent
+        backgroundColor:
+            Colors.transparent, // Make AppBar background transparent
         elevation: 0, // Removes shadow
         flexibleSpace: Ink(
           decoration: BoxDecoration(
             gradient: const LinearGradient(
-              colors: [
-                Color(0xFF80F37F),
-                Color(0xFF80E046)
-              ], // Gradient colors
+              colors: [Color(0xFF80F37F), Color(0xFF80E046)], // Gradient colors
               begin: Alignment.topCenter, // Start point of the gradient
               end: Alignment.bottomCenter, // End point of the gradient
             ),
@@ -137,13 +136,13 @@ class ConfigureGame extends StatelessWidget {
                   child: Container(
                     decoration: BoxDecoration(
                       gradient: const LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [
-                            Color(0xFF80E046),
-                            Color(0xFF88F37F),
-                          ],
-                        ),
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Color(0xFF80E046),
+                          Color(0xFF88F37F),
+                        ],
+                      ),
                       borderRadius: BorderRadius.circular(
                           18.0), // Applies rounded corners to the container
                     ),

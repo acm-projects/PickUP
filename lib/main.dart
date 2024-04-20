@@ -54,7 +54,6 @@ class PickUpApp extends StatelessWidget {
         '/ConfigureGame': (context) => const ConfigureGame(),
         '/ChooseTime': (context) => const ChooseTime(),
         '/ChooseLocation': (context) => const ChooseLocation(),
-        '/chatPage': (context) => const ChatPage(),
         '/Profile': (context) => const ProfilePage(),
         '/LiveMap': (context) => const LiveMap(),
         '/Stats': (context) => StatsPage(),

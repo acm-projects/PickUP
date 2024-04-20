@@ -8,6 +8,7 @@ class StartScreen extends StatefulWidget {
   @override
   _StartScreenState createState() => _StartScreenState();
 }
+
 void initLogin(BuildContext context) async {
   try {
     final String? userID = await local_user.User.getUserID();
@@ -34,7 +35,8 @@ class _StartScreenState extends State<StartScreen> {
   @override
   Widget build(BuildContext context) {
     // Reduce the initial space to center content more effectively
-    double topPadding = MediaQuery.of(context).size.height * 0.35; // Reduced from 0.1 to 0.05
+    double topPadding =
+        MediaQuery.of(context).size.height * 0.35; // Reduced from 0.1 to 0.05
 
     return Stack(
       children: [
@@ -47,7 +49,8 @@ class _StartScreenState extends State<StartScreen> {
         Scaffold(
           backgroundColor: Colors.transparent,
           body: Column(
-            mainAxisAlignment: MainAxisAlignment.start, // Aligns children to the start of the column
+            mainAxisAlignment: MainAxisAlignment
+                .start, // Aligns children to the start of the column
             children: [
               SizedBox(height: topPadding), // Adjust top padding dynamically
               Image.asset(

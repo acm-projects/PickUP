@@ -15,7 +15,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF0C2219), // Background color
-            appBar: AppBar(
+      appBar: AppBar(
         title: Text('Profile'),
         centerTitle: true,
         titleTextStyle: const TextStyle(
@@ -28,22 +28,16 @@ class _ProfilePageState extends State<ProfilePage> {
             Colors.transparent, // Make AppBar background transparent
         elevation: 0, // Removes shadow
         flexibleSpace: Ink(
-                      decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                          colors: [
-                            Color(0xFF80F37F),
-                            Color(0xFF80E046)
-                          ], // Gradient colors
-                          begin: Alignment
-                              .topCenter, // Start point of the gradient
-                          end: Alignment
-                              .bottomCenter, // End point of the gradient
-                        ),
-                        borderRadius:
-                            BorderRadius.circular(30), // Rounded corners
-                      ),
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              colors: [Color(0xFF80F37F), Color(0xFF80E046)], // Gradient colors
+              begin: Alignment.topCenter, // Start point of the gradient
+              end: Alignment.bottomCenter, // End point of the gradient
+            ),
+            borderRadius: BorderRadius.circular(30), // Rounded corners
           ),
-          automaticallyImplyLeading: false,
+        ),
+        automaticallyImplyLeading: false,
       ),
       body: Column(
         children: [

@@ -33,7 +33,7 @@ class _ChooseTimeState extends State<ChooseTime> {
 
     _hourController.text = hour.toString();
     _minuteController.text = (currentTime.minute).toString();
-    _isPM = DateTime.now().hour - 12 >= 0;
+    _isPM = currentTime.hour - 12 >= 0;
   }
 
   @override
@@ -96,7 +96,7 @@ class _ChooseTimeState extends State<ChooseTime> {
             },
           ),
           title: const Text('Choose a Date & Time'),
-           centerTitle: true,
+          centerTitle: true,
           titleTextStyle: const TextStyle(
             color: Colors.black,
             fontFamily: 'Mada',
@@ -107,20 +107,17 @@ class _ChooseTimeState extends State<ChooseTime> {
               Colors.transparent, // Make AppBar background transparent
           elevation: 0, // Removes shadow
           flexibleSpace: Ink(
-                      decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                          colors: [
-                            Color(0xFF80F37F),
-                            Color(0xFF80E046)
-                          ], // Gradient colors
-                          begin: Alignment
-                              .topCenter, // Start point of the gradient
-                          end: Alignment
-                              .bottomCenter, // End point of the gradient
-                        ),
-                        borderRadius:
-                            BorderRadius.circular(30), // Rounded corners
-                      ),
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [
+                  Color(0xFF80F37F),
+                  Color(0xFF80E046)
+                ], // Gradient colors
+                begin: Alignment.topCenter, // Start point of the gradient
+                end: Alignment.bottomCenter, // End point of the gradient
+              ),
+              borderRadius: BorderRadius.circular(30), // Rounded corners
+            ),
           ),
         ),
         body: SingleChildScrollView(
@@ -207,9 +204,12 @@ class _ChooseTimeState extends State<ChooseTime> {
                     onPressed: () {
                       DateTime date = _currentDate;
 
+                      int hour = int.parse(_hourController.text);
+
                       date = date.add(Duration(
-                          hours: (int.parse(_hourController.text) +
-                              (_isPM ? 12 : 0)),
+                          hours: hour +
+                              (_isPM ? 12 : 0) +
+                              (hour % 12 == 0 ? -12 : 0),
                           minutes: int.parse(_minuteController.text)));
 
                       Game.currentGame.startTime = tz.TZDateTime.parse(

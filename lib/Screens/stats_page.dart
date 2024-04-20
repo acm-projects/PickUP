@@ -71,7 +71,7 @@ class _StatsPageState extends State<StatsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF0C2219),
-                  appBar: AppBar(
+      appBar: AppBar(
         title: Text('Stats'),
         centerTitle: true,
         titleTextStyle: const TextStyle(
@@ -80,7 +80,7 @@ class _StatsPageState extends State<StatsPage> {
           fontWeight: FontWeight.bold,
           fontSize: 30,
         ),
-                leading: IconButton(
+        leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.of(context)
@@ -91,21 +91,15 @@ class _StatsPageState extends State<StatsPage> {
             Colors.transparent, // Make AppBar background transparent
         elevation: 0, // Removes shadow
         flexibleSpace: Ink(
-                      decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                          colors: [
-                            Color(0xFF80F37F),
-                            Color(0xFF80E046)
-                          ], // Gradient colors
-                          begin: Alignment
-                              .topCenter, // Start point of the gradient
-                          end: Alignment
-                              .bottomCenter, // End point of the gradient
-                        ),
-                        borderRadius:
-                            BorderRadius.circular(30), // Rounded corners
-                      ),
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              colors: [Color(0xFF80F37F), Color(0xFF80E046)], // Gradient colors
+              begin: Alignment.topCenter, // Start point of the gradient
+              end: Alignment.bottomCenter, // End point of the gradient
+            ),
+            borderRadius: BorderRadius.circular(30), // Rounded corners
           ),
+        ),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,

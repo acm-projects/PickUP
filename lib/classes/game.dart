@@ -284,7 +284,7 @@ class Game {
     Map<String, dynamic> doc = await Game.fetch(target) as Map<String, dynamic>;
 
     Map<String, dynamic> package = {
-      "message": " [${await User.getFirstName()}]: $msg",
+      "message": "${await User.getFirstName()} ~ $msg",
       "user": await User.getUserID(),
       "time": DateTime.now().toIso8601String()
     };

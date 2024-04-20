@@ -74,7 +74,7 @@ class _LiveMapState extends State<ChooseLocation> {
           ),
           backgroundColor: Colors.transparent,
           title: const Text('Choose a Location'),
-           centerTitle: true,
+          centerTitle: true,
           titleTextStyle: const TextStyle(
             color: Colors.black,
             fontFamily: 'Mada',
@@ -83,20 +83,17 @@ class _LiveMapState extends State<ChooseLocation> {
           ), // Make AppBar background transparent
           elevation: 0, // Removes shadow
           flexibleSpace: Ink(
-                      decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                          colors: [
-                            Color(0xFF80F37F),
-                            Color(0xFF80E046)
-                          ], // Gradient colors
-                          begin: Alignment
-                              .topCenter, // Start point of the gradient
-                          end: Alignment
-                              .bottomCenter, // End point of the gradient
-                        ),
-                        borderRadius:
-                            BorderRadius.circular(30), // Rounded corners
-                      ),
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [
+                  Color(0xFF80F37F),
+                  Color(0xFF80E046)
+                ], // Gradient colors
+                begin: Alignment.topCenter, // Start point of the gradient
+                end: Alignment.bottomCenter, // End point of the gradient
+              ),
+              borderRadius: BorderRadius.circular(30), // Rounded corners
+            ),
           ),
         ),
         body: Container(
@@ -141,7 +138,7 @@ class _LiveMapState extends State<ChooseLocation> {
                     onPressed: () async {
                       await Game.currentGame.instantiate();
                       //UI pops up that confirms that it was created
-                        Navigator.pushNamed(context, '/Login/HomePage');
+                      Navigator.pushNamed(context, '/Login/HomePage');
                     },
                     child: Container(
                       decoration: BoxDecoration(

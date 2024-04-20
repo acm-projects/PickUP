@@ -4,7 +4,9 @@ import 'package:pickup/classes/user.dart';
 import 'dart:async';
 
 class ChatPage extends StatefulWidget {
-  const ChatPage({super.key});
+  final String gameId;
+
+  const ChatPage(this.gameId, {super.key});
 
   @override
   _ChatPageState createState() => _ChatPageState();
@@ -20,11 +22,9 @@ class _ChatPageState extends State<ChatPage> {
     // TODO: implement initState
     super.initState();
 
-    print("hello");
-
     timer = Timer.periodic(const Duration(milliseconds: 1000), (_) async {
       Map<String, dynamic> gameInfo =
-          await Game.fetch("4ea1448b0m733h1o18") as Map<String, dynamic>;
+          await Game.fetch(widget.gameId) as Map<String, dynamic>;
       _messages = gameInfo["chat"];
       setState(() {});
     });
@@ -32,7 +32,7 @@ class _ChatPageState extends State<ChatPage> {
 
   void _sendMessage() {
     if (_controller.text.isNotEmpty) {
-      Game.message("4ea1448b0m733h1o18", _controller.text);
+      Game.message(widget.gameId, _controller.text);
       setState(() {
         _controller.clear();
       });
@@ -45,35 +45,39 @@ class _ChatPageState extends State<ChatPage> {
       home: Scaffold(
         backgroundColor: const Color(0xFF0C2219),
         appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.of(context).pop();
-            timer.cancel();  // Make sure to handle timer appropriately if it's part of your logic
-          },
-        ),
-        title: const Text('Chat'),
-        centerTitle: true,  // Centers the title in the AppBar
-        titleTextStyle: const TextStyle(
-          color: Colors.black,
-          fontFamily: 'Mada',
-          fontWeight: FontWeight.bold,
-          fontSize: 28,
-        ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [ Color(0xFF80F37F),
-        Color(0xFF80E046)],  // Adjusted to show a consistent color gradient
-             begin: Alignment.topCenter,
-      end: Alignment.bottomCenter,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.of(context).pop();
+              timer
+                  .cancel(); // Make sure to handle timer appropriately if it's part of your logic
+            },
+          ),
+          title: const Text('Chat'),
+          centerTitle: true, // Centers the title in the AppBar
+          titleTextStyle: const TextStyle(
+            color: Colors.black,
+            fontFamily: 'Mada',
+            fontWeight: FontWeight.bold,
+            fontSize: 28,
+          ),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          flexibleSpace: Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Color(0xFF80F37F),
+                  Color(0xFF80E046)
+                ], // Adjusted to show a consistent color gradient
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+              borderRadius: BorderRadius.vertical(
+                  bottom: Radius.circular(20)), // Rounded corners at the bottom
             ),
-            borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),  // Rounded corners at the bottom
           ),
         ),
-      ),
         body: Column(
           children: [
             Expanded(

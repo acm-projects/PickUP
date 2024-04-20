@@ -67,8 +67,8 @@ class _LiveMapState extends State<LiveMap> {
     return Scaffold(
       appBar: AppBar(
           title: const Text('Live Map'),
-           centerTitle: true,
-         titleTextStyle: const TextStyle(
+          centerTitle: true,
+          titleTextStyle: const TextStyle(
             color: Colors.black,
             fontFamily: 'Mada',
             fontWeight: FontWeight.bold,
@@ -77,49 +77,41 @@ class _LiveMapState extends State<LiveMap> {
           flexibleSpace: Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [
-                  Color(0xFF80F37F),
-                  Color(0xFF80E046)
-                ],
+                colors: [Color(0xFF80F37F), Color(0xFF80E046)],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
               ),
               borderRadius: BorderRadius.vertical(bottom: Radius.circular(30)),
             ),
-          )
-      ),
-      body: currentPosition == null
-          ? const Center(
-              child: Text("Loading..."),
-            )
-          : Container(
-              child: Stack(
-                children: [
-                  GoogleMap(
-                    myLocationButtonEnabled: true,
-                    compassEnabled: false,
-                    tiltGesturesEnabled: false,
-                    markers: _markers,
-                    polylines: {
-                      Polyline(
-                        polylineId: const PolylineId("route"),
-                        points: polylineCoords,
-                        width: 6,
-                      )
-                    },
-                    mapType: MapType.normal,
-                    initialCameraPosition: initialCameraPosition,
-                    onMapCreated: (GoogleMapController controller) {
-                      _controller.complete(controller);
-                      //displayLiveGame(); // Call the function to display markers
-                      populate();
-                    },
-                    onTap: _onMapTapped, // Add onTap handler
-                    onLongPress: onMarkerTapped,
-                  ),
-                ],
-              ),
+          )),
+      body: Container(
+        child: Stack(
+          children: [
+            GoogleMap(
+              myLocationButtonEnabled: true,
+              compassEnabled: false,
+              tiltGesturesEnabled: false,
+              markers: _markers,
+              polylines: {
+                Polyline(
+                  polylineId: const PolylineId("route"),
+                  points: polylineCoords,
+                  width: 6,
+                )
+              },
+              mapType: MapType.normal,
+              initialCameraPosition: initialCameraPosition,
+              onMapCreated: (GoogleMapController controller) {
+                _controller.complete(controller);
+                //displayLiveGame(); // Call the function to display markers
+                populate();
+              },
+              onTap: _onMapTapped, // Add onTap handler
+              onLongPress: onMarkerTapped,
             ),
+          ],
+        ),
+      ),
     );
   }
 

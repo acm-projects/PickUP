@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pickup/Screens/live_map.dart';
 import 'package:pickup/classes/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'home_page.dart';
@@ -88,7 +89,7 @@ class _MainPageState extends State<MainPage> {
   int index = 0;
   final screens = [
     const HomePage(),
-    const GameCreation(),
+    const LiveMap(),
     const GameCreation(),
     const ProfilePage(),
   ];
@@ -107,6 +108,7 @@ class _MainPageState extends State<MainPage> {
         onDestinationSelected: (index) {
           setState(() {
             this.index = index;
+            HomePage.timer.cancel();
           });
         },
         destinations: [

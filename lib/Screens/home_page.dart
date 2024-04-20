@@ -472,7 +472,19 @@ class _HomePageState extends State<HomePage> {
               itemCount: _upcomingGames.length,
               itemBuilder: (context, index) {
                 final game = _upcomingGames[index];
-                bool isDarkBackground = index % 2 == 0;
+                Map<String, dynamic> closestGame = {};
+
+                for (final game in _upcomingGames) {
+                  if (closestGame.isNotEmpty) {
+                    if (game["date"].isBefore(closestGame["date"])) {
+                      closestGame = game;
+                    }
+                  } else {
+                    closestGame = game;
+                  }
+                }
+
+                bool isDarkBackground = closestGame["id"] != game["id"];
                 return Container(
                   margin: const EdgeInsets.symmetric(vertical: 5),
                   decoration: BoxDecoration(

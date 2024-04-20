@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pickup/classes/game.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:pickup/classes/location.dart';
+import 'package:pickup/classes/user.dart';
 import 'dart:async';
-
 
 class JoinGamePage extends StatefulWidget {
   const JoinGamePage({super.key});
@@ -14,16 +15,31 @@ class JoinGamePage extends StatefulWidget {
 
 class JoinGamePageState extends State<JoinGamePage> {
   @override
-
   List<Object?> activeGames = [];
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
     Timer.periodic(const Duration(milliseconds: 1000), (_) async {
-        activeGames = await Game.fetch() as List<Object?>;
+      activeGames = await Game.fetch() as List<Object?>;
 
-        setState(() {});
+      CollectionReference usersJoinedGames = FirebaseFirestore.instance
+        .collection("Users")
+        .doc(await User.getUserID())
+        .collection("JoinedGames");
+
+      for (int index = 0; index < activeGames.length; index++) {
+        DocumentReference targetGameDoc = usersJoinedGames.doc((activeGames[index] as Map<String, dynamic>)["gameID"]);
+
+        if ((await targetGameDoc.get()).exists) {
+          print((activeGames[index] as Map<String, dynamic>)["gameID"]);
+          activeGames.removeAt(index);
+          index -= 1;
+        }
+      }
+
+      setState(() {});
     });
   }
 
@@ -75,7 +91,7 @@ class JoinGamePageState extends State<JoinGamePage> {
           SliverList(
             delegate: SliverChildListDelegate.fixed([
               // Mock games
-              for (final game in activeGames) 
+              for (final game in activeGames)
                 _buildGameWidget(context, game as Map<String, dynamic>)
               // Pass context to the method
             ]),
@@ -87,34 +103,33 @@ class JoinGamePageState extends State<JoinGamePage> {
 
   Widget _buildGameWidget(BuildContext context, Map<String, dynamic> game) {
     // Mock data for game
-              tz.TZDateTime startTime = tz.TZDateTime.parse(
-              Location.getTimeZone(), game["startTime"]);
+    tz.TZDateTime startTime =
+        tz.TZDateTime.parse(Location.getTimeZone(), game["startTime"]);
 
+    String morningOrNight = startTime.hour - 12 >= 0 ? "PM" : "AM";
 
-          String morningOrNight = startTime.hour - 12 >= 0 ? "PM" : "AM";
+    final Map<int, String> monthsInYear = {
+      1: 'Jan',
+      2: 'Feb',
+      3: 'Mar',
+      4: 'Apr',
+      5: 'May',
+      6: 'Jun',
+      7: 'Jul',
+      8: 'Aug',
+      9: 'Sept',
+      10: 'Oct',
+      11: 'Nov',
+      12: 'Dec',
+    };
 
-          final Map<int, String> monthsInYear = {
-            1: 'Jan',
-            2: 'Feb',
-            3: 'Mar',
-            4: 'Apr',
-            5: 'May',
-            6: 'Jun',
-            7: 'Jul',
-            8: 'Aug',
-            9: 'Sept',
-            10: 'Oct',
-            11: 'Nov',
-            12: 'Dec',
-          };
+    int hour = startTime.hour % 12;
+    if (hour == 0) {
+      hour = 12; // 0 and 12 should map to 12 in 12-hour format
+    }
 
-          int hour = startTime.hour % 12;
-          if (hour == 0) {
-            hour = 12; // 0 and 12 should map to 12 in 12-hour format
-          }
-
-          String date =
-              "${monthsInYear[startTime.month]} ${startTime.day} $hour:${startTime.minute.toString().padLeft(2, '0')} $morningOrNight";
+    String date =
+        "${monthsInYear[startTime.month]} ${startTime.day} $hour:${startTime.minute.toString().padLeft(2, '0')} $morningOrNight";
     String id = game["gameID"];
     String title = game["title"];
     String location = game["location"];

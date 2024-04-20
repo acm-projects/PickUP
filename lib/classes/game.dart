@@ -37,8 +37,7 @@ class Game {
   final String _gameID = generateRandomHex();
 
   // Constructor
-  Game(this.title, this.sport, this.description,
-      this.startTime);
+  Game(this.title, this.sport, this.description, this.startTime);
 
   Future<Map<String, dynamic>> toMap() async {
     return {
@@ -213,7 +212,7 @@ class Game {
       targetGame["players"].add(await User.getUserID());
       targetGame["numOfPlayers"] = targetGame["players"].length;
 
-      await Game.edit(target, targetGame);
+      await Game.edit(target, targetGame, true);
 
       String targetGameSport = targetGame["sport"];
 
@@ -333,10 +332,7 @@ class Game {
       Map<String, dynamic> jsonData =
           (await fetch(target)) as Map<String, dynamic>;
 
-      return Game(
-          jsonData["title"],
-          jsonData["sport"],
-          jsonData["description"],
+      return Game(jsonData["title"], jsonData["sport"], jsonData["description"],
           tz.TZDateTime.parse(Location.getTimeZone(), jsonData["startTime"]));
     } catch (e) {
       print('Error: $e'); // Typically while fetching, if fetch == false

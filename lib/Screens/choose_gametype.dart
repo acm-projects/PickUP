@@ -20,31 +20,29 @@ class GameCreation extends StatelessWidget {
         backgroundColor: const Color(0xFF0C2219),
         appBar: AppBar(
           title: const Text('Choose a Game Type'),
-          centerTitle: true, // Centering the title
+          centerTitle: true,
           titleTextStyle: const TextStyle(
             color: Colors.black,
             fontFamily: 'Mada',
-            fontWeight: FontWeight
-                .bold, // Adjust weight if needed, e.g., to FontWeight.w800 or FontWeight.bold for more emphasis
+            fontWeight: FontWeight.bold,
             fontSize: 28,
           ),
-          backgroundColor:
-              Colors.transparent, // Make AppBar background transparent
-          elevation: 0, // Removes shadow
+          backgroundColor: Colors.transparent,
+          elevation: 0,
           flexibleSpace: Ink(
             decoration: BoxDecoration(
               gradient: gradient,
-              borderRadius: BorderRadius.circular(30), // Rounded corners
+              borderRadius: BorderRadius.circular(30),
             ),
           ),
         ),
         
-        body: Center(
-          
+        body: Padding(
+          padding: const EdgeInsets.only(top: 100), // Increased top padding to move content down
           child: Column(
-            
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start, // Aligning content to the start of the column
             children: <Widget>[
+              SizedBox(height: 65), // Additional space at the top of the column
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
@@ -90,12 +88,12 @@ class GameCreation extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Icon(icon, color: Colors.black, size: 80), // Icon
-            const SizedBox(height: 10), // Space between icon and text
+            Icon(icon, color: Colors.black, size: 80),
+            const SizedBox(height: 10),
             Text(
               text,
               style: const TextStyle(
-                  color: Colors.black, // Ensuring text color is white
+                  color: Colors.black,
                   fontFamily: 'Mada',
                   fontWeight: FontWeight.w500,
                   fontSize: 20),

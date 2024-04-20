@@ -5,12 +5,11 @@ import 'package:pickup/classes/game.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pickup/Screens/chat_page.dart';
 import 'package:pickup/classes/location.dart';
-import 'package:pickup/Screens/join_page.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'dart:async';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({Key? key}) : super(key: key);
   static late Timer timer;
   @override
   _HomePageState createState() => _HomePageState();
@@ -19,7 +18,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   List<Map<String, dynamic>> _activeGames = [];
   List<Map<String, dynamic>> _upcomingGames = [];
-  Map<String, dynamic> closestGame = {};
 
   Widget? sliderWidget;
 
@@ -135,7 +133,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0C2219),
+      backgroundColor: const Color(0xFF1A3E2F),
       body: Column(
         children: [
           _buildActiveGamesSection(),
@@ -159,11 +157,7 @@ class _HomePageState extends State<HomePage> {
               child: ElevatedButton(
                 onPressed: () {
                   // Navigate to the game creation page
-                  Navigator.of(context).push<void>(
-                    MaterialPageRoute<void>(
-                      builder: (BuildContext context) => const JoinGamePage(),
-                    ),
-                  );
+                  Navigator.of(context).pushNamed('/LiveMap');
                 },
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
@@ -225,6 +219,8 @@ class _HomePageState extends State<HomePage> {
       );
     } else {
       // Display the first active game only
+      Map<String, dynamic> closestGame = {};
+
       int differenceInMinutes = -1;
 
       for (final game in _upcomingGames) {
@@ -257,7 +253,6 @@ class _HomePageState extends State<HomePage> {
                   }
                 });
                 setState(() {});
-                return null;
               },
               backgroundColor: const Color.fromARGB(255, 19, 189, 7),
               label: const Text(
@@ -273,9 +268,8 @@ class _HomePageState extends State<HomePage> {
         }
       }
 
-      if (differenceInMinutes > 15 || differenceInMinutes <= -1) {
+      if (differenceInMinutes > 15 || differenceInMinutes <= -1)
         sliderWidget = null;
-      }
 
       return Container(
         decoration: const BoxDecoration(
@@ -329,7 +323,7 @@ class _HomePageState extends State<HomePage> {
                   differenceInMinutes < 0
                       ? ""
                       : "$differenceInMinutes min till",
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: Colors.black,
                   ),
                 ),
@@ -345,14 +339,14 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildUpcomingGamesSection() {
-    const Color darkGreen = Color(0xFF0C2219); // Dark green
-    const Color lightGreen = Color(0xFF72CD52); // Light green
+    const Color darkGreen = Color(0xFF1A3E2F); // Dark green
+    const Color lightGreen = Color(0xFF255035); // Light green
     const double borderRadiusValue = 20.0; // Value for the border radius
 
     if (_upcomingGames.isEmpty) {
       // Display message if there are no upcoming games
-      return const Padding(
-        padding: EdgeInsets.symmetric(vertical: 40, horizontal: 20),
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
         child: Text(
           'No Upcoming Games',
           style: TextStyle(
@@ -415,7 +409,7 @@ class _HomePageState extends State<HomePage> {
                       title: Text(
                         '${game['title'] ?? ""} ${game['startTime'] ?? ""}',
                         style: TextStyle(
-                          color: isDarkBackground ? Colors.white : Colors.black,
+                          color: isDarkBackground ? Colors.white : Colors.white,
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
                         ),
@@ -427,11 +421,11 @@ class _HomePageState extends State<HomePage> {
                               style: TextStyle(
                                   color: isDarkBackground
                                       ? Colors.white
-                                      : Colors.black)),
+                                      : Colors.white)),
                           trailing: Icon(Icons.arrow_forward_ios,
                               color: isDarkBackground
                                   ? Colors.white
-                                  : Colors.black,
+                                  : Colors.white,
                               size: 16), // Small right arrow
                           onTap: () {
                             // Action for viewing game information
@@ -442,11 +436,11 @@ class _HomePageState extends State<HomePage> {
                               style: TextStyle(
                                   color: isDarkBackground
                                       ? Colors.white
-                                      : Colors.black)),
+                                      : Colors.white)),
                           trailing: Icon(Icons.arrow_forward_ios,
                               color: isDarkBackground
                                   ? Colors.white
-                                  : Colors.black,
+                                  : Colors.white,
                               size: 16), // Small right arrow
                           onTap: () {
                             Navigator.of(context).push<void>(
@@ -462,11 +456,11 @@ class _HomePageState extends State<HomePage> {
                               style: TextStyle(
                                   color: isDarkBackground
                                       ? Colors.white
-                                      : Colors.black)),
+                                      : Colors.white)),
                           trailing: Icon(Icons.arrow_forward_ios,
                               color: isDarkBackground
                                   ? Colors.white
-                                  : Colors.black,
+                                  : Colors.white,
                               size: 16), // Small right arrow
                           onTap: () {
                             Game.leave(_upcomingGames[index]["id"]);

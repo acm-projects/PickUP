@@ -198,9 +198,9 @@ class JoinGamePageState extends State<JoinGamePage> {
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 // Navigate back to home page when join button is pressed
-                Navigator.pop(context);
+                await Game.join(id);
               },
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(

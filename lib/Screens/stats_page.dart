@@ -153,11 +153,14 @@ class _StatsPageState extends State<StatsPage> {
                           const SizedBox(width: 10), // Add left padding here
                           // Display sport icon (you can replace the icons with your own)
                           if (value == 'Basketball')
-                            const Icon(Icons.sports_basketball, color: Colors.black),
+                            const Icon(Icons.sports_basketball,
+                                color: Colors.black),
                           if (value == 'Volleyball')
-                            const Icon(Icons.sports_volleyball, color: Colors.black),
+                            const Icon(Icons.sports_volleyball,
+                                color: Colors.black),
                           if (value == 'Soccer')
-                            const Icon(Icons.sports_soccer, color: Colors.black),
+                            const Icon(Icons.sports_soccer,
+                                color: Colors.black),
                           const SizedBox(
                               width: 10), // Add spacing between icon and text
                           Text(value,
@@ -278,7 +281,8 @@ class _StatsPageState extends State<StatsPage> {
                 // Example game data, replace with actual game data
                 Map<String, dynamic> game = stats[index];
                 return Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   color: index.isEven
                       ? const Color(0xFF255035) // Alternate row color
                       : Colors.transparent,

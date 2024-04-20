@@ -19,7 +19,7 @@ class ConfigureGame extends StatelessWidget {
       'basketball': 12, // 5 players per team (typical)
       'volleyball': 12, // 6 players per team (typical)
       'soccer': 22, // 11 players per team (typical)
-      'tennis': 4,  // Singles (2 players) or Doubles (4 players)
+      'tennis': 4, // Singles (2 players) or Doubles (4 players)
     };
 
     return MaterialApp(
@@ -138,7 +138,8 @@ class ConfigureGame extends StatelessWidget {
                     Game.currentGame.title = titleController.text;
                     Game.currentGame.description = descriptionController.text;
                     Game.currentGame.location = locationController.text;
-                    Game.currentGame.maxNumOfPlayers = maxPlayersPerSport[sport]!;
+                    Game.currentGame.maxNumOfPlayers =
+                        maxPlayersPerSport[sport]!;
                     Navigator.of(context).pushNamed('/ChooseTime');
                   },
                   child: Container(

@@ -399,7 +399,7 @@ class _HomePageState extends State<HomePage> {
                   }
                 }
 
-                bool isDarkBackground = closestGame["id"]  != game["id"];
+                bool isDarkBackground = closestGame["id"] != game["id"];
                 return Container(
                   margin: const EdgeInsets.symmetric(vertical: 5),
                   decoration: BoxDecoration(

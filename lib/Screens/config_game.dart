@@ -16,10 +16,10 @@ class ConfigureGame extends StatelessWidget {
     titleController.text = "${User.firstName}'s $sport Game";
 
     const Map<String, int> maxPlayersPerSport = {
-      'basketball': 12, // 5 players per team (typical)
-      'volleyball': 12, // 6 players per team (typical)
-      'soccer': 22, // 11 players per team (typical)
-      'tennis': 4, // Singles (2 players) or Doubles (4 players)
+      'Basketball': 12, // 5 players per team (typical)
+      'Volleyball': 12, // 6 players per team (typical)
+      'Soccer': 22, // 11 players per team (typical)
+      'Tennis': 4, // Singles (2 players) or Doubles (4 players)
     };
 
     return MaterialApp(

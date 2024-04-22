@@ -201,24 +201,11 @@ class _DirectionsMapState extends State<DirectionsMap> {
     print('Added custom Marker');
   }
 
-  void findGame() {
-    MarkerId markerId = MarkerId(searchValue);
-    Marker? foundMarker;
-    for (Marker marker in _markers) {
-      if (marker.markerId.value == searchValue) {
-        foundMarker = marker;
-        break;
-      }
-    }
-    if (foundMarker != null) {
-      print('Found Marker: ${foundMarker.markerId}');
-      LatLng markerPosition = foundMarker.position;
-      print('Marker Position: $markerPosition');
-      displayRoute(currentPosition!, markerPosition);
-      //_controller.animateCamera(CameraUpdate.newLatLng(markerPosition));
-    } else {
-      print('Marker not found');
-    }
+  void findGame(Map<String, dynamic> coordinates) {
+    LatLng markerPosition = LatLng(coordinates["latitude"], coordinates["longitude"]);
+    print('Marker Position: $markerPosition');
+    displayRoute(currentPosition!, markerPosition);
+    //_controller.animateCamera(CameraUpdate.newLatLng(markerPosition));
     setState(() {});
   }
 
@@ -419,6 +406,8 @@ class _DirectionsMapState extends State<DirectionsMap> {
 
   @override
   Widget build(BuildContext context) {
+    final Map<String, dynamic>? coordinates= ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+    
     CameraPosition initialCameraPosition = const CameraPosition(
       zoom: CameraZoom,
       tilt: CameraTilt,
@@ -449,30 +438,12 @@ class _DirectionsMapState extends State<DirectionsMap> {
                   onMapCreated: (GoogleMapController controller) {
                     _controller.complete(controller);
                     populate();
+                    findGame(coordinates!);
                   },
-                ),
-                Positioned(
-                  top: 8.0,
-                  left: 8.0,
-                  right: 8.0,
-                  child: TextField(
-                    controller: searchController,
-                    onChanged: (value) {
-                      setState(() {
-                        searchValue = value;
-                      });
-                    },
-                    onSubmitted: (value) {
-                      //Add join game feature here
-                      findGame(); // Call findGame when user submits the search query
-                    },
-                    decoration: const InputDecoration(
-                      hintText: 'Search By Game ID',
-                    ),
-                  ),
-                ),
-              ],
-            ),
+                )
+              ]
+      ),
     );
+                
   }
 }

@@ -12,6 +12,7 @@ import 'Screens/stats_page.dart';
 import 'Screens/nav_bar.dart';
 import 'Screens/profile.dart';
 import 'Screens/live_map.dart';
+import 'Screens/directionMap.dart';
 import 'dart:io' show Platform;
 
 void main() async {
@@ -53,6 +54,7 @@ class PickUpApp extends StatelessWidget {
         '/ConfigureGame': (context) => const ConfigureGame(),
         '/ChooseTime': (context) => const ChooseTime(),
         '/ChooseLocation': (context) => const ChooseLocation(),
+        '/DirectionsMap': (context) => const DirectionsMap(),
         '/Profile': (context) => const ProfilePage(),
         '/LiveMap': (context) => const LiveMap(),
         '/Stats': (context) => StatsPage(),

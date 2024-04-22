@@ -114,6 +114,7 @@ class _HomePageState extends State<HomePage> {
             'id': game,
             'date': date,
             'location': gameInfo["location"],
+            'coordinates': gameInfo["coordinates"],
           });
         }
 
@@ -239,6 +240,8 @@ class _HomePageState extends State<HomePage> {
             child: SliderButton(
               action: () async {
                 setState(() async {
+                  Navigator.of(context).pushNamed('/DirectionsMap', arguments: game["coordinates"]);
+
                   /// Do something here OnSlideComplete
                   await Game.checkIn(closestGame["id"]);
 

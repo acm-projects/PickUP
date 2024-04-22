@@ -79,7 +79,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                           const SizedBox(height: 5),
                           const Text(
-                            'ronaldo@example.com', // Replace with user's email
+                            'ronaldo@utdallas.edu', // Replace with user's email
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 16,

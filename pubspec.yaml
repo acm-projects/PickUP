@@ -86,6 +86,7 @@ flutter:
     - assets/cr7.png
     - assets/beachsoccer.png
     - assets/PickUP-Logo.png
+    - assets/soccer-ball (1).png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

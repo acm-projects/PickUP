@@ -41,7 +41,7 @@ class _StartScreenState extends State<StartScreen> {
     return Stack(
       children: [
         Container(
-          color: const Color(0xFF0C2219), // Background color
+          color:  const Color(0xFF1A3E2F), // Background color
           width: double.infinity,
           height: double.infinity,
         ),

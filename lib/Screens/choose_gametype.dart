@@ -19,7 +19,7 @@ class GameCreation extends StatelessWidget {
     );
 
     // Color used for buttons
-    final buttonColor = Color(0xFF254E32); // New color for buttons
+    final buttonColor =    const Color(0xFF254E32); // New color for buttons
 
     return MaterialApp(
       home: Scaffold(
@@ -76,43 +76,52 @@ class GameCreation extends StatelessWidget {
     );
   }
 
-  Widget gradientButton(
-      String text, IconData icon, BuildContext context, Color color) {
-    // Change gradient type to Color
-    return Container(
-      width: 150,
-      height: 150,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [color, color], // Set both colors to the same color
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-        ),
-        borderRadius: BorderRadius.circular(28),
-      ),
-      child: InkWell(
-        onTap: () {
-          Game.currentGame =
-              Game("", "", "", tz.TZDateTime.now(Location.getTimeZone()));
-          Game.currentGame.sport = text;
-          Navigator.of(context).pushNamed('/ConfigureGame', arguments: text);
-        },
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Icon(icon, color: Colors.white, size: 80),
-            const SizedBox(height: 10),
-            Text(
-              text,
-              style: const TextStyle(
-                  color: Colors.white,
-                  fontFamily: 'Mada',
-                  fontWeight: FontWeight.w500,
-                  fontSize: 20),
-            ),
-          ],
-        ),
-      ),
+  Widget gradientButton(String text, dynamic icon, BuildContext context, Color color) {
+  Widget iconWidget;
+  
+  if (text == "Soccer") {
+    // Use an image for the soccer button
+    iconWidget = Image.asset(
+      'assets/soccer-ball (1).png',
+      width: 100,
+      height: 100,
+      color: Colors.white,
     );
+  } else {
+    // Use the default icon for other buttons
+    iconWidget = Icon(icon, color: Colors.white, size: 80);
   }
+
+  return Container(
+    width: 150,
+    height: 150,
+    decoration: BoxDecoration(
+      color: color,
+      borderRadius: BorderRadius.circular(28),
+    ),
+    child: InkWell(
+      onTap: () {
+        Game.currentGame =
+            Game("", "", "", tz.TZDateTime.now(Location.getTimeZone()));
+        Game.currentGame.sport = text;
+        Navigator.of(context).pushNamed('/ConfigureGame', arguments: text);
+      },
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          iconWidget,
+          const SizedBox(height: 10),
+          Text(
+            text,
+            style: const TextStyle(
+                color: Colors.white,
+                fontFamily: 'Mada',
+                fontWeight: FontWeight.w500,
+                fontSize: 20),
+          ),
+        ],
+      ),
+    ),
+  );
+}
 }

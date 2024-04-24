@@ -7,10 +7,18 @@ class ConfigureGame extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String? sport = ModalRoute.of(context)?.settings.arguments as String?;
+    const Map<String, String> sportEmojis = {
+      'Basketball': '🏀',
+      'Volleyball': '🏐',
+      'Soccer': '⚽',
+      'Tennis': '🎾',
+    };
+
     TextEditingController titleController = TextEditingController();
     TextEditingController descriptionController = TextEditingController();
     TextEditingController locationController = TextEditingController();
-    titleController.text = "${User.firstName}'s $sport Game";
+    titleController.text =
+        "${sportEmojis[sport]} ${User.firstName}'s $sport Game";
     const Map<String, int> maxPlayersPerSport = {
       'Basketball': 12,
       'Volleyball': 12,

@@ -1,26 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:pickup/classes/game.dart';
 import 'package:pickup/classes/user.dart';
-
 class ConfigureGame extends StatelessWidget {
   const ConfigureGame({super.key});
-
+  
   @override
   Widget build(BuildContext context) {
     final String? sport = ModalRoute.of(context)?.settings.arguments as String?;
-
-    const Map<String, String> sportEmojis = {
-      'Basketball': '🏀',
-      'Volleyball': '🏐',
-      'Soccer': '⚽',
-      'Tennis': '🎾',
-    };
-
     TextEditingController titleController = TextEditingController();
     TextEditingController descriptionController = TextEditingController();
     TextEditingController locationController = TextEditingController();
-    titleController.text =
-        "${sportEmojis[sport]} ${User.firstName}'s $sport Game";
+    titleController.text = "${User.firstName}'s $sport Game";
     const Map<String, int> maxPlayersPerSport = {
       'Basketball': 12,
       'Volleyball': 12,
@@ -30,37 +20,55 @@ class ConfigureGame extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         backgroundColor: const Color(0xFF1A3E2F),
-        appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.of(context)
-                  .pop(); // Navigates back to the previous screen
-            },
-          ),
-          title: Text('Create a $sport Game'),
-          titleTextStyle: const TextStyle(
-            color: Colors.black,
-            fontFamily: 'Mada',
-            fontWeight: FontWeight.bold,
-            fontSize: 24,
-          ),
-          backgroundColor:
-              Colors.transparent, // Make AppBar background transparent
-          elevation: 0, // Removes shadow
-          flexibleSpace: Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [Color(0xFF80F37F), Color(0xFF80E046)],
-              ),
-              borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
-              // borderRadius: BorderRadius.circular(30), // Rounded corners
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(20),  // Reduced height of the AppBar
+          child: AppBar(
+            automaticallyImplyLeading: false,
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            flexibleSpace: Stack(
+              fit: StackFit.expand,
+              children: [
+                Ink(
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFF80F37F), Color(0xFF80E046)],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ),
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+                Positioned(
+                  top: 15,  // Adjust the top value to move it upwards as needed
+                  left: 5,
+                  right: 15,
+                  child: Container(
+                    padding: const EdgeInsets.only(left: 48),  // Adjust based on IconButton's size
+                    alignment: Alignment.center,
+                    child: Text(
+                      'Create a $sport Game',
+                     style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  top: 10,  // Adjust the top value to move the button upwards as needed
+                  left: 4,
+                  child: IconButton(
+                    icon: const Icon(Icons.arrow_back, size: 24),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                ),
+              ],
             ),
           ),
         ),
-        body: SingleChildScrollView(
+        body: SingleChildScrollView( 
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: <Widget>[
@@ -137,8 +145,7 @@ class ConfigureGame extends StatelessWidget {
                       Game.currentGame.title = titleController.text;
                       Game.currentGame.description = descriptionController.text;
                       Game.currentGame.location = locationController.text;
-                      Game.currentGame.maxNumOfPlayers =
-                          maxPlayersPerSport[sport]!;
+                      Game.currentGame.maxNumOfPlayers = maxPlayersPerSport[sport]!;
                       Navigator.of(context).pushNamed('/ChooseTime');
                     },
                     child: Container(

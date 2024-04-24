@@ -20,6 +20,7 @@ class _ProfilePageState extends State<ProfilePage> {
       backgroundColor: Color(0xFF1A3E2F), // Background color
       body: Column(
         children: [
+          SizedBox(height: 20), // Add padding to the top
           Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(

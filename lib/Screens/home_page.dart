@@ -4,9 +4,10 @@ import 'package:slider_button/slider_button.dart';
 import 'package:pickup/classes/game.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pickup/Screens/chat_page.dart';
-import 'package:pickup/Screens/join_page.dart';
 import 'package:pickup/classes/location.dart';
 import 'package:timezone/timezone.dart' as tz;
+import 'directionMap.dart';
+import 'package:pickup/Screens/join_page.dart';
 import 'dart:async';
 
 class HomePage extends StatefulWidget {
@@ -115,6 +116,7 @@ class _HomePageState extends State<HomePage> {
             'id': game,
             'date': date,
             'location': gameInfo["location"],
+            'coordinates': gameInfo["coordinates"],
           });
         }
 
@@ -159,11 +161,9 @@ class _HomePageState extends State<HomePage> {
                 onPressed: () {
                   // Navigate to the game creation page
                   Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => JoinGamePage(),
-                    ),
-                  );
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const JoinGamePage()));
                 },
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
@@ -245,6 +245,9 @@ class _HomePageState extends State<HomePage> {
             child: SliderButton(
               action: () async {
                 setState(() async {
+                  Navigator.of(context).pushNamed('/DirectionsMap',
+                      arguments: game["coordinates"]);
+
                   /// Do something here OnSlideComplete
                   await Game.checkIn(closestGame["id"]);
 
@@ -297,9 +300,9 @@ class _HomePageState extends State<HomePage> {
                 Text(
                   '${closestGame['title'] ?? "No Active Games"}',
                   style: const TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                  ),
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20.0),
                 ),
               ],
             ),

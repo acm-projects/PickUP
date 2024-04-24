@@ -97,7 +97,6 @@ class _StatsPageState extends State<StatsPage> {
     stats = basketballStats;
   }
 
-  // Function to calculate wins
   int calculateWins(List<Map<String, dynamic>> stats) {
     int wins = 0;
     for (var game in stats) {
@@ -108,7 +107,6 @@ class _StatsPageState extends State<StatsPage> {
     return wins;
   }
 
-  // Function to calculate losses
   int calculateLosses(List<Map<String, dynamic>> stats) {
     int losses = 0;
     for (var game in stats) {
@@ -129,12 +127,9 @@ class _StatsPageState extends State<StatsPage> {
           Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [
-                  Color(0xFF80F37F),
-                  Color(0xFF80E046)
-                ], // Gradient colors
-                begin: Alignment.topCenter, // Start point of the gradient
-                end: Alignment.bottomCenter, // End point of the gradient
+                colors: [Color(0xFF80F37F), Color(0xFF80E046)],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
               ),
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(20),
@@ -163,19 +158,17 @@ class _StatsPageState extends State<StatsPage> {
                     ),
                   ),
                 ),
-                SizedBox(width: 40), // Adjust spacing as needed
+                SizedBox(width: 40),
               ],
             ),
           ),
           SizedBox(height: 20),
-          // Dropdown button for selecting the sport
           Center(
             child: Container(
-              width: MediaQuery.of(context).size.width *
-                  0.5, // Adjust the width here
+              width: MediaQuery.of(context).size.width * 0.56,
               padding: EdgeInsets.symmetric(horizontal: 20),
               decoration: BoxDecoration(
-                color: Colors.grey[200], // Light grey background color
+                color: Colors.grey[200],
                 borderRadius: BorderRadius.circular(30),
               ),
               child: DropdownButton<String>(
@@ -189,7 +182,6 @@ class _StatsPageState extends State<StatsPage> {
                   color: Colors.transparent,
                 ),
                 onChanged: (String? newValue) {
-                  // Update the selected sport when the user makes a selection
                   if (newValue != null) {
                     setState(() {
                       selectedSport = newValue;
@@ -213,8 +205,7 @@ class _StatsPageState extends State<StatsPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SizedBox(width: 10), // Add left padding here
-                          // Display sport icon (you can replace the icons with your own)
+                          SizedBox(width: 10),
                           if (value == 'Basketball')
                             Icon(Icons.sports_basketball, color: Colors.black),
                           if (value == 'Volleyball')
@@ -223,12 +214,8 @@ class _StatsPageState extends State<StatsPage> {
                             Icon(Icons.sports_soccer, color: Colors.black),
                           if (value == 'Tennis')
                             Icon(Icons.sports_tennis, color: Colors.black),
-                          SizedBox(
-                              width: 10), // Add spacing between icon and text
-                          Text(value,
-                              style: TextStyle(
-                                  color:
-                                      Colors.black)), // Adjust the text color
+                          SizedBox(width: 10),
+                          Text(value, style: TextStyle(color: Colors.black)),
                         ],
                       ),
                     ),
@@ -238,7 +225,6 @@ class _StatsPageState extends State<StatsPage> {
             ),
           ),
           SizedBox(height: 20),
-          // Wins and Losses Section
           Container(
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: Row(
@@ -257,7 +243,7 @@ class _StatsPageState extends State<StatsPage> {
                       ),
                       SizedBox(height: 10),
                       Text(
-                        '${calculateWins(stats)}', // Calculate wins dynamically
+                        '${calculateWins(stats)}',
                         style: TextStyle(
                           fontSize: 80,
                           fontWeight: FontWeight.bold,
@@ -269,7 +255,7 @@ class _StatsPageState extends State<StatsPage> {
                 ),
                 Container(
                   width: 2,
-                  height: 100, // Adjust height as needed
+                  height: 100,
                   color: Colors.white.withOpacity(0.29),
                 ),
                 Expanded(
@@ -285,7 +271,7 @@ class _StatsPageState extends State<StatsPage> {
                       ),
                       SizedBox(height: 10),
                       Text(
-                        '${calculateLosses(stats)}', // Calculate losses dynamically
+                        '${calculateLosses(stats)}',
                         style: TextStyle(
                           fontSize: 80,
                           fontWeight: FontWeight.bold,
@@ -298,7 +284,6 @@ class _StatsPageState extends State<StatsPage> {
               ],
             ),
           ),
-          // Recent Games Section
           Container(
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: Column(
@@ -337,26 +322,25 @@ class _StatsPageState extends State<StatsPage> {
           SizedBox(height: 10),
           Expanded(
             child: ListView.builder(
-              itemCount:
-                  stats.length, // Example count, replace with actual data count
+              itemCount: stats.length,
               itemBuilder: (context, index) {
-                // Example game data, replace with actual game data
                 Map<String, dynamic> game = stats[index];
                 return Container(
                   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  color: index.isEven
-                      ? Color(0xFF255035) // Alternate row color
-                      : Colors.transparent,
+                  color: index.isEven ? Color(0xFF255035) : Colors.transparent,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        '${game['team1']} vs ${game['team2']}',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.white,
+                      Expanded(
+                        child: Text(
+                          '${game['team1']} vs ${game['team2']}',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
+                      SizedBox(width: 10),
                       Text(
                         '${game['score']}',
                         style: TextStyle(

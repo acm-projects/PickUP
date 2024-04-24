@@ -80,7 +80,7 @@ class Game {
 
     DocumentSnapshot globablTargetGameSS = await globablTargetGame.get();
 
-    if ((await usersActiveGames.get()).docs.length >= 5) {
+    if ((await usersActiveGames.get()).docs.length >= 10) {
       throw 'You have reached the limit of games you can make';
     }
 

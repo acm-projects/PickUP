@@ -19,46 +19,31 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFF1A3E2F), // Background color
+      appBar: AppBar(
+        title: Text('Profile'),
+        titleTextStyle: const TextStyle(
+          color: Colors.black,
+          fontFamily: 'Mada',
+          fontWeight: FontWeight.bold,
+          fontSize: 24,
+        ),
+        backgroundColor:
+            Colors.transparent, // Make AppBar background transparent
+        elevation: 0, // Removes shadow
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Color(0xFF80F37F), Color(0xFF80E046)],
+            ),
+            borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
+            // borderRadius: BorderRadius.circular(30), // Rounded corners
+          ),
+        ),
+      ),
       body: Column(
         children: [
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Color(0xFF80F37F),
-                  Color(0xFF80E046)
-                ], // Gradient colors
-                begin: Alignment.topCenter, // Start point of the gradient
-                end: Alignment.bottomCenter, // End point of the gradient
-              ),
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(20),
-                bottomRight: Radius.circular(20),
-              ),
-            ),
-            padding: EdgeInsets.symmetric(vertical: 10),
-            child: Center(
-              // Center the row
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Center(
-                      child: Text(
-                        'Profile',
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 0), // Adjust spacing as needed
-                ],
-              ),
-            ),
-          ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(20.0),

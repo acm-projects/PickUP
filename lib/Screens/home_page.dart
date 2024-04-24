@@ -102,7 +102,8 @@ class _HomePageState extends State<HomePage> {
 
           for (int index = 0; index < _upcomingGames.length; index++) {
             if (_upcomingGames[index]["id"] == game &&
-                tz.TZDateTime.now(Location.getTimeZone()).isAfter(date) && !finishGame) {
+                tz.TZDateTime.now(Location.getTimeZone()).isAfter(date) &&
+                !finishGame) {
               _upcomingGames.remove(_upcomingGames[index]);
               sliderWidget = null;
               await Game.leave(game);
@@ -337,7 +338,8 @@ class _HomePageState extends State<HomePage> {
               action: () async {
                 setState(() async {
                   finishGame = true;
-                  Navigator.of(context).pushNamed('/DirectionsMap', arguments: game["coordinates"]);
+                  Navigator.of(context).pushNamed('/DirectionsMap',
+                      arguments: game["coordinates"]);
 
                   /// Do something here OnSlideComplete
                   await Game.checkIn(closestGame["id"]);
@@ -418,8 +420,8 @@ class _HomePageState extends State<HomePage> {
         }
       }
 
-      if ((differenceInMinutes > 15 || differenceInMinutes <= -1) && !finishGame)
-        sliderWidget = null;
+      if ((differenceInMinutes > 15 || differenceInMinutes <= -1) &&
+          !finishGame) sliderWidget = null;
 
       return Container(
         decoration: const BoxDecoration(

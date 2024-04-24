@@ -19,7 +19,8 @@ void initLogin(BuildContext context) async {
       password: password,
     );
 
-    Navigator.pushNamed(context, '/Login/HomePage');
+    Navigator.of(context)
+        .pushNamedAndRemoveUntil('/Login/HomePage', (route) => false);
   } catch (e) {
     print(e);
   }

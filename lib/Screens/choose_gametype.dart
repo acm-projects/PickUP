@@ -18,28 +18,26 @@ class GameCreation extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         backgroundColor: const Color(0xFF1A3E2F),
-        appBar: PreferredSize(
-          preferredSize:
-              const Size.fromHeight(23), // Custom height for the AppBar
-          child: AppBar(
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            flexibleSpace: Container(
-              decoration: BoxDecoration(
-                gradient: appBarGradient, // Use the defined gradient here
-                borderRadius: BorderRadius.circular(30),
+        appBar: AppBar(
+          title: const Text('Choose a Game Type'),
+          titleTextStyle: const TextStyle(
+            color: Colors.black,
+            fontFamily: 'Mada',
+            fontWeight: FontWeight.bold,
+            fontSize: 24,
+          ),
+          backgroundColor:
+              Colors.transparent, // Make AppBar background transparent
+          elevation: 0, // Removes shadow
+          flexibleSpace: Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Color(0xFF80F37F), Color(0xFF80E046)],
               ),
-              child: Align(
-                alignment: Alignment.center,
-                child: const Text(
-                  'Choose a Game Type',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
-              ),
+              borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
+              // borderRadius: BorderRadius.circular(30), // Rounded corners
             ),
           ),
         ),

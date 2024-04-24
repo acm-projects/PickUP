@@ -22,7 +22,7 @@ class JoinGamePageState extends State<JoinGamePage> {
     super.initState();
 
     Future<void> fetch() async {
-            activeGames = await Game.fetch() as List<Object?>;
+      activeGames = await Game.fetch() as List<Object?>;
 
       CollectionReference usersJoinedGames = FirebaseFirestore.instance
           .collection("Users")
@@ -45,6 +45,7 @@ class JoinGamePageState extends State<JoinGamePage> {
 
       setState(() {});
     }
+
     fetch();
     Timer.periodic(const Duration(seconds: 10), (_) async {
       await fetch();
@@ -55,47 +56,38 @@ class JoinGamePageState extends State<JoinGamePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF1A3E2F),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context)
+                .pop(); // Navigates back to the previous screen
+          },
+        ),
+        title: const Text('Choose a Date & Time'),
+        titleTextStyle: const TextStyle(
+          color: Colors.black,
+          fontFamily: 'Mada',
+          fontWeight: FontWeight.bold,
+          fontSize: 24,
+        ),
+        backgroundColor:
+            Colors.transparent, // Make AppBar background transparent
+        elevation: 0, // Removes shadow
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Color(0xFF80F37F), Color(0xFF80E046)],
+            ),
+            borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
+            // borderRadius: BorderRadius.circular(30), // Rounded corners
+          ),
+        ),
+      ),
       body: CustomScrollView(
         slivers: [
-          SliverAppBar(
-            backgroundColor: Colors.transparent,
-            flexibleSpace: Container(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Color(0xFF80F37F), Color(0xFF80E046)],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                ),
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(20),
-                  bottomRight: Radius.circular(20),
-                ),
-              ),
-              child: const SafeArea(
-                child: Center(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    child: Text(
-                      'Join Game',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            pinned: true,
-            floating: false,
-            expandedHeight: 0,
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(
-                bottom: Radius.circular(20),
-              ),
-            ),
-          ),
           SliverList(
             delegate: SliverChildListDelegate.fixed([
               // Mock games

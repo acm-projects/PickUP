@@ -10,10 +10,7 @@ class GameCreation extends StatelessWidget {
   Widget build(BuildContext context) {
     // Gradient used for AppBar and buttons
     final LinearGradient appBarGradient = LinearGradient(
-      colors: [
-        Color(0xFF80F37F),
-        Color(0xFF80E046)
-      ],
+      colors: [Color(0xFF80F37F), Color(0xFF80E046)],
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
     );
@@ -22,7 +19,8 @@ class GameCreation extends StatelessWidget {
       home: Scaffold(
         backgroundColor: const Color(0xFF1A3E2F),
         appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(23), // Custom height for the AppBar
+          preferredSize:
+              const Size.fromHeight(23), // Custom height for the AppBar
           child: AppBar(
             backgroundColor: Colors.transparent,
             elevation: 0,
@@ -46,24 +44,31 @@ class GameCreation extends StatelessWidget {
           ),
         ),
         body: Padding(
-          padding: const EdgeInsets.only(top: 100), // Increased top padding to move content down
+          padding: const EdgeInsets.only(
+              top: 100), // Increased top padding to move content down
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start, // Aligning content to the start of the column
+            mainAxisAlignment: MainAxisAlignment
+                .start, // Aligning content to the start of the column
             children: <Widget>[
-              const SizedBox(height: 65), // Additional space at the top of the column
+              const SizedBox(
+                  height: 65), // Additional space at the top of the column
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  gradientButton("Volleyball", Icons.sports_volleyball, context, appBarGradient),
-                  gradientButton("Basketball", Icons.sports_basketball, context, appBarGradient),
+                  gradientButton("Volleyball", Icons.sports_volleyball, context,
+                      appBarGradient),
+                  gradientButton("Basketball", Icons.sports_basketball, context,
+                      appBarGradient),
                 ],
               ),
               const SizedBox(height: 30), // Spacing between rows
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  gradientButton("Soccer", Icons.sports_soccer, context, appBarGradient),
-                  gradientButton("Tennis", Icons.sports_tennis, context, appBarGradient),
+                  gradientButton(
+                      "Soccer", Icons.sports_soccer, context, appBarGradient),
+                  gradientButton(
+                      "Tennis", Icons.sports_tennis, context, appBarGradient),
                 ],
               ),
             ],
@@ -73,7 +78,8 @@ class GameCreation extends StatelessWidget {
     );
   }
 
-  Widget gradientButton(String text, IconData icon, BuildContext context, LinearGradient gradient) {
+  Widget gradientButton(String text, IconData icon, BuildContext context,
+      LinearGradient gradient) {
     Widget iconWidget;
 
     if (text == "Soccer") {
@@ -98,7 +104,8 @@ class GameCreation extends StatelessWidget {
       ),
       child: InkWell(
         onTap: () {
-          Game.currentGame = Game("", "", "", tz.TZDateTime.now(Location.getTimeZone()));
+          Game.currentGame =
+              Game("", "", "", tz.TZDateTime.now(Location.getTimeZone()));
           Game.currentGame.sport = text;
           Navigator.of(context).pushNamed('/ConfigureGame', arguments: text);
         },

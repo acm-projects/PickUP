@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pickup/Screens/stats_page.dart';
 import 'package:pickup/classes/user.dart';
 import 'package:slider_button/slider_button.dart';
 import 'package:pickup/classes/game.dart';
@@ -22,6 +23,7 @@ class _HomePageState extends State<HomePage> {
   List<Map<String, dynamic>> _upcomingGames = [];
 
   Widget? sliderWidget;
+  bool finishGame = false;
 
   @override
   void initState() {
@@ -100,7 +102,7 @@ class _HomePageState extends State<HomePage> {
 
           for (int index = 0; index < _upcomingGames.length; index++) {
             if (_upcomingGames[index]["id"] == game &&
-                tz.TZDateTime.now(Location.getTimeZone()).isAfter(date)) {
+                tz.TZDateTime.now(Location.getTimeZone()).isAfter(date) && !finishGame) {
               _upcomingGames.remove(_upcomingGames[index]);
               sliderWidget = null;
               await Game.leave(game);
@@ -131,6 +133,95 @@ class _HomePageState extends State<HomePage> {
     } catch (e) {}
 
     //Cancel timer you navigate away
+  }
+
+  void _showFinishGameDialog(BuildContext context) {
+    String? result;
+    TextEditingController team1Controller = TextEditingController();
+    TextEditingController team2Controller = TextEditingController();
+    // Show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: const Color.fromARGB(
+              255, 221, 219, 219), // Set background color to very light grey
+          title: Text('Did you win or lose?'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              DropdownButtonFormField<String>(
+                value: result,
+                onChanged: (String? value) {
+                  setState(() {
+                    result = value;
+                  });
+                },
+                items: <String>['Win', 'Lose'].map((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                decoration: InputDecoration(
+                  labelText: 'Result',
+                ),
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: team1Controller,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        labelText: 'Team 1 Score',
+                      ),
+                    ),
+                  ),
+                  Text(' - '),
+                  Expanded(
+                    child: TextField(
+                      controller: team2Controller,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        labelText: 'Team 2 Score',
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                // Close the dialog
+                Navigator.of(context).pop();
+                finishGame = false;
+              },
+              child: Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                // Process the result and scores here
+                // For now, just print them
+                if (result != null) {
+                  print('Result: $result');
+                  print('Team 1 Score: ${team1Controller.text}');
+                  print('Team 2 Score: ${team2Controller.text}');
+                }
+                // Close the dialog
+                Navigator.of(context).pop();
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => StatsPage()));
+                finishGame = false;
+              },
+              child: Text('Submit'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -245,8 +336,8 @@ class _HomePageState extends State<HomePage> {
             child: SliderButton(
               action: () async {
                 setState(() async {
-                  Navigator.of(context).pushNamed('/DirectionsMap',
-                      arguments: game["coordinates"]);
+                  finishGame = true;
+                  Navigator.of(context).pushNamed('/DirectionsMap', arguments: game["coordinates"]);
 
                   /// Do something here OnSlideComplete
                   await Game.checkIn(closestGame["id"]);
@@ -260,6 +351,56 @@ class _HomePageState extends State<HomePage> {
                       break;
                     }
                   }
+
+                  sliderWidget = Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 0),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          // Navigate to the game creation page
+                          _showFinishGameDialog(context);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(30), // Rounded corners
+                          ),
+                          backgroundColor: Colors.transparent,
+                          padding: EdgeInsets.zero,
+                          elevation: 5, // Set primary color to transparent
+                        ),
+                        child: Ink(
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(
+                              colors: [
+                                Color(0xFF1A3E2F),
+                                Color(0xFF1A3E2F)
+                              ], // Gradient colors
+                              begin: Alignment
+                                  .topCenter, // Start point of the gradient
+                              end: Alignment
+                                  .bottomCenter, // End point of the gradient
+                            ),
+                            borderRadius:
+                                BorderRadius.circular(30), // Rounded corners
+                          ),
+                          child: const Padding(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 13, horizontal: 67),
+                            child: Text(
+                              'Check Out',
+                              style: TextStyle(
+                                fontSize: 23,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
                 });
                 setState(() {});
               },
@@ -277,7 +418,7 @@ class _HomePageState extends State<HomePage> {
         }
       }
 
-      if (differenceInMinutes > 15 || differenceInMinutes <= -1)
+      if ((differenceInMinutes > 15 || differenceInMinutes <= -1) && !finishGame)
         sliderWidget = null;
 
       return Container(
@@ -302,7 +443,7 @@ class _HomePageState extends State<HomePage> {
                   style: const TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
-                     fontSize: 23,
+                    fontSize: 23,
                   ),
                 ),
               ],

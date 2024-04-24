@@ -44,8 +44,9 @@ class _ChatPageState extends State<ChatPage> {
     return MaterialApp(
       home: Scaffold(
         backgroundColor: const Color(0xFF1A3E2F),
-       appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(20),  // Reduced height of the AppBar
+        appBar: PreferredSize(
+          preferredSize:
+              const Size.fromHeight(20), // Reduced height of the AppBar
           child: AppBar(
             automaticallyImplyLeading: false,
             backgroundColor: Colors.transparent,
@@ -64,24 +65,26 @@ class _ChatPageState extends State<ChatPage> {
                   ),
                 ),
                 Positioned(
-                  top: 15,  // Adjust the top value to move it upwards as needed
+                  top: 15, // Adjust the top value to move it upwards as needed
                   left: 5,
                   right: 15,
                   child: Container(
-                    padding: const EdgeInsets.only(left: 48),  // Adjust based on IconButton's size
+                    padding: const EdgeInsets.only(
+                        left: 48), // Adjust based on IconButton's size
                     alignment: Alignment.center,
                     child: Text(
                       'Game Chat',
-                     style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
                     ),
                   ),
                 ),
                 Positioned(
-                  top: 10,  // Adjust the top value to move the button upwards as needed
+                  top:
+                      10, // Adjust the top value to move the button upwards as needed
                   left: 4,
                   child: IconButton(
                     icon: const Icon(Icons.arrow_back, size: 24),

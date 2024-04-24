@@ -99,7 +99,8 @@ class _LoginScreenState extends State<Login> {
               alignment: Alignment.center,
               child: TextButton(
                 onPressed: () {
-                  Navigator.of(context).pushNamed('/Signup'); // Adjusted for direct navigation without global key
+                  Navigator.of(context).pushNamed(
+                      '/Signup'); // Adjusted for direct navigation without global key
                 },
                 child: const Text(
                   "Don't have an account? Sign up",
@@ -172,7 +173,7 @@ class _LoginScreenState extends State<Login> {
       ),
       child: ElevatedButton(
         onPressed: () {
-           Navigator.of(context).pushNamed('/Login/HomePage');
+          Navigator.of(context).pushNamed('/Login/HomePage');
           _login(context);
         },
         style: ElevatedButton.styleFrom(

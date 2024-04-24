@@ -34,8 +34,8 @@ class JoinGamePageState extends State<JoinGamePage> {
             .doc((activeGames[index] as Map<String, dynamic>)["gameID"]);
 
         if ((await targetGameDoc.get()).exists ||
-            !tz.TZDateTime.parse(
-                    Location.getTimeZone(), (activeGames[index]! as Map<String, dynamic>)["startTime"])
+            !tz.TZDateTime.parse(Location.getTimeZone(),
+                    (activeGames[index]! as Map<String, dynamic>)["startTime"])
                 .isAfter(tz.TZDateTime.now(Location.getTimeZone())
                     .add(const Duration(minutes: 15)))) {
           activeGames.removeAt(index);

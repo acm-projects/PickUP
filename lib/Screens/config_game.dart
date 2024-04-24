@@ -1,28 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:pickup/classes/game.dart';
 import 'package:pickup/classes/user.dart';
+
 class ConfigureGame extends StatelessWidget {
   const ConfigureGame({super.key});
-  
+
   @override
   Widget build(BuildContext context) {
     final String? sport = ModalRoute.of(context)?.settings.arguments as String?;
+
+    const Map<String, String> sportEmojis = {
+      'Basketball': '🏀',
+      'Volleyball': '🏐',
+      'Soccer': '⚽',
+      'Tennis': '🎾',
+    };
+
     TextEditingController titleController = TextEditingController();
     TextEditingController descriptionController = TextEditingController();
     TextEditingController locationController = TextEditingController();
-    titleController.text = "${User.firstName}'s $sport Game";
+    titleController.text =
+        "${sportEmojis[sport]} ${User.firstName}'s $sport Game";
     const Map<String, int> maxPlayersPerSport = {
       'Basketball': 12,
       'Volleyball': 12,
       'Soccer': 22,
       'Tennis': 4,
-     
     };
     return MaterialApp(
       home: Scaffold(
         backgroundColor: const Color(0xFF1A3E2F),
         appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(20),  // Reduced height of the AppBar
+          preferredSize:
+              const Size.fromHeight(20), // Reduced height of the AppBar
           child: AppBar(
             automaticallyImplyLeading: false,
             backgroundColor: Colors.transparent,
@@ -41,24 +51,26 @@ class ConfigureGame extends StatelessWidget {
                   ),
                 ),
                 Positioned(
-                  top: 15,  // Adjust the top value to move it upwards as needed
+                  top: 15, // Adjust the top value to move it upwards as needed
                   left: 5,
                   right: 15,
                   child: Container(
-                    padding: const EdgeInsets.only(left: 48),  // Adjust based on IconButton's size
+                    padding: const EdgeInsets.only(
+                        left: 48), // Adjust based on IconButton's size
                     alignment: Alignment.center,
                     child: Text(
                       'Create a $sport Game',
-                     style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
                     ),
                   ),
                 ),
                 Positioned(
-                  top: 10,  // Adjust the top value to move the button upwards as needed
+                  top:
+                      10, // Adjust the top value to move the button upwards as needed
                   left: 4,
                   child: IconButton(
                     icon: const Icon(Icons.arrow_back, size: 24),
@@ -146,7 +158,8 @@ class ConfigureGame extends StatelessWidget {
                       Game.currentGame.title = titleController.text;
                       Game.currentGame.description = descriptionController.text;
                       Game.currentGame.location = locationController.text;
-                      Game.currentGame.maxNumOfPlayers = maxPlayersPerSport[sport]!;
+                      Game.currentGame.maxNumOfPlayers =
+                          maxPlayersPerSport[sport]!;
                       Navigator.of(context).pushNamed('/ChooseTime');
                     },
                     child: Container(
@@ -176,11 +189,8 @@ class ConfigureGame extends StatelessWidget {
               ),
             ],
           ),
-        ),  
-          ),
-        );
-      
-    
-    
+        ),
+      ),
+    );
   }
 }

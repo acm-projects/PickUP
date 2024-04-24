@@ -44,37 +44,51 @@ class _ChatPageState extends State<ChatPage> {
     return MaterialApp(
       home: Scaffold(
         backgroundColor: const Color(0xFF1A3E2F),
-        appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.of(context).pop();
-              timer
-                  .cancel(); // Make sure to handle timer appropriately if it's part of your logic
-            },
-          ),
-          title: const Text('Chat'),
-          centerTitle: true, // Centers the title in the AppBar
-          titleTextStyle: const TextStyle(
-            color: Colors.black,
-            fontFamily: 'Mada',
-            fontWeight: FontWeight.bold,
-            fontSize: 28,
-          ),
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          flexibleSpace: Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Color(0xFF80F37F),
-                  Color(0xFF80E046)
-                ], // Adjusted to show a consistent color gradient
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
-              borderRadius: BorderRadius.vertical(
-                  bottom: Radius.circular(20)), // Rounded corners at the bottom
+       appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(20),  // Reduced height of the AppBar
+          child: AppBar(
+            automaticallyImplyLeading: false,
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            flexibleSpace: Stack(
+              fit: StackFit.expand,
+              children: [
+                Ink(
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFF80F37F), Color(0xFF80E046)],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ),
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+                Positioned(
+                  top: 15,  // Adjust the top value to move it upwards as needed
+                  left: 5,
+                  right: 15,
+                  child: Container(
+                    padding: const EdgeInsets.only(left: 48),  // Adjust based on IconButton's size
+                    alignment: Alignment.center,
+                    child: Text(
+                      'Game Chat',
+                     style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  top: 10,  // Adjust the top value to move the button upwards as needed
+                  left: 4,
+                  child: IconButton(
+                    icon: const Icon(Icons.arrow_back, size: 24),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                ),
+              ],
             ),
           ),
         ),

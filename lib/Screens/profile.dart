@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'stats_page.dart';
 import 'start_screen.dart';
+import 'package:pickup/classes/user.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 
@@ -96,7 +97,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                           SizedBox(height: 5),
                           Text(
-                            'ronaldo@example.com', // Replace with user's email
+                            'ronaldo@utdallas.edu', // Replace with user's email
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 16,
@@ -136,6 +137,7 @@ class _ProfilePageState extends State<ProfilePage> {
               );
             } else if (title == 'Reset Password') {
             } else if (title == 'Log Out') {
+              User.logOut();
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(builder: (context) => StartScreen()),

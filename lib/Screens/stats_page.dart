@@ -10,7 +10,7 @@ class _StatsPageState extends State<StatsPage> {
   List<Map<String, dynamic>> stats = [];
 
   List<Map<String, dynamic>> basketballStats = [
-    {'team1': 'Lakers', 'team2': 'Bulls', 'score': '112-108', 'result': 'Win'},
+    {'title': "Ahmed's Basketball Game", 'score': '112-108', 'result': 'Win'},
     {
       'team1': 'Celtics',
       'team2': 'Warriors',
@@ -333,7 +333,7 @@ class _StatsPageState extends State<StatsPage> {
                     children: [
                       Expanded(
                         child: Text(
-                          '${game['team1']} vs ${game['team2']}',
+                          '${game['title'] != null ? game['title'] : '${game['team1']} vs ${game['team2']}'}',
                           style: TextStyle(
                             fontSize: 16,
                             color: Colors.white,

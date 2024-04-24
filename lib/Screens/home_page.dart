@@ -104,7 +104,7 @@ class _HomePageState extends State<HomePage> {
               _upcomingGames.remove(_upcomingGames[index]);
               sliderWidget = null;
               await Game.leave(game);
-              continue;q
+              continue;
             }
           }
 

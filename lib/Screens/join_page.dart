@@ -47,7 +47,7 @@ class JoinGamePageState extends State<JoinGamePage> {
     }
 
     fetch();
-    Timer.periodic(const Duration(seconds: 10), (_) async {
+    Timer.periodic(const Duration(seconds: 1), (_) async {
       await fetch();
     });
   }

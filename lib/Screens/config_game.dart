@@ -16,6 +16,7 @@ class ConfigureGame extends StatelessWidget {
       'Volleyball': 12,
       'Soccer': 22,
       'Tennis': 4,
+     
     };
     return MaterialApp(
       home: Scaffold(
@@ -175,8 +176,11 @@ class ConfigureGame extends StatelessWidget {
               ),
             ],
           ),
-        ),
-      ),
-    );
+        ),  
+          ),
+        );
+      
+    
+    
   }
 }

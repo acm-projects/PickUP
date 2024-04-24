@@ -1,3 +1,4 @@
+import 'package:pickup/Screens/join_page.dart';
 import 'package:pickup/classes/notification.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,8 @@ import 'Screens/stats_page.dart';
 import 'Screens/nav_bar.dart';
 import 'Screens/profile.dart';
 import 'Screens/live_map.dart';
+import 'Screens/directionMap.dart';
+import 'Screens/join_page.dart';
 import 'dart:io' show Platform;
 
 void main() async {
@@ -53,9 +56,11 @@ class PickUpApp extends StatelessWidget {
         '/ConfigureGame': (context) => const ConfigureGame(),
         '/ChooseTime': (context) => const ChooseTime(),
         '/ChooseLocation': (context) => const ChooseLocation(),
+        '/DirectionsMap': (context) => const DirectionsMap(),
         '/Profile': (context) => const ProfilePage(),
         '/LiveMap': (context) => const LiveMap(),
         '/Stats': (context) => StatsPage(),
+        '/JoinGamePage': (context) => const JoinGamePage(),
       },
     );
   }

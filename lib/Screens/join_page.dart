@@ -21,8 +21,8 @@ class JoinGamePageState extends State<JoinGamePage> {
     // TODO: implement initState
     super.initState();
 
-    Timer.periodic(const Duration(milliseconds: 1000), (_) async {
-      activeGames = await Game.fetch() as List<Object?>;
+    Future<void> fetch() async {
+            activeGames = await Game.fetch() as List<Object?>;
 
       CollectionReference usersJoinedGames = FirebaseFirestore.instance
           .collection("Users")
@@ -44,6 +44,10 @@ class JoinGamePageState extends State<JoinGamePage> {
       }
 
       setState(() {});
+    }
+    fetch();
+    Timer.periodic(const Duration(seconds: 10), (_) async {
+      await fetch();
     });
   }
 

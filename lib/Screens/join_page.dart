@@ -25,15 +25,19 @@ class JoinGamePageState extends State<JoinGamePage> {
       activeGames = await Game.fetch() as List<Object?>;
 
       CollectionReference usersJoinedGames = FirebaseFirestore.instance
-        .collection("Users")
-        .doc(await User.getUserID())
-        .collection("JoinedGames");
+          .collection("Users")
+          .doc(await User.getUserID())
+          .collection("JoinedGames");
 
       for (int index = 0; index < activeGames.length; index++) {
-        DocumentReference targetGameDoc = usersJoinedGames.doc((activeGames[index] as Map<String, dynamic>)["gameID"]);
+        DocumentReference targetGameDoc = usersJoinedGames
+            .doc((activeGames[index] as Map<String, dynamic>)["gameID"]);
 
-        if ((await targetGameDoc.get()).exists) {
-          print((activeGames[index] as Map<String, dynamic>)["gameID"]);
+        if ((await targetGameDoc.get()).exists ||
+            !tz.TZDateTime.parse(
+                    Location.getTimeZone(), (activeGames[index]! as Map<String, dynamic>)["startTime"])
+                .isAfter(tz.TZDateTime.now(Location.getTimeZone())
+                    .add(const Duration(minutes: 15)))) {
           activeGames.removeAt(index);
           index -= 1;
         }

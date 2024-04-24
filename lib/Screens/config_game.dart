@@ -57,7 +57,7 @@ class ConfigureGame extends StatelessWidget {
                     child: Text(
                       'Create a $sport Game',
                      style: TextStyle(
-                          fontSize: 24,
+                          fontSize: 21,
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
                         ),

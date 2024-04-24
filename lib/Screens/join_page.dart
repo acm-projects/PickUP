@@ -56,36 +56,54 @@ class JoinGamePageState extends State<JoinGamePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF1A3E2F),
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.of(context)
-                .pop(); // Navigates back to the previous screen
-          },
-        ),
-        title: const Text('Choose a Date & Time'),
-        titleTextStyle: const TextStyle(
-          color: Colors.black,
-          fontFamily: 'Mada',
-          fontWeight: FontWeight.bold,
-          fontSize: 24,
-        ),
-        backgroundColor:
-            Colors.transparent, // Make AppBar background transparent
-        elevation: 0, // Removes shadow
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [Color(0xFF80F37F), Color(0xFF80E046)],
+     appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(20),  // Reduced height of the AppBar
+          child: AppBar(
+            automaticallyImplyLeading: false,
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            flexibleSpace: Stack(
+              fit: StackFit.expand,
+              children: [
+                Ink(
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFF80F37F), Color(0xFF80E046)],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ),
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+                Positioned(
+                  top: 15,  // Adjust the top value to move it upwards as needed
+                  left: 5,
+                  right: 15,
+                  child: Container(
+                    padding: const EdgeInsets.only(left: 48),  // Adjust based on IconButton's size
+                    alignment: Alignment.center,
+                    child: Text(
+                      'Join Game',
+                     style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  top: 10,  // Adjust the top value to move the button upwards as needed
+                  left: 4,
+                  child: IconButton(
+                    icon: const Icon(Icons.arrow_back, size: 24),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                ),
+              ],
             ),
-            borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
-            // borderRadius: BorderRadius.circular(30), // Rounded corners
           ),
         ),
-      ),
       body: CustomScrollView(
         slivers: [
           SliverList(
@@ -216,7 +234,7 @@ class JoinGamePageState extends State<JoinGamePage> {
               onPressed: () async {
                 // Navigate back to home page when join button is pressed
                 await Game.join(id);
-                Navigator.of(context).pop(); 
+                Navigator.of(context).pop();
               },
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(

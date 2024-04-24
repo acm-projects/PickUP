@@ -20,53 +20,56 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       backgroundColor: Color(0xFF1A3E2F), // Background color
       appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(20),  // Reduced height of the AppBar
-          child: AppBar(
-            automaticallyImplyLeading: false,
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            flexibleSpace: Stack(
-              fit: StackFit.expand,
-              children: [
-                Ink(
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      colors: [Color(0xFF80F37F), Color(0xFF80E046)],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
+        preferredSize:
+            const Size.fromHeight(20), // Reduced height of the AppBar
+        child: AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          flexibleSpace: Stack(
+            fit: StackFit.expand,
+            children: [
+              Ink(
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFF80F37F), Color(0xFF80E046)],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ),
+                  borderRadius: BorderRadius.circular(30),
+                ),
+              ),
+              Positioned(
+                top: 15, // Adjust the top value to move it upwards as needed
+                left: 5,
+                right: 15,
+                child: Container(
+                  padding: const EdgeInsets.only(
+                      left: 48), // Adjust based on IconButton's size
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Profile',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
                     ),
-                    borderRadius: BorderRadius.circular(30),
                   ),
                 ),
-                Positioned(
-                  top: 15,  // Adjust the top value to move it upwards as needed
-                  left: 5,
-                  right: 15,
-                  child: Container(
-                    padding: const EdgeInsets.only(left: 48),  // Adjust based on IconButton's size
-                    alignment: Alignment.center,
-                    child: Text(
-                      'Profile',
-                     style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                    ),
-                  ),
+              ),
+              Positioned(
+                top:
+                    10, // Adjust the top value to move the button upwards as needed
+                left: 4,
+                child: IconButton(
+                  icon: const Icon(Icons.arrow_back, size: 24),
+                  onPressed: () => Navigator.of(context).pop(),
                 ),
-                Positioned(
-                  top: 10,  // Adjust the top value to move the button upwards as needed
-                  left: 4,
-                  child: IconButton(
-                    icon: const Icon(Icons.arrow_back, size: 24),
-                    onPressed: () => Navigator.of(context).pop(),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
+      ),
       body: Column(
         children: [
           Expanded(
@@ -107,7 +110,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                           SizedBox(height: 5),
                           Text(
-                            'ronaldo@utdallas.edu', // Replace with user's email
+                            'axs220103@utdallas.edu', // Replace with user's email
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 16,

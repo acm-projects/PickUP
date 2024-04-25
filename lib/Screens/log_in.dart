@@ -173,7 +173,6 @@ class _LoginScreenState extends State<Login> {
       ),
       child: ElevatedButton(
         onPressed: () {
-          Navigator.of(context).pushNamed('/Login/HomePage');
           _login(context);
         },
         style: ElevatedButton.styleFrom(
